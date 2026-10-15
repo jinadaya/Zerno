@@ -1,26 +1,30 @@
-import com.android.build.api.dsl.LibraryExtension
-import org.gradle.api.JavaVersion
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
- * Base for every shared module: Kotlin Multiplatform with Android and iOS targets,
- * plus an Android library so the module plugs into the Android app.
+ * Base for every shared module: Kotlin Multiplatform with Android and iOS targets.
+ * Uses the AGP 9 `com.android.kotlin.multiplatform.library` plugin, which creates the `android` target itself.
  */
 class KmpLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("org.jetbrains.kotlin.multiplatform")
-        pluginManager.apply("com.android.library")
+        pluginManager.apply("com.android.kotlin.multiplatform.library")
 
         extensions.configure<KotlinMultiplatformExtension> {
-            androidTarget {
+            targets.withType<KotlinMultiplatformAndroidLibraryTarget>().configureEach {
+                namespace = zernoNamespace
+                compileSdk = libs.int("android-compileSdk")
+                minSdk = libs.int("android-minSdk")
                 compilerOptions {
                     jvmTarget.set(JvmTarget.JVM_17)
                 }
             }
+
             iosArm64()
             iosSimulatorArm64()
 
@@ -29,18 +33,6 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
             }
             sourceSets.commonTest.dependencies {
                 implementation(libs.lib("kotlin-test"))
-            }
-        }
-
-        extensions.configure<LibraryExtension> {
-            namespace = zernoNamespace
-            compileSdk = libs.int("android-compileSdk")
-            defaultConfig {
-                minSdk = libs.int("android-minSdk")
-            }
-            compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_17
-                targetCompatibility = JavaVersion.VERSION_17
             }
         }
     }

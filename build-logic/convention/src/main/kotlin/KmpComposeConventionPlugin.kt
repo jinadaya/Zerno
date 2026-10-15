@@ -22,7 +22,7 @@ class KmpComposeConventionPlugin : Plugin<Project> {
         }
 
         dependencies {
-            add("debugImplementation", libs.lib("compose-ui-tooling"))
+            add("androidRuntimeClasspath", libs.lib("compose-ui-tooling"))
         }
     }
 }
