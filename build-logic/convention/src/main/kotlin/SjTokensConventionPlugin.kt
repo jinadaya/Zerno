@@ -11,18 +11,19 @@ import tokens.GenerateSjTokensTask
  */
 class SjTokensConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
+        val modulePath = path.removePrefix(":").replace(':', '/')
         val generate = tasks.register<GenerateSjTokensTask>("generateSjTokens") {
             group = "design system"
             description = "Generates SjColors, SjSpacing, SjRadius and SjSize from tokens/tokens.json."
             tokensFile.set(layout.projectDirectory.file("tokens/tokens.json"))
             packageName.set("app.zerno.designsystem.tokens")
-            sourceName.set("${path.removePrefix(":")}/tokens/tokens.json")
+            sourceName.set("$modulePath/tokens/tokens.json")
             outputDir.set(layout.buildDirectory.dir("generated/sjTokens/commonMain/kotlin"))
         }
 
         pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
             extensions.configure<KotlinMultiplatformExtension> {
-                sourceSets.commonMain {
+                sourceSets.commonMain.configure {
                     kotlin.srcDir(generate.flatMap { it.outputDir })
                 }
             }
