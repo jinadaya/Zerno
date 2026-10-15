@@ -48,5 +48,9 @@ gradlePlugin {
             id = "zerno.feature.api"
             implementationClass = "FeatureApiConventionPlugin"
         }
+        register("sjTokens") {
+            id = "zerno.sj.tokens"
+            implementationClass = "SjTokensConventionPlugin"
+        }
     }
 }
