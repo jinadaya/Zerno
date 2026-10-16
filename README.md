@@ -37,5 +37,10 @@ Shared Gradle setup lives in `build-logic/convention`:
 | `zerno.room` | `zerno.kmp.library` + Room with KSP for every target and the bundled SQLite driver; schemas go to `<module>/schemas` |
 | `zerno.feature.api` | `zerno.kmp.library` + serialization, depends on `:entities` |
 | `zerno.feature` | `zerno.kmp.compose` + Koin, depends on its own `:api`, `:arch`, `:designsystem`, `:entities`, `:data` |
+| `zerno.sj.tokens` | `generateSjTokens`: turns `tokens/tokens.json` into `SjColors`, `SjSpacing`, `SjRadius`, `SjSize` in `commonMain` |
+
+## Design tokens
+
+`designsystem/tokens/tokens.json` is the one source of truth for colours, spacing, radii and sizes. Edit the json, not Kotlin: every build regenerates `app.zerno.designsystem.tokens` into `designsystem/build/generated/sjTokens`. Run `./gradlew :designsystem:generateSjTokens` to refresh the IDE without a full build.
 
 Versions live in `gradle/libs.versions.toml`.

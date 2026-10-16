@@ -93,3 +93,4 @@ zerno-kmp-compose = { id = "zerno.kmp.compose" }
 zerno-room = { id = "zerno.room" }
 zerno-feature = { id = "zerno.feature" }
 zerno-feature-api = { id = "zerno.feature.api" }
+zerno-sj-tokens = { id = "zerno.sj.tokens" }
