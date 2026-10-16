@@ -27,6 +27,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -34,6 +35,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.koin.core)
 
             implementation(projects.entities)
             implementation(projects.arch)
