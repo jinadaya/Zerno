@@ -1,0 +1,26 @@
+-- Bible file schema v1: the tables the app relies on. The files already contain them,
+-- so these statements are never run; they only let SQLDelight check the queries.
+-- Files declare NUMERIC for the integer columns and store integers, which reads back as INTEGER.
+CREATE TABLE info (
+    name TEXT NOT NULL,
+    value TEXT NOT NULL
+);
+
+CREATE TABLE books (
+    book_number INTEGER NOT NULL,
+    short_name TEXT NOT NULL,
+    long_name TEXT NOT NULL,
+    book_color TEXT NOT NULL
+);
+
+CREATE TABLE verses (
+    book_number INTEGER NOT NULL,
+    chapter INTEGER NOT NULL,
+    verse INTEGER NOT NULL,
+    text TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX verses_index ON verses (book_number, chapter, verse);
+
+infoValue:
+SELECT value FROM info WHERE name = ?;

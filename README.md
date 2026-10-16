@@ -17,7 +17,7 @@ Requires JDK 17+ (Android Studio's bundled JBR works) and Xcode 16+ for iOS.
 | `:entities` | Shared models read by `:data` and the UI |
 | `:arch` | MVI / UDF base (placeholder, existing code goes here) |
 | `:designsystem` | Tokens, theme, components, mascots |
-| `:data` | Room (KMP) databases, network client, preferences; shared infrastructure only |
+| `:data` | SQLDelight databases (`UserDb`, read-only `BibleDb` per translation file), network client, preferences; shared infrastructure only |
 | `:navigation` | Navigation 3 graph (placeholder, existing code goes here) |
 | `:feature:<name>` | Feature implementation with `domain`, `data`, `ui`, `di` packages |
 | `:feature:<name>:api` | Routes and contracts other features may use |
@@ -34,7 +34,7 @@ Shared Gradle setup lives in `build-logic/convention`:
 | --- | --- |
 | `zerno.kmp.library` | Kotlin Multiplatform (Android, iosArm64, iosSimulatorArm64) + Android library, namespace from the module path |
 | `zerno.kmp.compose` | `zerno.kmp.library` + Compose Multiplatform (runtime, foundation, ui, resources; no Material) |
-| `zerno.room` | `zerno.kmp.library` + Room with KSP for every target and the bundled SQLite driver; schemas go to `<module>/schemas` |
+| `zerno.sqldelight` | `zerno.kmp.library` + SQLDelight runtime, Android driver and native driver; each module declares its own databases |
 | `zerno.feature.api` | `zerno.kmp.library` + serialization, depends on `:entities` |
 | `zerno.feature` | `zerno.kmp.compose` + Koin, depends on its own `:api`, `:arch`, `:designsystem`, `:entities`, `:data` |
 | `zerno.sj.tokens` | `generateSjTokens`: turns `tokens/tokens.json` into `SjColors`, `SjSpacing`, `SjRadius`, `SjSize` in `commonMain` |
