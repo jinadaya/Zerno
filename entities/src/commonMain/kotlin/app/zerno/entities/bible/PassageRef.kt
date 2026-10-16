@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
  * Verses are optional: a null [startVerse] means the passage starts at the beginning of
  * [startChapter], a null [endVerse] means it runs to the end of [endChapter].
  * So "Ps 23" is `PassageRef(Ps, 23, null, 23, null)` and "John 4:1-26" is
- * `PassageRef(John, 4, 1, 4, 26)`. Parsing and formatting live in EN-02.
+ * `PassageRef(John, 4, 1, 4, 26)`. [parse] and [format] in PassageRefText.kt read and write it as text.
  */
 @Serializable
 data class PassageRef(
