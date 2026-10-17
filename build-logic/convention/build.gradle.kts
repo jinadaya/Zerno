@@ -23,6 +23,7 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.composeCompiler.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
 }
 
 gradlePlugin {
@@ -35,9 +36,9 @@ gradlePlugin {
             id = "zerno.kmp.compose"
             implementationClass = "KmpComposeConventionPlugin"
         }
-        register("sqldelight") {
-            id = "zerno.sqldelight"
-            implementationClass = "SqlDelightConventionPlugin"
+        register("room") {
+            id = "zerno.room"
+            implementationClass = "RoomConventionPlugin"
         }
         register("feature") {
             id = "zerno.feature"
