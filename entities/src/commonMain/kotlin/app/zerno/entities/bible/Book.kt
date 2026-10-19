@@ -64,14 +64,14 @@ data class ChapterRef(
 /**
  * One verse of one translation.
  *
- * @property text verse text with MyBible markup already removed (see DA-02).
+ * @property text verse text with MyBible markup turned into plain text and annotations.
  */
 @Serializable
 data class Verse(
     val translation: TranslationId,
     val chapter: ChapterRef,
     val number: Int,
-    val text: String,
+    val text: VerseText,
 ) {
     init {
         require(number > 0) { "Verse number must be positive, was $number" }
