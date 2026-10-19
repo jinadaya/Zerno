@@ -17,8 +17,9 @@ class RoomConventionPlugin : Plugin<Project> {
 
         extensions.configure<KotlinMultiplatformExtension> {
             sourceSets.commonMain.dependencies {
-                implementation(libs.lib("room-runtime"))
-                implementation(libs.lib("sqlite-bundled"))
+                // Database classes and DAOs built on RoomDatabase are used from feature modules.
+                api(libs.lib("room-runtime"))
+                api(libs.lib("sqlite-bundled"))
             }
         }
 

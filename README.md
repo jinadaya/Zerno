@@ -17,7 +17,7 @@ Requires JDK 17+ (Android Studio's bundled JBR works) and Xcode 16+ for iOS.
 | `:entities` | Shared models read by `:data` and the UI |
 | `:arch` | MVI / UDF base (placeholder, existing code goes here) |
 | `:designsystem` | Tokens, theme, components, mascots |
-| `:data` | Room (KMP) databases, network client, preferences; shared infrastructure only |
+| `:data` | Room (KMP) `UserDb`, read-only Bible files, network client, preferences; shared infrastructure only |
 | `:navigation` | Navigation 3 graph (placeholder, existing code goes here) |
 | `:feature:<name>` | Feature implementation with `domain`, `data`, `ui`, `di` packages |
 | `:feature:<name>:api` | Routes and contracts other features may use |
