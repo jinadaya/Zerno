@@ -21,6 +21,7 @@ class FeatureConventionPlugin : Plugin<Project> {
                 implementation(project(":data"))
                 implementation(libs.lib("koin-core"))
                 implementation(libs.lib("koin-compose"))
+                implementation(libs.lib("koin-compose-viewmodel"))
                 implementation(libs.lib("kotlinx-serialization-core"))
             }
         }
