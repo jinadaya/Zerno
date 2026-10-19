@@ -49,7 +49,7 @@ class TranslationStoreTest {
     }
 
     @Test
-    fun freshInstallReadsGenesisOneOfflineInBoth() = runBlocking {
+    fun freshInstallReadsGenesisOneOfflineInBoth() = runBlocking<Unit> {
         val store = TranslationStore(directory, meta, source = source)
 
         assertEquals(listOf(rst, kjv), store.list().map { it.id })
@@ -60,7 +60,7 @@ class TranslationStoreTest {
     }
 
     @Test
-    fun copiesAgainOnlyWhenTheBundledVersionGoesUp() = runBlocking {
+    fun copiesAgainOnlyWhenTheBundledVersionGoesUp() = runBlocking<Unit> {
         TranslationStore(directory, meta, source = source).installBundled()
         TranslationStore(directory, meta, source = source).installBundled()
         assertEquals(2, reads.size, "Second launch copied the files again")
@@ -72,7 +72,7 @@ class TranslationStoreTest {
     }
 
     @Test
-    fun listsDownloadedFilesAfterBundledOnesAndSkipsBrokenOnes() = runBlocking {
+    fun listsDownloadedFilesAfterBundledOnesAndSkipsBrokenOnes() = runBlocking<Unit> {
         val store = TranslationStore(directory, meta, source = source)
         store.installBundled()
         write("asv.SQLite3", fixture("asv", "en", "In the beginning God"))
