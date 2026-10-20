@@ -33,5 +33,5 @@ val featureModules: List<Module> = listOf(
  */
 fun initKoin(platform: KoinAppDeclaration = {}): KoinApplication = startKoin {
     platform()
-    modules(featureModules)
+    modules(listOf(platformDataModule) + featureModules)
 }

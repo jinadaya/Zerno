@@ -1,18 +1,11 @@
 package app.zerno
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import app.zerno.feature.reader.ui.ReaderRoute
+import com.royaal.navigation.NavHost
 
-/** Root composable shared by Android and iOS. Blank until the design system and navigation land. */
+/** Root composable shared by Android and iOS. Opens on the reader until the app shell (PR-01) adds the tabs. */
 @Composable
 fun App() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-    )
+    NavHost(startRoute = ReaderRoute)
 }

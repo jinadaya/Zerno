@@ -13,11 +13,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -26,6 +29,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
@@ -90,6 +95,8 @@ object SjReaderTextDefaults {
  * column is capped at `reader-measure` of that size. The page does not scroll by itself; put it in a scroll
  * container.
  *
+ * Pass a [layout] to find verses on the page: which one is at a scroll offset, and where one starts.
+ *
  * [colors] and [fonts] are parameters until `SjTheme` (DS-04) provides them.
  */
 @Composable
@@ -103,6 +110,7 @@ fun SjReaderText(
     highlighted: Set<Int> = emptySet(),
     selected: Int? = null,
     onVerseClick: ((index: Int) -> Unit)? = null,
+    layout: SjReaderTextLayout? = null,
     colors: SjColors = SjColors.Light,
     fonts: SjFonts = rememberSjFonts(),
 ) {
@@ -139,6 +147,7 @@ fun SjReaderText(
 
     Column(
         modifier
+            .onPlaced { layout?.root = it }
             .background(colors.readerPaper)
             .padding(horizontal = spacing.space6, vertical = spacing.space12),
     ) {
@@ -159,8 +168,8 @@ fun SjReaderText(
             }
             Spacer(Modifier.height(spacing.space8))
             Column(verticalArrangement = Arrangement.spacedBy(spacing.space4)) {
-                paragraphs.forEach { paragraph ->
-                    ParagraphText(paragraph, scripture, selected, colors.ultra)
+                paragraphs.forEachIndexed { index, paragraph ->
+                    ParagraphText(paragraph, scripture, selected, colors.ultra, layout, index)
                 }
             }
             Spacer(Modifier.height(spacing.space8))
@@ -209,21 +218,92 @@ private fun ReaderTag(text: String, colors: SjColors, fonts: SjFonts, hairline: 
 }
 
 @Composable
-private fun ParagraphText(paragraph: ReaderParagraph, style: TextStyle, selected: Int?, underline: Color) {
+private fun ParagraphText(
+    paragraph: ReaderParagraph,
+    style: TextStyle,
+    selected: Int?,
+    underline: Color,
+    readerLayout: SjReaderTextLayout?,
+    position: Int,
+) {
     var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
     val selectedRange = paragraph.verses.firstOrNull { it.index == selected }
     BasicText(
         text = paragraph.text,
         style = style,
-        onTextLayout = { layout = it },
-        modifier = Modifier.drawBehind {
-            val result = layout
-            if (selectedRange != null && result != null) {
-                drawWavyUnderline(result, selectedRange.start, selectedRange.end, underline)
-            }
+        onTextLayout = { result ->
+            layout = result
+            readerLayout?.laidOut(position, paragraph.verses.associate { it.index to result.verseTop(it) })
         },
+        modifier = Modifier
+            .onPlaced { readerLayout?.placed(position, it) }
+            .drawBehind {
+                val result = layout
+                if (selectedRange != null && result != null) {
+                    drawWavyUnderline(result, selectedRange.start, selectedRange.end, underline)
+                }
+            },
     )
 }
+
+/**
+ * Where each verse of an [SjReaderText] sits, for a screen that restores a reading position or asks which verse is
+ * at the top. Offsets are in px from the top of the [SjReaderText], so inside a `verticalScroll` that starts with
+ * it they compare directly with `ScrollState.value`. Remember one per page: a new chapter needs a new layout.
+ */
+@Stable
+class SjReaderTextLayout {
+    internal var root: LayoutCoordinates? = null
+    private val paragraphs = mutableMapOf<Int, PlacedParagraph>()
+
+    /**
+     * Grows every time a paragraph is laid out again, e.g. after a font size change. Not read during composition by
+     * the page itself; observe it in `snapshotFlow` to wait for a new layout.
+     */
+    var revision: Int by mutableIntStateOf(0)
+        private set
+
+    /** Top of verse [index] (its line, number included), or null while it is not laid out. */
+    fun verseTop(index: Int): Float? {
+        val root = root?.takeIf { it.isAttached } ?: return null
+        val paragraph = paragraphs.values.firstOrNull { index in it.verseTops } ?: return null
+        val coordinates = paragraph.coordinates?.takeIf { it.isAttached } ?: return null
+        return root.localPositionOf(coordinates, Offset.Zero).y + paragraph.verseTops.getValue(index)
+    }
+
+    /** The verse at [y]: the last one whose top is at or above it, or null above the first verse. */
+    fun verseAt(y: Float): Int? {
+        val root = root?.takeIf { it.isAttached } ?: return null
+        var found: Int? = null
+        for (paragraph in paragraphs.values) {
+            val coordinates = paragraph.coordinates?.takeIf { it.isAttached } ?: continue
+            val paragraphTop = root.localPositionOf(coordinates, Offset.Zero).y
+            for ((index, top) in paragraph.verseTops) {
+                if (paragraphTop + top <= y && (found == null || index > found)) found = index
+            }
+        }
+        return found
+    }
+
+    internal fun laidOut(position: Int, verseTops: Map<Int, Float>) {
+        paragraphs.getOrPut(position) { PlacedParagraph() }.verseTops = verseTops
+        // Called while measuring: reading the counter there would make the text depend on it.
+        Snapshot.withoutReadObservation { revision++ }
+    }
+
+    internal fun placed(position: Int, coordinates: LayoutCoordinates) {
+        paragraphs.getOrPut(position) { PlacedParagraph() }.coordinates = coordinates
+    }
+
+    private class PlacedParagraph {
+        var coordinates: LayoutCoordinates? = null
+        var verseTops: Map<Int, Float> = emptyMap()
+    }
+}
+
+/** Top of the line [range] starts on. */
+private fun TextLayoutResult.verseTop(range: VerseRange): Float =
+    getLineTop(getLineForOffset(range.start.coerceAtMost(layoutInput.text.length)))
 
 /** Where one verse's own text sits in its paragraph, without the verse number. */
 internal data class VerseRange(val index: Int, val start: Int, val end: Int)

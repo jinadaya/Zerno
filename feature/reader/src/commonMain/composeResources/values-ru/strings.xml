@@ -1,0 +1,22 @@
+<resources>
+    <string name="reader_choose_chapter">Выбрать книгу и главу</string>
+    <string name="reader_settings">Настройки чтения</string>
+    <string name="reader_text_size">Размер текста</string>
+    <string name="reader_smaller_text">Мельче</string>
+    <string name="reader_larger_text">Крупнее</string>
+    <string name="reader_translation">Перевод</string>
+    <string name="reader_previous_chapter">Предыдущая глава: %1$s</string>
+    <string name="reader_next_chapter">Следующая глава: %1$s</string>
+    <string name="reader_failed">Не получилось открыть главу. Попробуйте другую.</string>
+    <string name="books_title">Книги</string>
+    <string name="books_back">Назад</string>
+    <string name="books_old_testament">Ветхий Завет</string>
+    <string name="books_new_testament">Новый Завет</string>
+    <string name="books_chapter">Глава %1$d</string>
+    <plurals name="books_chapter_count">
+        <item quantity="one">%1$d глава</item>
+        <item quantity="few">%1$d главы</item>
+        <item quantity="many">%1$d глав</item>
+        <item quantity="other">%1$d главы</item>
+    </plurals>
+</resources>

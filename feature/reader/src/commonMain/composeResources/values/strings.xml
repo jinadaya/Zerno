@@ -1,0 +1,20 @@
+<resources>
+    <string name="reader_choose_chapter">Choose a book and chapter</string>
+    <string name="reader_settings">Reading settings</string>
+    <string name="reader_text_size">Text size</string>
+    <string name="reader_smaller_text">Smaller text</string>
+    <string name="reader_larger_text">Larger text</string>
+    <string name="reader_translation">Translation</string>
+    <string name="reader_previous_chapter">Previous chapter: %1$s</string>
+    <string name="reader_next_chapter">Next chapter: %1$s</string>
+    <string name="reader_failed">This chapter didn’t open. Try another one.</string>
+    <string name="books_title">Books</string>
+    <string name="books_back">Back</string>
+    <string name="books_old_testament">Old Testament</string>
+    <string name="books_new_testament">New Testament</string>
+    <string name="books_chapter">Chapter %1$d</string>
+    <plurals name="books_chapter_count">
+        <item quantity="one">%1$d chapter</item>
+        <item quantity="other">%1$d chapters</item>
+    </plurals>
+</resources>
