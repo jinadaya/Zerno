@@ -4,7 +4,7 @@ package app.zerno.entities.bible
  * Verses of one chapter: [first] to [last], or to the end of the chapter when [last] is null.
  * Written "14:55-56", "6:13" or "13:2-" (verse 2 to the end).
  */
-internal class VerseSpan(val chapter: Int, val first: Int, val last: Int?) {
+internal class ChapterSpan(val chapter: Int, val first: Int, val last: Int?) {
     init {
         require(chapter > 0 && first > 0 && (last == null || last >= first)) { "Bad span $this" }
     }
@@ -17,11 +17,11 @@ internal class VerseSpan(val chapter: Int, val first: Int, val last: Int?) {
     override fun toString(): String = "$chapter:$first-${last ?: ""}"
 
     companion object {
-        fun parse(text: String): VerseSpan {
+        fun parse(text: String): ChapterSpan {
             val (chapter, verses) = text.split(':')
             val first = verses.substringBefore('-').toInt()
             val last = if ('-' !in verses) first else verses.substringAfter('-').toIntOrNull()
-            return VerseSpan(chapter.toInt(), first, last)
+            return ChapterSpan(chapter.toInt(), first, last)
         }
     }
 }
@@ -32,7 +32,7 @@ internal class VerseSpan(val chapter: Int, val first: Int, val last: Int?) {
  *
  * @property moved the text sits in another place in the other numbering, out of order (the Romans doxology).
  */
-internal class VerseSegment(val english: VerseSpan, val russian: VerseSpan, val moved: Boolean = false) {
+internal class VerseSegment(val english: ChapterSpan, val russian: ChapterSpan, val moved: Boolean = false) {
     init {
         require(english.size == russian.size || (english.size != null && russian.size != null && (english.size == 1 || russian.size == 1))) {
             "Segment $english = $russian must keep its size or split one verse"
@@ -212,7 +212,7 @@ internal object SynodalMapping {
         val segments = mutableListOf<VerseSegment>()
 
         fun map(english: String, russian: String, moved: Boolean = false) {
-            segments += VerseSegment(VerseSpan.parse(english), VerseSpan.parse(russian), moved)
+            segments += VerseSegment(ChapterSpan.parse(english), ChapterSpan.parse(russian), moved)
         }
 
         fun same(verses: String) = map(verses, verses)
