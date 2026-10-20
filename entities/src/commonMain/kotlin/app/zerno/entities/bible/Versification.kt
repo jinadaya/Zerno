@@ -45,8 +45,8 @@ fun PassageRef.mapVersification(from: Versification, to: Versification): Passage
 }
 
 private class VersificationMapper(private val from: Versification, segments: List<VerseSegment>) {
-    private val VerseSegment.source: VerseSpan get() = if (from == Versification.English) english else russian
-    private val VerseSegment.target: VerseSpan get() = if (from == Versification.English) russian else english
+    private val VerseSegment.source: ChapterSpan get() = if (from == Versification.English) english else russian
+    private val VerseSegment.target: ChapterSpan get() = if (from == Versification.English) russian else english
 
     private val bySource = segments.groupBy { it.source.chapter }.mapValues { (_, list) -> list.sortedBy { it.source.first } }
     private val byTarget = segments.groupBy { it.target.chapter }.mapValues { (_, list) -> list.sortedBy { it.target.first } }
