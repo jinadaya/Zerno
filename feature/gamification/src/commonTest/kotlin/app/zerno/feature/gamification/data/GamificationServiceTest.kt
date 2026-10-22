@@ -13,8 +13,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -63,8 +63,7 @@ class GamificationServiceTest {
         advanceUntilIdle()
 
         val unlocked = mutableListOf<String>()
-        backgroundScope.launchCollect(service) { unlocked += it }
-        runCurrent()
+        collectUnlocks(service) { unlocked += it }
         service.onSessionCompleted(session())
         advanceUntilIdle()
 
@@ -79,7 +78,7 @@ class GamificationServiceTest {
     fun nothingUnlocksTwice() = runTest {
         val service = service()
         val unlocked = mutableListOf<String>()
-        backgroundScope.launchCollect(service) { unlocked += it }
+        collectUnlocks(service) { unlocked += it }
         advanceUntilIdle()
         service.onSessionCompleted(session())
         clock.now += 1.days
@@ -128,6 +127,9 @@ class GamificationServiceTest {
         assertEquals("1 of 5", service.achievements.value.single { it.code.value == "thoughtful_5" }.progress!!.let { "${it.current} of ${it.target}" })
     }
 
-    private fun CoroutineScope.launchCollect(service: GamificationService, onCode: (String) -> Unit) =
-        launch { service.newlyUnlocked.collect { list -> list.forEach { onCode(it.code.value) } } }
+    // Unconfined, so each emission is collected at once: advanceUntilIdle does not run backgroundScope work.
+    private fun TestScope.collectUnlocks(service: GamificationService, onCode: (String) -> Unit) =
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            service.newlyUnlocked.collect { list -> list.forEach { onCode(it.code.value) } }
+        }
 }
