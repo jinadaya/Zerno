@@ -7,7 +7,8 @@ plugins {
 kotlin {
     sourceSets.commonMain.dependencies {
         api(projects.entities)
-        implementation(libs.kotlinx.io.core)
+        // TranslationStore and bibleDirectory() take and return kotlinx.io Path, so callers need it too.
+        api(libs.kotlinx.io.core)
     }
 }
 
