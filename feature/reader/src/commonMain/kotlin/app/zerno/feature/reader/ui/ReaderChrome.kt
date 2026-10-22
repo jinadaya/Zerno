@@ -3,7 +3,6 @@ package app.zerno.feature.reader.ui
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
@@ -30,10 +29,6 @@ import app.zerno.designsystem.tokens.SjColors
 import app.zerno.designsystem.tokens.SjRadius
 import app.zerno.designsystem.tokens.SjSize
 import app.zerno.designsystem.type.SjFonts
-
-/** Light or dark tokens by the system setting, until `SjTheme` (DS-04) and the page themes (MV-09) arrive. */
-@Composable
-internal fun readerColors(): SjColors = if (isSystemInDarkTheme()) SjColors.Dark else SjColors.Light
 
 /** Interface copy on the reader's chrome: Onest 16, as `body` in tokens.json. */
 internal fun SjFonts.body(color: Color, weight: FontWeight = FontWeight.Normal) = TextStyle(

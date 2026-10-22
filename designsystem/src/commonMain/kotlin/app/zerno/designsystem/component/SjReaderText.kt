@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -38,22 +37,15 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import app.zerno.designsystem.tokens.SjColors
-import app.zerno.designsystem.tokens.SjRadius
-import app.zerno.designsystem.tokens.SjSize
-import app.zerno.designsystem.tokens.SjSpacing
-import app.zerno.designsystem.type.SjFonts
-import app.zerno.designsystem.type.rememberSjFonts
+import app.zerno.designsystem.theme.SjTheme
 import kotlin.math.min
 
 /**
@@ -97,7 +89,7 @@ object SjReaderTextDefaults {
  *
  * Pass a [layout] to find verses on the page: which one is at a scroll offset, and where one starts.
  *
- * [colors] and [fonts] are parameters until `SjTheme` (DS-04) provides them.
+ * Colours and type come from [SjTheme].
  */
 @Composable
 fun SjReaderText(
@@ -111,31 +103,26 @@ fun SjReaderText(
     selected: Int? = null,
     onVerseClick: ((index: Int) -> Unit)? = null,
     layout: SjReaderTextLayout? = null,
-    colors: SjColors = SjColors.Light,
-    fonts: SjFonts = rememberSjFonts(),
 ) {
-    val spacing = SjSpacing.Default
-    val sizes = SjSize.Default
+    val colors = SjTheme.colors
+    val type = SjTheme.type
+    val spacing = SjTheme.spacing
+    val sizes = SjTheme.sizes
     val scriptureSize = clampFontSize(fontSize)
     val measure = with(LocalDensity.current) { (scriptureSize.value * sizes.readerMeasure.value).sp.toDp() }
 
-    val scripture = TextStyle(
-        fontFamily = fonts.serif,
-        fontWeight = FontWeight.Normal,
+    val scripture = type.scripture.copy(
         fontSize = scriptureSize,
         lineHeight = SjReaderTextDefaults.LineHeight,
         color = colors.ink,
     )
-    val verseNumber = SpanStyle(
-        fontFamily = fonts.sans,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 11.sp,
+    val verseNumber = type.verseNumber.toSpanStyle().copy(
         color = colors.inkMuted,
         baselineShift = BaselineShift.Superscript,
     )
     val currentOnVerseClick by rememberUpdatedState(onVerseClick)
     val clickable = onVerseClick != null
-    val paragraphs = remember(verses, highlighted, colors, fonts, clickable) {
+    val paragraphs = remember(verses, highlighted, colors, type, clickable) {
         readerParagraphs(
             verses = verses,
             numberStyle = verseNumber,
@@ -153,18 +140,8 @@ fun SjReaderText(
     ) {
         Column(Modifier.widthIn(max = measure)) {
             Column(verticalArrangement = Arrangement.spacedBy(spacing.space3)) {
-                ReaderTag(translation, colors, fonts, sizes.hairline)
-                BasicText(
-                    text = chapterTitle,
-                    style = TextStyle(
-                        fontFamily = fonts.serif,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 40.sp,
-                        lineHeight = 44.sp,
-                        letterSpacing = (-0.01).em,
-                        color = colors.ink,
-                    ),
-                )
+                ReaderTag(translation)
+                BasicText(text = chapterTitle, style = type.chapterTitle.copy(color = colors.ink))
             }
             Spacer(Modifier.height(spacing.space8))
             Column(verticalArrangement = Arrangement.spacedBy(spacing.space4)) {
@@ -175,13 +152,7 @@ fun SjReaderText(
             Spacer(Modifier.height(spacing.space8))
             BasicText(
                 text = credit,
-                style = TextStyle(
-                    fontFamily = fonts.sans,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 13.sp,
-                    lineHeight = 18.sp,
-                    color = colors.inkMuted,
-                ),
+                style = type.caption.copy(color = colors.inkMuted),
                 modifier = Modifier
                     .drawBehind {
                         val stroke = sizes.hairline.toPx()
@@ -195,25 +166,16 @@ fun SjReaderText(
 
 /** The outline `tag` above the chapter title. Uppercase is applied here; the string stays sentence case. */
 @Composable
-private fun ReaderTag(text: String, colors: SjColors, fonts: SjFonts, hairline: Dp) {
+private fun ReaderTag(text: String) {
+    val colors = SjTheme.colors
     Box(
         modifier = Modifier
             .height(24.dp)
-            .border(hairline, colors.ink, RoundedCornerShape(SjRadius.Default.pill))
+            .border(SjTheme.sizes.hairline, colors.ink, SjTheme.shapes.pill)
             .padding(horizontal = 10.dp),
         contentAlignment = Alignment.Center,
     ) {
-        BasicText(
-            text = text.uppercase(),
-            style = TextStyle(
-                fontFamily = fonts.display,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 11.sp,
-                lineHeight = 14.sp,
-                letterSpacing = 0.06.em,
-                color = colors.ink,
-            ),
-        )
+        BasicText(text = text.uppercase(), style = SjTheme.type.tag.copy(color = colors.ink))
     }
 }
 
@@ -416,28 +378,31 @@ private val SampleVersesRu = listOf(
 @Preview
 @Composable
 private fun SjReaderTextPreview() {
-    SjReaderText(
-        translation = "Psalms · KJV",
-        chapterTitle = "Psalm 119",
-        verses = SampleVerses,
-        credit = "Psalm 119:105–108, King James Version (public domain). Sample text for layout.",
-        highlighted = setOf(1),
-        selected = 3,
-        onVerseClick = {},
-    )
+    SjTheme(darkTheme = false) {
+        SjReaderText(
+            translation = "Psalms · KJV",
+            chapterTitle = "Psalm 119",
+            verses = SampleVerses,
+            credit = "Psalm 119:105–108, King James Version (public domain). Sample text for layout.",
+            highlighted = setOf(1),
+            selected = 3,
+            onVerseClick = {},
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun SjReaderTextDarkPreview() {
-    SjReaderText(
-        translation = "Псалтирь · СП",
-        chapterTitle = "Псалом 118",
-        verses = SampleVersesRu.mapIndexed { i, verse -> if (i == 2) verse.copy(startsParagraph = true) else verse },
-        credit = "Псалом 118:105–108, Синодальный перевод (общественное достояние). Образец для вёрстки.",
-        fontSize = 24.sp,
-        highlighted = setOf(1),
-        selected = 3,
-        colors = SjColors.Dark,
-    )
+    SjTheme(darkTheme = true) {
+        SjReaderText(
+            translation = "Псалтирь · СП",
+            chapterTitle = "Псалом 118",
+            verses = SampleVersesRu.mapIndexed { i, verse -> if (i == 2) verse.copy(startsParagraph = true) else verse },
+            credit = "Псалом 118:105–108, Синодальный перевод (общественное достояние). Образец для вёрстки.",
+            fontSize = 24.sp,
+            highlighted = setOf(1),
+            selected = 3,
+        )
+    }
 }

@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.zerno.designsystem.component.SjReaderText
 import app.zerno.designsystem.component.SjReaderTextLayout
+import app.zerno.designsystem.theme.SjTheme
 import app.zerno.designsystem.tokens.SjColors
 import app.zerno.designsystem.tokens.SjRadius
 import app.zerno.designsystem.tokens.SjSize
@@ -89,7 +90,7 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
 
 @Composable
 private fun ReaderContent(state: ReaderState, onEvent: (ReaderEvent) -> Unit) {
-    val colors = readerColors()
+    val colors = SjTheme.colors
     val fonts = rememberSjFonts()
     val page = state.page
     Column(
@@ -222,8 +223,6 @@ private fun ReaderPageContent(
             credit = "${page.title}, ${page.translation.name}",
             fontSize = fontSize.sp,
             layout = textLayout,
-            colors = colors,
-            fonts = fonts,
             modifier = Modifier.fillMaxWidth(),
         )
         Row(
