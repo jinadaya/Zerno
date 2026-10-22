@@ -23,6 +23,9 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       # Compiles every module for Android, so a broken shared file fails here first.
       - run: ./gradlew :composeApp:assembleDebug --stacktrace
+      # Module rules (README): build-logic's own tests, then the check on every feature module.
+      - run: ./gradlew -p build-logic test
+      - run: ./gradlew checkModuleRules
 
   ios:
     name: iOS framework and tests

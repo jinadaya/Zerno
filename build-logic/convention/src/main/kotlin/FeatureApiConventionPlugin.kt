@@ -8,6 +8,7 @@ class FeatureApiConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("zerno.kmp.library")
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
+        registerModuleRules()
 
         extensions.configure<KotlinMultiplatformExtension> {
             sourceSets.commonMain.dependencies {
