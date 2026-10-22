@@ -4,7 +4,7 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
- * `:feature:x`: its own `:api`, the shared base modules, Compose and Koin.
+ * `:feature:x`: its own `:api`, the shared base modules (`:navigation` for `screen<T>`), Compose and Koin.
  * Other features are reached only through their `:api` modules.
  */
 class FeatureConventionPlugin : Plugin<Project> {
@@ -20,6 +20,7 @@ class FeatureConventionPlugin : Plugin<Project> {
                 implementation(project(":designsystem"))
                 implementation(project(":entities"))
                 implementation(project(":data"))
+                implementation(project(":navigation"))
                 implementation(libs.lib("koin-core"))
                 implementation(libs.lib("koin-compose"))
                 implementation(libs.lib("koin-compose-viewmodel"))

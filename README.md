@@ -18,7 +18,7 @@ Requires JDK 17+ (Android Studio's bundled JBR works) and Xcode 16+ for iOS.
 | `:arch` | MVI / UDF base (placeholder, existing code goes here) |
 | `:designsystem` | Tokens, theme, components, mascots |
 | `:data` | Room (KMP) `UserDb`, read-only Bible files, network client, preferences; shared infrastructure only |
-| `:navigation` | Navigation 3 graph (placeholder, existing code goes here) |
+| `:navigation` | Navigation 3 host: `NavHost`, `Navigator`, `screen<T>` registration from Koin |
 | `:feature:<name>` | Feature implementation with `domain`, `data`, `ui`, `di` packages |
 | `:feature:<name>:api` | Routes and contracts other features may use |
 
@@ -35,9 +35,15 @@ Shared Gradle setup lives in `build-logic/convention`:
 | `zerno.kmp.library` | Kotlin Multiplatform (Android, iosArm64, iosSimulatorArm64) + Android library, namespace from the module path |
 | `zerno.kmp.compose` | `zerno.kmp.library` + Compose Multiplatform (runtime, foundation, ui, resources; no Material) |
 | `zerno.room` | `zerno.kmp.library` + Room with KSP for every target and the bundled SQLite driver; schemas go to `<module>/schemas` |
-| `zerno.feature.api` | `zerno.kmp.library` + serialization, depends on `:entities` |
-| `zerno.feature` | `zerno.kmp.compose` + Koin, depends on its own `:api`, `:arch`, `:designsystem`, `:entities`, `:data` |
+| `zerno.feature.api` | `zerno.kmp.library` + serialization, depends on `:entities` and the Navigation 3 runtime (`NavKey`) |
+| `zerno.feature` | `zerno.kmp.compose` + Koin, depends on its own `:api`, `:arch`, `:designsystem`, `:entities`, `:data`, `:navigation` |
 | `zerno.sj.tokens` | `generateSjTokens`: turns `tokens/tokens.json` into `SjColors`, `SjSpacing`, `SjRadius`, `SjSize`, `SjTypography` in `commonMain` |
+
+## Navigation
+
+Each feature's routes other features open live in its `:api` module as `@Serializable data object XRoute : NavKey` (or a data class with arguments). The feature registers the screen in its Koin module with `screen<XRoute> { ... }`; `NavHost` in `:navigation` picks up every registration, so nothing central changes when a screen is added. Routes used only inside a feature stay in its `ui` package. Move with `LocalNavigator.current.navigate(route)`.
+
+Debug builds show a small "debug" tag in the bottom corner. It opens the debug menu, which lists every feature's entry screen and the design system catalog.
 
 ## Design tokens
 

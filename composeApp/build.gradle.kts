@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -36,6 +37,7 @@ kotlin {
             implementation(libs.compose.components.resources)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.koin.core)
+            implementation(libs.kotlinx.serialization.core)
 
             implementation(projects.entities)
             implementation(projects.arch)
@@ -69,6 +71,10 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "0.1.0"
+    }
+    buildFeatures {
+        // BuildConfig.DEBUG turns the debug menu on.
+        buildConfig = true
     }
     packaging {
         resources {
