@@ -15,9 +15,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
+import app.zerno.data.net.ApiConfig
+import app.zerno.data.net.HealthApi
 import app.zerno.designsystem.catalog.SjCatalog
 import app.zerno.designsystem.component.SjLinkButton
 import app.zerno.designsystem.foundation.sjHairline
@@ -34,7 +41,9 @@ import app.zerno.feature.settings.api.SettingsRoute
 import app.zerno.feature.today.api.TodayRoute
 import com.royaal.navigation.LocalNavigator
 import com.royaal.navigation.screen
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.koinInject
 import org.koin.dsl.module
 
 /** Developer menu: every feature's entry screen and the design system catalog. Debug builds only. */
@@ -90,6 +99,7 @@ private fun DebugMenuScreen() {
     ) {
         SjLinkButton("Back", navigator::back)
         BasicText("Debug", style = type.headline.copy(color = colors.ink))
+        BackendHealthRow()
         destinations.forEach { (label, route) ->
             BasicText(
                 label,
@@ -103,4 +113,25 @@ private fun DebugMenuScreen() {
             )
         }
     }
+}
+
+/** Pings the backend's `/health` on tap and shows the answer, to check the app reaches the local backend. */
+@Composable
+private fun BackendHealthRow(health: HealthApi = koinInject(), config: ApiConfig = koinInject()) {
+    val colors = SjTheme.colors
+    val scope = rememberCoroutineScope()
+    var status by remember { mutableStateOf("tap to check") }
+    BasicText(
+        "Backend ${config.baseUrl}: $status",
+        style = SjTheme.type.body.copy(color = colors.ink),
+        modifier = Modifier
+            .fillMaxWidth()
+            .sjMinTapTarget()
+            .clickable {
+                status = "checking"
+                scope.launch { status = if (health.isUp()) "up" else "down" }
+            }
+            .sjHairline(colors.rule)
+            .padding(vertical = SjTheme.spacing.space3),
+    )
 }
