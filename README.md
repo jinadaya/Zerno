@@ -71,6 +71,12 @@ Wrap every screen in `SjTheme` (the app root already does) and read tokens throu
 
 Versions live in `gradle/libs.versions.toml`.
 
+## Screenshot tests
+
+`designsystem/src/androidHostTest` shoots every design system component with Roborazzi on Robolectric, in light and dark and with English and Russian copy. `./gradlew :designsystem:testAndroidHostTest` compares the shots with the PNGs in `designsystem/src/androidHostTest/screenshots` and fails on any pixel change; CI uploads the diffs as the `screenshot-diffs` artifact. A new component gets a test there.
+
+The PNGs are recorded on Linux, because font rendering differs between hosts. After a deliberate visual change, run the **Record screenshots** workflow on your branch (Actions tab, or `[record screenshots]` in a pushed commit message). It commits the new PNGs. Check them in the commit, then push again so CI runs. `./gradlew :designsystem:testAndroidHostTest -Proborazzi.record=true` records locally, for a look only.
+
 ## Decisions
 
 Architecture decisions are in [`docs/adr/`](docs/adr): [001 Compose Multiplatform](docs/adr/001-compose-multiplatform.md), [002 MVI on `:arch`](docs/adr/002-mvi-on-arch.md), [003 module rules](docs/adr/003-module-rules.md), [004 translations and the Bible file format](docs/adr/004-translations-and-bible-file-format.md).
