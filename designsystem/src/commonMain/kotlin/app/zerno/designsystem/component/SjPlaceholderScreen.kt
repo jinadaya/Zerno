@@ -12,7 +12,10 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import app.zerno.designsystem.resources.Res
+import app.zerno.designsystem.resources.sj_back
 import app.zerno.designsystem.theme.SjTheme
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Stand-in for a screen that is not built yet: its [title] and one line on what will be there. Reached from the
@@ -23,7 +26,7 @@ fun SjPlaceholderScreen(
     title: String,
     caption: String,
     modifier: Modifier = Modifier,
-    backLabel: String = "Back",
+    backLabel: String = stringResource(Res.string.sj_back),
     onBack: (() -> Unit)? = null,
 ) {
     val colors = SjTheme.colors
@@ -52,6 +55,6 @@ private fun SjPlaceholderScreenPreview() {
 @Composable
 private fun SjPlaceholderScreenDarkRuPreview() {
     SjTheme(darkTheme = true) {
-        SjPlaceholderScreen("Планы", "Здесь будут планы чтения.", backLabel = "Назад", onBack = {})
+        SjPlaceholderScreen("Планы", "Здесь будут планы чтения.", onBack = {})
     }
 }

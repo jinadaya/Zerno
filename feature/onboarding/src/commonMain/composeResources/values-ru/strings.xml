@@ -1,0 +1,4 @@
+<resources>
+    <string name="onboarding_title">Знакомство</string>
+    <string name="onboarding_placeholder">Приветствие, язык, перевод и напоминание.</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="account_title">Аккаунт</string>
+    <string name="account_placeholder">Вход и синхронизация.</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="settings_title">Настройки</string>
+    <string name="settings_placeholder">Язык, размер текста и напоминания.</string>
+</resources>

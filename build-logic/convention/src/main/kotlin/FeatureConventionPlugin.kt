@@ -1,6 +1,8 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.compose.ComposeExtension
+import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -12,6 +14,14 @@ class FeatureConventionPlugin : Plugin<Project> {
         pluginManager.apply("zerno.kmp.compose")
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
         registerModuleRules()
+
+        // A feature's strings are its own, reached through its screens: `Res` stays internal, in `<namespace>.resources`.
+        extensions.configure<ComposeExtension> {
+            extensions.configure<ResourcesExtension> {
+                publicResClass = false
+                packageOfResClass = "$zernoNamespace.resources"
+            }
+        }
 
         extensions.configure<KotlinMultiplatformExtension> {
             sourceSets.commonMain.dependencies {

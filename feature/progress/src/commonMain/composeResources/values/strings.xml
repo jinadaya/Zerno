@@ -1,0 +1,4 @@
+<resources>
+    <string name="progress_title">Journey</string>
+    <string name="progress_placeholder">Sessions, chapters read, streaks and saved verses.</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="gamification_title">Achievements</string>
+    <string name="gamification_placeholder">Every seal, unlocked and locked.</string>
+</resources>

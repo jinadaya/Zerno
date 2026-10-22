@@ -1,0 +1,4 @@
+<resources>
+    <string name="today_title">Today</string>
+    <string name="today_placeholder">The day’s reading card and streak week.</string>
+</resources>

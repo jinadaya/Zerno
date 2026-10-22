@@ -1,0 +1,4 @@
+<resources>
+    <string name="onboarding_title">Onboarding</string>
+    <string name="onboarding_placeholder">Welcome, language, translation and reminder.</string>
+</resources>
