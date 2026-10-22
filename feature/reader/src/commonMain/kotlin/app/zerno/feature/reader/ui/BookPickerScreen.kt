@@ -39,6 +39,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import app.zerno.designsystem.theme.SjTheme
 import app.zerno.designsystem.tokens.SjColors
 import app.zerno.designsystem.tokens.SjRadius
 import app.zerno.designsystem.tokens.SjSize
@@ -75,7 +76,7 @@ fun BookPickerScreen(viewModel: BookPickerViewModel) {
 
 @Composable
 private fun BookPickerContent(state: BookPickerState, onEvent: (BookPickerEvent) -> Unit) {
-    val colors = readerColors()
+    val colors = SjTheme.colors
     val fonts = rememberSjFonts()
     val spacing = SjSpacing.Default
     val rows = remember(state.books, state.expanded) { pickerRows(state.books, state.expanded) }

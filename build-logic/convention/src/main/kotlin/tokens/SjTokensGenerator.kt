@@ -16,6 +16,12 @@ internal object SjTokensGenerator {
         "sticker-padding" to "space-6",
     )
 
+    /** Type styles that show numbers that change, so they get tabular figures. */
+    val tabularStyles: Set<String> = setOf("mega", "tag", "verse-number")
+
+    /** Type styles the design shows in capitals. The component uppercases; strings stay sentence case. */
+    val uppercaseStyles: Set<String> = setOf("button", "tag")
+
     /** Returns file name to file content. */
     fun generate(json: String, packageName: String, sourceName: String): Map<String, String> {
         @Suppress("UNCHECKED_CAST")
@@ -27,6 +33,7 @@ internal object SjTokensGenerator {
             "SjSpacing.kt" to header + spacing(root),
             "SjRadius.kt" to header + radius(root),
             "SjSize.kt" to header + size(root),
+            "SjTypography.kt" to header + typography(root),
         )
     }
 
@@ -96,6 +103,90 @@ internal object SjTokensGenerator {
         }
         val units = if (props.any { it.type == "TextUnit" }) "dp_em" else "dp"
         return tokenClass("SjSize", "Fixed component sizes. `em` sizes are relative to the text they measure.", props, units)
+    }
+
+    private fun typography(root: Map<String, Any?>): String {
+        val type = root.obj("type")
+        val families = type.obj("families").keys.toList()
+        require(families.isNotEmpty()) { "tokens.json: type.families is empty" }
+        val styles = type.list("groups").map { it as Map<*, *> }.flatMap { group ->
+            val family = group["family"]?.toString() ?: error("tokens.json: type group ${group["name"]} has no family")
+            require(family in families) { "tokens.json: type group ${group["name"]} uses unknown family $family" }
+            (group["styles"] as? List<*> ?: error("tokens.json: type group ${group["name"]} has no styles"))
+                .map { family to it as Map<*, *> }
+        }
+
+        val props = styles.joinToString("\n") { (_, style) ->
+            val notes = buildList {
+                if (style.name() in uppercaseStyles) add("Uppercase it in the component; the string stays sentence case.")
+                if (style.name() in tabularStyles) add("Tabular figures.")
+            }
+            val doc = (listOf(style.usage()) + notes).joinToString(" ")
+            "    /** $doc */\n    val ${style.name().camel()}: TextStyle,"
+        }
+        val params = families.joinToString(", ") { "${it.camel()}: FontFamily" }
+        val instances = styles.joinToString("\n") { (family, style) -> textStyle(family, style) }
+
+        return """
+            |
+            |import androidx.compose.runtime.Immutable
+            |import androidx.compose.ui.text.TextStyle
+            |import androidx.compose.ui.text.font.FontFamily
+            |import androidx.compose.ui.text.font.FontStyle
+            |import androidx.compose.ui.text.font.FontWeight
+            |import androidx.compose.ui.text.style.LineHeightStyle
+            |import androidx.compose.ui.unit.em
+            |import androidx.compose.ui.unit.sp
+            |
+            |/**
+            | * Type styles from `type.groups`. They carry no colour: the component picks one from `SjColors`.
+            | * Line height is spread above and below the text, as in CSS.
+            | */
+            |@Immutable
+            |data class SjTypography(
+            |$props
+            |) {
+            |    companion object {
+            |        /** The styles set in the given faces, one per entry of `type.families`. */
+            |        fun from($params): SjTypography = SjTypography(
+            |$instances
+            |        )
+            |
+            |        private val CssLineHeight = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
+            |    }
+            |}
+            |""".trimMargin()
+    }
+
+    private fun textStyle(family: String, style: Map<*, *>): String {
+        val name = style.name()
+        val args = buildList {
+            add("fontFamily = ${family.camel()}")
+            val weight = style["fontWeight"]?.toString()?.toIntOrNull() ?: error("tokens.json: style $name has no numeric fontWeight")
+            require(weight in 1..1000) { "tokens.json: style $name fontWeight is out of range: $weight" }
+            add("fontWeight = FontWeight($weight)")
+            when (val fontStyle = style["fontStyle"]?.toString()) {
+                null, "normal" -> Unit
+                "italic" -> add("fontStyle = FontStyle.Italic")
+                else -> error("tokens.json: style $name has unknown fontStyle $fontStyle")
+            }
+            add("fontSize = ${textUnit(name, style["fontSize"]?.toString() ?: error("tokens.json: style $name has no fontSize"))}")
+            style["lineHeight"]?.let { add("lineHeight = ${textUnit(name, it.toString())}") }
+            style["letterSpacing"]?.let { add("letterSpacing = ${textUnit(name, it.toString())}") }
+            if (name in tabularStyles) add("fontFeatureSettings = \"tnum\"")
+            add("lineHeightStyle = CssLineHeight")
+        }
+        return "            ${name.camel()} = TextStyle(\n" +
+            args.joinToString("") { "                $it,\n" } +
+            "            ),"
+    }
+
+    /** `16px` to `16.sp`, `-0.04em` to `(-0.04).em`. */
+    internal fun textUnit(token: String, raw: String): String {
+        val match = unit.matchEntire(raw.trim()) ?: error("tokens.json: $token is not a px or em value: $raw")
+        val (number, suffix) = match.destructured
+        val kotlinNumber = if (number.startsWith("-")) "($number)" else number
+        return if (suffix == "px") "$kotlinNumber.sp" else "$kotlinNumber.em"
     }
 
     private data class Prop(val name: String, val doc: String, val type: String, val value: String)

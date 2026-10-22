@@ -14,7 +14,7 @@ class SjTokensConventionPlugin : Plugin<Project> {
         val modulePath = path.removePrefix(":").replace(':', '/')
         val generate = tasks.register<GenerateSjTokensTask>("generateSjTokens") {
             group = "design system"
-            description = "Generates SjColors, SjSpacing, SjRadius and SjSize from tokens/tokens.json."
+            description = "Generates SjColors, SjSpacing, SjRadius, SjSize and SjTypography from tokens/tokens.json."
             tokensFile.set(layout.projectDirectory.file("tokens/tokens.json"))
             packageName.set("app.zerno.designsystem.tokens")
             sourceName.set("$modulePath/tokens/tokens.json")

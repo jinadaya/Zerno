@@ -12,7 +12,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 
-/** Writes `SjColors`, `SjSpacing`, `SjRadius` and `SjSize` from `tokens.json`. */
+/** Writes `SjColors`, `SjSpacing`, `SjRadius`, `SjSize` and `SjTypography` from `tokens.json`. */
 @CacheableTask
 abstract class GenerateSjTokensTask : DefaultTask() {
 
