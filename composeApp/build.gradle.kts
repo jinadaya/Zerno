@@ -96,3 +96,8 @@ android {
 dependencies {
     debugImplementation(libs.compose.ui.tooling)
 }
+
+compose.resources {
+    publicResClass = false
+    packageOfResClass = "app.zerno.resources"
+}

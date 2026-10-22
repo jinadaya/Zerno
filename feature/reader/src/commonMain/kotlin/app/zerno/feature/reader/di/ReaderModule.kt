@@ -29,7 +29,7 @@ val readerModule = module {
     viewModelOf(::ReaderViewModel)
     viewModelOf(::BookPickerViewModel)
 
-    // The reader is a quiet page: no bottom bar over it (PR-01).
+    // The reader is a quiet page: the app shell hides the bottom bar over it, and back returns to Today.
     screen<ReaderRoute>(showBottomBar = false) { ReaderScreen(koinViewModel()) }
     screen<BookPickerRoute>(showBottomBar = false) { BookPickerScreen(koinViewModel()) }
 }
