@@ -1,0 +1,162 @@
+{
+  "id": "gospel-of-john",
+  "type": "Sequential",
+  "version": 1,
+  "title": {
+    "en": "The Gospel of John",
+    "ru": "Евангелие от Иоанна"
+  },
+  "description": {
+    "en": "One chapter a day through John, from “In the beginning was the Word” to breakfast on the shore.",
+    "ru": "По главе в день через Евангелие от Иоанна, от «В начале было Слово» до завтрака на берегу."
+  },
+  "days": [
+    {
+      "day": 1,
+      "passages": [
+        "John 1"
+      ],
+      "minutes": 6
+    },
+    {
+      "day": 2,
+      "passages": [
+        "John 2"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 3,
+      "passages": [
+        "John 3"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 4,
+      "passages": [
+        "John 4"
+      ],
+      "minutes": 6
+    },
+    {
+      "day": 5,
+      "passages": [
+        "John 5"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 6,
+      "passages": [
+        "John 6"
+      ],
+      "minutes": 8
+    },
+    {
+      "day": 7,
+      "passages": [
+        "John 7"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 8,
+      "passages": [
+        "John 8"
+      ],
+      "minutes": 7
+    },
+    {
+      "day": 9,
+      "passages": [
+        "John 9"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 10,
+      "passages": [
+        "John 10"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 11,
+      "passages": [
+        "John 11"
+      ],
+      "minutes": 6
+    },
+    {
+      "day": 12,
+      "passages": [
+        "John 12"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 13,
+      "passages": [
+        "John 13"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 14,
+      "passages": [
+        "John 14"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 15,
+      "passages": [
+        "John 15"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 16,
+      "passages": [
+        "John 16"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 17,
+      "passages": [
+        "John 17"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 18,
+      "passages": [
+        "John 18"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 19,
+      "passages": [
+        "John 19"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 20,
+      "passages": [
+        "John 20"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 21,
+      "passages": [
+        "John 21"
+      ],
+      "minutes": 5
+    }
+  ]
+}

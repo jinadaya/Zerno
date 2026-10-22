@@ -1,0 +1,162 @@
+{
+  "id": "first-steps",
+  "type": "Introductory",
+  "version": 1,
+  "title": {
+    "en": "First Steps",
+    "ru": "Первые шаги"
+  },
+  "description": {
+    "en": "Three weeks with the Gospel of Mark, the shortest account of Jesus’ life, and a psalm every fourth day to slow down and pray.",
+    "ru": "Три недели с Евангелием от Марка, самым коротким рассказом о жизни Иисуса, и псалом каждый четвёртый день, чтобы остановиться и помолиться."
+  },
+  "days": [
+    {
+      "day": 1,
+      "passages": [
+        "Mark 1"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 2,
+      "passages": [
+        "Mark 2"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 3,
+      "passages": [
+        "Mark 3"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 4,
+      "passages": [
+        "Ps 1"
+      ],
+      "minutes": 2
+    },
+    {
+      "day": 5,
+      "passages": [
+        "Mark 4"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 6,
+      "passages": [
+        "Mark 5"
+      ],
+      "minutes": 6
+    },
+    {
+      "day": 7,
+      "passages": [
+        "Mark 6"
+      ],
+      "minutes": 6
+    },
+    {
+      "day": 8,
+      "passages": [
+        "Ps 23"
+      ],
+      "minutes": 2
+    },
+    {
+      "day": 9,
+      "passages": [
+        "Mark 7"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 10,
+      "passages": [
+        "Mark 8"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 11,
+      "passages": [
+        "Mark 9"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 12,
+      "passages": [
+        "Ps 27"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 13,
+      "passages": [
+        "Mark 10"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 14,
+      "passages": [
+        "Mark 11"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 15,
+      "passages": [
+        "Mark 12"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 16,
+      "passages": [
+        "Ps 46"
+      ],
+      "minutes": 2
+    },
+    {
+      "day": 17,
+      "passages": [
+        "Mark 13"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 18,
+      "passages": [
+        "Mark 14"
+      ],
+      "minutes": 6
+    },
+    {
+      "day": 19,
+      "passages": [
+        "Mark 15"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 20,
+      "passages": [
+        "Ps 121"
+      ],
+      "minutes": 2
+    },
+    {
+      "day": 21,
+      "passages": [
+        "Mark 16"
+      ],
+      "minutes": 5
+    }
+  ]
+}
