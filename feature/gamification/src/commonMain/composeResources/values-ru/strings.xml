@@ -1,0 +1,4 @@
+<resources>
+    <string name="gamification_title">Достижения</string>
+    <string name="gamification_placeholder">Все печати, открытые и закрытые.</string>
+</resources>

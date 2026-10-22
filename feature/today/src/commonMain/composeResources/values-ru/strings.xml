@@ -1,0 +1,4 @@
+<resources>
+    <string name="today_title">Сегодня</string>
+    <string name="today_placeholder">Карточка дневного чтения и неделя серии.</string>
+</resources>

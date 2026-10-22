@@ -1,0 +1,4 @@
+<resources>
+    <string name="reflection_title">Reflection</string>
+    <string name="reflection_placeholder">A few lines after a reading session.</string>
+</resources>

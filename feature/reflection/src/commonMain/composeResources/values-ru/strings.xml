@@ -1,0 +1,4 @@
+<resources>
+    <string name="reflection_title">Размышление</string>
+    <string name="reflection_placeholder">Несколько строк после чтения.</string>
+</resources>

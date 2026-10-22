@@ -1,0 +1,4 @@
+<resources>
+    <string name="progress_title">Путь</string>
+    <string name="progress_placeholder">Сессии, прочитанные главы, серии и сохранённые стихи.</string>
+</resources>

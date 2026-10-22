@@ -45,6 +45,10 @@ Each feature's routes other features open live in its `:api` module as `@Seriali
 
 Debug builds show a small "debug" tag in the bottom corner. It opens the debug menu, which lists every feature's entry screen and the design system catalog.
 
+## Strings
+
+Every module keeps its user-facing text in `src/commonMain/composeResources/values/strings.xml` (English) and `values-ru/strings.xml` (Russian), with keys prefixed by the module (`today_title`). A feature's `Res` class is internal, in `app.zerno.feature.<name>.resources`. `./gradlew checkStrings` (part of `check` and CI) fails when a key is in one language and not the other. Use typographic quotes (’) rather than escaped apostrophes.
+
 ## Design tokens
 
 `designsystem/tokens/tokens.json` is the one source of truth for colours, type, spacing, radii and sizes. Edit the json, not Kotlin: every build regenerates `app.zerno.designsystem.tokens` into `designsystem/build/generated/sjTokens`. Run `./gradlew :designsystem:generateSjTokens` to refresh the IDE without a full build.

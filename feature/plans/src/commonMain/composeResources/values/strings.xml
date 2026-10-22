@@ -1,0 +1,4 @@
+<resources>
+    <string name="plans_title">Plans</string>
+    <string name="plans_placeholder">Reading plans and their progress.</string>
+</resources>

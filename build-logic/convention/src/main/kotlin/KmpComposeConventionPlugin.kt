@@ -12,6 +12,7 @@ class KmpComposeConventionPlugin : Plugin<Project> {
         pluginManager.apply("zerno.kmp.library")
         pluginManager.apply("org.jetbrains.compose")
         pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+        registerStringsCheck()
 
         extensions.configure<KotlinMultiplatformExtension> {
             // Compose resources (fonts, vectors) ship as Android assets; the KMP library plugin leaves them off by default.
