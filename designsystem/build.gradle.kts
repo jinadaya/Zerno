@@ -17,6 +17,9 @@ kotlin {
             implementation(libs.robolectric)
             implementation(libs.roborazzi)
             implementation(libs.roborazzi.compose)
+            // Roborazzi leaves these to the app: its activity hosts the content through setContent.
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.compose.ui.test.junit4)
         }
     }
 }
