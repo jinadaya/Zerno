@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package app.zerno.data.db
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
@@ -116,7 +118,6 @@ class TranslationStoreTest {
     }
 }
 
-@OptIn(ExperimentalForeignApi::class)
 private fun NSData.toByteArray(): ByteArray = ByteArray(length.toInt()).also { array ->
     if (array.isNotEmpty()) array.usePinned { memcpy(it.addressOf(0), bytes, length) }
 }

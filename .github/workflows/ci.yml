@@ -36,4 +36,4 @@ jobs:
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
       # commonTest runs on the iOS simulator target; the Android library targets have no host tests yet.
-      - run: ./gradlew allTests :composeApp:linkDebugFrameworkIosSimulatorArm64 --stacktrace
+      - run: ./gradlew allTests :composeApp:linkDebugFrameworkIosSimulatorArm64 --continue

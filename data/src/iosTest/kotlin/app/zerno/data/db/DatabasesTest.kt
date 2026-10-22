@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package app.zerno.data.db
 
 import androidx.room.Room
@@ -14,10 +16,12 @@ import app.zerno.entities.bible.ChapterRef
 import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.TranslationId
 import app.zerno.entities.bible.VerseStyle
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.runBlocking
 import platform.Foundation.NSData
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSTemporaryDirectory
+import platform.Foundation.isEqualToData
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
