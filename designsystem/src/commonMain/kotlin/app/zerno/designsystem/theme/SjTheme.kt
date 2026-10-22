@@ -8,6 +8,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import app.zerno.designsystem.tokens.SjColors
 import app.zerno.designsystem.tokens.SjSize
 import app.zerno.designsystem.tokens.SjSpacing
@@ -19,6 +20,12 @@ val LocalSjType = staticCompositionLocalOf<SjTypography> { error("No SjTypograph
 val LocalSjSpacing = staticCompositionLocalOf { SjSpacing.Default }
 val LocalSjShapes = staticCompositionLocalOf { SjShapes.Default }
 val LocalSjMotion = staticCompositionLocalOf { SjMotion.Default }
+
+/**
+ * True inside a sticker (`StickerSurface`). Content there uses `sticker-ink`, which stays black in both themes,
+ * instead of `ink`. Read it through [SjTheme.contentColor].
+ */
+val LocalOnSticker = staticCompositionLocalOf { false }
 
 /** True when the system asks for reduced motion. Same as `SjTheme.motion.reduced`; here for code that only needs the flag. */
 val LocalReducedMotion = staticCompositionLocalOf { false }
@@ -57,6 +64,11 @@ object SjTheme {
     val colors: SjColors
         @Composable @ReadOnlyComposable
         get() = LocalSjColors.current
+
+    /** Text and icon colour for the surface underneath: `sticker-ink` on a sticker, `ink` on paper and cards. */
+    val contentColor: Color
+        @Composable @ReadOnlyComposable
+        get() = if (LocalOnSticker.current) LocalSjColors.current.stickerInk else LocalSjColors.current.ink
 
     val type: SjTypography
         @Composable @ReadOnlyComposable
