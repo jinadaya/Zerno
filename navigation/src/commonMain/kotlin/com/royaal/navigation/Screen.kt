@@ -46,6 +46,4 @@ inline fun <reified T : NavKey> Module.screen(
 internal const val SHOW_BOTTOM_BAR_KEY = "com.royaal.navigation.showBottomBar"
 
 /** Collected by [NavHost] to build the polymorphic `NavKey` serializers module for the back stack. */
-class NavKeySerializerRegistration(
-    val register: PolymorphicModuleBuilder<NavKey>.() -> Unit,
-)
+class NavKeySerializerRegistration(val register: PolymorphicModuleBuilder<NavKey>.() -> Unit)

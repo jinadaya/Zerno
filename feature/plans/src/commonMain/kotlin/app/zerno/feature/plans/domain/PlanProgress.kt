@@ -51,9 +51,7 @@ data class PlanStep(val day: Int, val done: Boolean)
  * Every plan the user has touched, with at most one [PlanStatus.Active]. Switching plans pauses the old one and keeps
  * its completed days, so switching back resumes where the user left off.
  */
-data class PlanJourney(
-    val plans: Map<PlanId, PlanProgress> = emptyMap(),
-) {
+data class PlanJourney(val plans: Map<PlanId, PlanProgress> = emptyMap()) {
     init {
         require(plans.values.count { it.status == PlanStatus.Active } <= 1) { "More than one active plan" }
         require(plans.all { (id, progress) -> id == progress.planId }) { "Plan ids do not match their progress" }
@@ -70,8 +68,16 @@ data class PlanJourney(
         val existing = plans[plan.id]
         val started = when {
             existing == null -> PlanProgress(plan.id, plan.length, PlanStatus.Active, startedOn = today)
+
             existing.status == PlanStatus.Completed ->
-                PlanProgress(plan.id, plan.length, PlanStatus.Active, startedOn = today, timesCompleted = existing.timesCompleted)
+                PlanProgress(
+                    plan.id,
+                    plan.length,
+                    PlanStatus.Active,
+                    startedOn = today,
+                    timesCompleted = existing.timesCompleted,
+                )
+
             else -> existing.copy(
                 length = plan.length,
                 status = PlanStatus.Active,
@@ -83,7 +89,15 @@ data class PlanJourney(
 
     /** Pauses the active plan, if any. Its days are kept. */
     fun pause(): PlanJourney = copy(
-        plans = plans.mapValues { (_, p) -> if (p.status == PlanStatus.Active) p.copy(status = PlanStatus.Paused) else p },
+        plans = plans.mapValues { (_, p) ->
+            if (p.status ==
+                PlanStatus.Active
+            ) {
+                p.copy(status = PlanStatus.Paused)
+            } else {
+                p
+            }
+        },
     )
 
     /**

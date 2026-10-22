@@ -21,7 +21,11 @@ data class AchievementEvaluation(
  * its first date even if the stats fall below the threshold, and is never reported as newly unlocked again.
  */
 class AchievementEvaluator(private val catalog: AchievementCatalog) {
-    fun evaluate(stats: AchievementStats, unlocked: Map<AchievementCode, Instant>, now: Instant): AchievementEvaluation {
+    fun evaluate(
+        stats: AchievementStats,
+        unlocked: Map<AchievementCode, Instant>,
+        now: Instant,
+    ): AchievementEvaluation {
         val newly = mutableListOf<Achievement>()
         val achievements = catalog.achievements.map { definition ->
             val code = AchievementCode(definition.code)
@@ -36,7 +40,13 @@ class AchievementEvaluator(private val catalog: AchievementCatalog) {
                 descriptionKey = definition.descriptionKey,
                 icon = definition.icon,
                 unlockedAt = unlockedAt,
-                progress = if (definition.criteria.type in Uncounted) null else AchievementProgress(current.coerceAtMost(target), target),
+                progress = if (definition.criteria.type in
+                    Uncounted
+                ) {
+                    null
+                } else {
+                    AchievementProgress(current.coerceAtMost(target), target)
+                },
             )
             if (earlier == null && unlockedAt != null) newly += achievement
             achievement

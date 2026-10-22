@@ -27,11 +27,7 @@ class SubscriptionScope<Event : InnerEvent>(
      *  from scratch. Without [policy], an unhandled exception cancels
      *  this subscription silently, same as before.
      */
-    fun <T> bind(
-        flow: Flow<T>,
-        policy: (PolicyScope<Event>.() -> Unit)? = null,
-        mapper: (T) -> Event,
-    ) = launch {
+    fun <T> bind(flow: Flow<T>, policy: (PolicyScope<Event>.() -> Unit)? = null, mapper: (T) -> Event) = launch {
         val collect: suspend IntentScope<Event>.() -> Unit = {
             flow.collect { data -> emit(mapper(data)) }
         }
@@ -44,19 +40,15 @@ class SubscriptionScope<Event : InnerEvent>(
 
     override suspend fun emit(event: Event) {
         executor.emit(
-            IntentExecutor.ScopedEvent(key, event, true, Long.MAX_VALUE)
+            IntentExecutor.ScopedEvent(key, event, true, Long.MAX_VALUE),
         )
     }
 
-    override fun launch(block: suspend IntentScope<Event>.() -> Unit): Job {
-        return scope.launch {
-            this@SubscriptionScope.block()
-        }
+    override fun launch(block: suspend IntentScope<Event>.() -> Unit): Job = scope.launch {
+        this@SubscriptionScope.block()
     }
 
-    override suspend fun <T> io(block: suspend IntentScope<Event>.() -> T): T {
-        return withContext(ioDispatcher) {
-            this@SubscriptionScope.block()
-        }
+    override suspend fun <T> io(block: suspend IntentScope<Event>.() -> T): T = withContext(ioDispatcher) {
+        this@SubscriptionScope.block()
     }
 }

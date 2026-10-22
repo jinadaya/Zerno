@@ -39,11 +39,7 @@ import app.zerno.designsystem.theme.SjTheme
  * For the splash, onboarding start and store art.
  */
 @Composable
-fun SjCover(
-    title: String,
-    tagline: String,
-    modifier: Modifier = Modifier,
-) {
+fun SjCover(title: String, tagline: String, modifier: Modifier = Modifier) {
     val colors = SjTheme.colors
     BoxWithConstraints(modifier.fillMaxWidth().background(colors.paper).clipToBounds()) {
         val words = @Composable {
@@ -53,9 +49,18 @@ fun SjCover(
             ) {
                 BasicText(
                     title,
-                    style = SjTheme.type.titleItalic.copy(fontSize = 84.sp, lineHeight = 0.95.em, letterSpacing = (-0.02).em, color = colors.ink),
+                    style = SjTheme.type.titleItalic.copy(
+                        fontSize = 84.sp,
+                        lineHeight = 0.95.em,
+                        letterSpacing = (-0.02).em,
+                        color = colors.ink,
+                    ),
                 )
-                BasicText(tagline.uppercase(), style = SjTheme.type.tag.copy(color = colors.inkMuted), modifier = Modifier.padding(start = 4.dp))
+                BasicText(
+                    tagline.uppercase(),
+                    style = SjTheme.type.tag.copy(color = colors.inkMuted),
+                    modifier = Modifier.padding(start = 4.dp),
+                )
             }
         }
         if (maxWidth >= WideLayout) {
@@ -70,7 +75,13 @@ fun SjCover(
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space6)) {
                 CoverArt(Modifier.fillMaxWidth().aspectRatio(ArtWidth / ArtHeight))
-                Column(Modifier.padding(start = SjTheme.spacing.gutter, end = SjTheme.spacing.gutter, bottom = SjTheme.spacing.space8)) {
+                Column(
+                    Modifier.padding(
+                        start = SjTheme.spacing.gutter,
+                        end = SjTheme.spacing.gutter,
+                        bottom = SjTheme.spacing.space8,
+                    ),
+                ) {
                     words()
                 }
             }

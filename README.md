@@ -59,6 +59,10 @@ Time comes from Koin too: `kotlin.time.Clock` and `TimeZoneProvider` (`app.zerno
 
 Every module keeps its user-facing text in `src/commonMain/composeResources/values/strings.xml` (English) and `values-ru/strings.xml` (Russian), with keys prefixed by the module (`today_title`). A feature's `Res` class is internal, in `app.zerno.feature.<name>.resources`. `./gradlew checkStrings` (part of `check` and CI) fails when a key is in one language and not the other. Use typographic quotes (’) rather than escaped apostrophes.
 
+## Lint
+
+`./scripts/lint.sh` runs ktlint (style from `.editorconfig`, IntelliJ code style, 120 columns) and detekt (`config/detekt/detekt.yml` on top of the defaults) over the repo, as CI does; `./scripts/lint.sh --format` lets ktlint fix what it can. Findings from before detekt sit in `config/detekt/baseline.xml`; fix one and drop it from there rather than adding new ones.
+
 ## Design tokens
 
 `designsystem/tokens/tokens.json` is the one source of truth for colours, type, spacing, radii and sizes. Edit the json, not Kotlin: every build regenerates `app.zerno.designsystem.tokens` into `designsystem/build/generated/sjTokens`. Run `./gradlew :designsystem:generateSjTokens` to refresh the IDE without a full build.

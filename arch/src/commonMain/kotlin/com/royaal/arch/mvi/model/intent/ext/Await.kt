@@ -12,8 +12,8 @@ import kotlin.time.Duration.Companion.seconds
 
     When one intent needs to await for another one (or meet state).
 
-    * awaitState - suspends until precondition isn't met
-    * awaitIdle - suspends until intent with given key
+ * awaitState - suspends until precondition isn't met
+ * awaitIdle - suspends until intent with given key
 
  */
 
@@ -42,10 +42,7 @@ suspend inline fun <reified S : ScreenState, E : InnerEvent> IntentScope<E>.awai
  *
  *  @throws [kotlinx.coroutines.TimeoutCancellationException] по истечении [timeout]
  */
-suspend fun <E : InnerEvent> IntentScope<E>.awaitIdle(
-    key: Any,
-    timeout: Duration = 30.seconds,
-) {
+suspend fun <E : InnerEvent> IntentScope<E>.awaitIdle(key: Any, timeout: Duration = 30.seconds) {
     require(key != this.key) { "Intent '$key' cannot await itself" }
     withTimeout(timeout) {
         executor.activeKeys.first { key !in it }

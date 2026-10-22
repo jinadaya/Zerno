@@ -19,23 +19,17 @@ class DefaultIntentScope<Event : InnerEvent>(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : IntentScope<Event>(key, executor) {
 
-    override suspend fun emit(
-        event: Event,
-    ) {
+    override suspend fun emit(event: Event) {
         executor.emit(
-            IntentExecutor.ScopedEvent(key, event, false, generationProvider())
+            IntentExecutor.ScopedEvent(key, event, false, generationProvider()),
         )
     }
 
-    override fun launch(block: suspend IntentScope<Event>.() -> Unit): Job {
-        return scope.launch {
-            this@DefaultIntentScope.block()
-        }
+    override fun launch(block: suspend IntentScope<Event>.() -> Unit): Job = scope.launch {
+        this@DefaultIntentScope.block()
     }
 
-    override suspend fun <T> io(block: suspend IntentScope<Event>.() -> T): T {
-        return withContext(ioDispatcher) {
-            this@DefaultIntentScope.block()
-        }
+    override suspend fun <T> io(block: suspend IntentScope<Event>.() -> T): T = withContext(ioDispatcher) {
+        this@DefaultIntentScope.block()
     }
 }

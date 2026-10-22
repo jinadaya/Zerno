@@ -15,14 +15,21 @@ class AchievementCatalogTest {
         val codes = catalog.achievements.map { it.code }.toSet()
 
         assertEquals(EXPECTED_CODES, codes)
-        assertEquals(setOf(AchievementSet.Sheep, AchievementSet.Lamp, AchievementSet.Bird), catalog.achievements.map { it.set }.toSet())
+        assertEquals(
+            setOf(AchievementSet.Sheep, AchievementSet.Lamp, AchievementSet.Bird),
+            catalog.achievements.map {
+                it.set
+            }.toSet(),
+        )
         // Every criteria type is used by at least one achievement.
         assertEquals(CriteriaType.entries.toSet(), catalog.achievements.map { it.criteria.type }.toSet())
     }
 
     @Test
     fun validCatalogParses() {
-        val catalog = AchievementCatalogParser.parse(catalog(achievement("first_steps", """{"type": "sessionsCompleted", "threshold": 1}""")))
+        val catalog = AchievementCatalogParser.parse(
+            catalog(achievement("first_steps", """{"type": "sessionsCompleted", "threshold": 1}""")),
+        )
         assertEquals("first_steps", catalog.achievements.single().code)
         assertEquals(Criteria(CriteriaType.SessionsCompleted, 1), catalog.achievements.single().criteria)
     }
@@ -35,7 +42,9 @@ class AchievementCatalogTest {
 
     @Test
     fun brokenJsonFails() {
-        assertFailsWith<InvalidAchievementCatalog> { AchievementCatalogParser.parse("""{"version": 1, "achievements": [""") }
+        assertFailsWith<InvalidAchievementCatalog> {
+            AchievementCatalogParser.parse("""{"version": 1, "achievements": [""")
+        }
     }
 
     @Test
@@ -83,9 +92,9 @@ class AchievementCatalogTest {
     private companion object {
         val EXPECTED_CODES = setOf(
             // Sheep: reading
-            "first_steps", "first_chapter", "chapters_10", "chapters_50", "chapters_100", "chapters_250", "chapters_500",
-            "chapters_1189", "book_finished", "gospel_reader", "explorer_5", "explorer_10", "explorer_20", "old_and_new",
-            "plan_finished", "plans_3", "plans_5", "plans_10", "whole_bible",
+            "first_steps", "first_chapter", "chapters_10", "chapters_50", "chapters_100", "chapters_250",
+            "chapters_500", "chapters_1189", "book_finished", "gospel_reader", "explorer_5", "explorer_10",
+            "explorer_20", "old_and_new", "plan_finished", "plans_3", "plans_5", "plans_10", "whole_bible",
             // Lamp: reflection and understanding
             "first_light", "treasured_verse", "keeper_10", "keeper_50", "journal_10", "journal_50", "journal_100",
             "thoughtful_5", "thoughtful_25", "paused_to_think",

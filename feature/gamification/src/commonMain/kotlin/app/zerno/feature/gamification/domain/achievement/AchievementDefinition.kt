@@ -10,31 +10,55 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 enum class CriteriaType {
-    @SerialName("sessionsCompleted") SessionsCompleted,
-    @SerialName("chaptersRead") ChaptersRead,
-    @SerialName("booksFinished") BooksFinished,
+    @SerialName("sessionsCompleted")
+    SessionsCompleted,
+
+    @SerialName("chaptersRead")
+    ChaptersRead,
+
+    @SerialName("booksFinished")
+    BooksFinished,
 
     /** Books of [Criteria.group] read to the end. */
-    @SerialName("booksInGroup") BooksInGroup,
-    @SerialName("distinctBooks") DistinctBooks,
+    @SerialName("booksInGroup")
+    BooksInGroup,
+
+    @SerialName("distinctBooks")
+    DistinctBooks,
 
     /** 1 once both Testaments have a chapter read. */
-    @SerialName("bothTestaments") BothTestaments,
-    @SerialName("plansCompleted") PlansCompleted,
-    @SerialName("wholeBiblePlan") WholeBiblePlan,
-    @SerialName("reflectionsWritten") ReflectionsWritten,
+    @SerialName("bothTestaments")
+    BothTestaments,
+
+    @SerialName("plansCompleted")
+    PlansCompleted,
+
+    @SerialName("wholeBiblePlan")
+    WholeBiblePlan,
+
+    @SerialName("reflectionsWritten")
+    ReflectionsWritten,
 
     /** Reflections written on the prompt after a plan step. */
-    @SerialName("planStepReflections") PlanStepReflections,
-    @SerialName("versesSaved") VersesSaved,
-    @SerialName("questionsAnswered") QuestionsAnswered,
-    @SerialName("streakDays") StreakDays,
+    @SerialName("planStepReflections")
+    PlanStepReflections,
+
+    @SerialName("versesSaved")
+    VersesSaved,
+
+    @SerialName("questionsAnswered")
+    QuestionsAnswered,
+
+    @SerialName("streakDays")
+    StreakDays,
 
     /** Weeks with reading on at least 4 days. */
-    @SerialName("steadyWeeks") SteadyWeeks,
+    @SerialName("steadyWeeks")
+    SteadyWeeks,
 
     /** Days away before a reading that brings the user back. */
-    @SerialName("returnAfterDays") ReturnAfterDays,
+    @SerialName("returnAfterDays")
+    ReturnAfterDays,
 }
 
 @Serializable
@@ -60,7 +84,4 @@ data class AchievementDefinition(
 )
 
 @Serializable
-data class AchievementCatalog(
-    val version: Int,
-    val achievements: List<AchievementDefinition>,
-)
+data class AchievementCatalog(val version: Int, val achievements: List<AchievementDefinition>)

@@ -38,7 +38,7 @@ class DebugActions(
 
     /** One finished session a day for [days] days, ending yesterday, so today's reading extends the streak. */
     suspend fun seedStreak(days: Int) {
-        (days downTo 1).forEach { seedSession(daysAgo = it) }
+        for (daysAgo in days downTo 1) seedSession(daysAgo)
     }
 
     /** One session [daysAgo] days ago, to test returning after a break. */

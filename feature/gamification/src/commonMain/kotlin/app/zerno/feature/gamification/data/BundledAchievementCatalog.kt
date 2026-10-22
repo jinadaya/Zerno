@@ -6,9 +6,7 @@ import app.zerno.feature.gamification.resources.Res
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 /** The achievements shipped with the app, `composeResources/files/achievements.json`, until the backend serves them. */
-class BundledAchievementCatalog(
-    private val read: suspend () -> ByteArray = { readBundled() },
-) {
+class BundledAchievementCatalog(private val read: suspend () -> ByteArray = { readBundled() }) {
     suspend fun load(): AchievementCatalog = AchievementCatalogParser.parse(read().decodeToString())
 
     private companion object {

@@ -39,17 +39,30 @@ class AppPreferences(private val settings: Settings) {
 
     val prefs: StateFlow<AppPrefs> = state.asStateFlow()
 
-    fun setAppTheme(theme: AppTheme) = write { putString(APP_THEME, theme.name); it.copy(appTheme = theme) }
+    fun setAppTheme(theme: AppTheme) = write {
+        putString(APP_THEME, theme.name)
+        it.copy(appTheme = theme)
+    }
 
-    fun setPageTheme(theme: PageTheme) = write { putString(PAGE_THEME, theme.name); it.copy(pageTheme = theme) }
+    fun setPageTheme(theme: PageTheme) = write {
+        putString(PAGE_THEME, theme.name)
+        it.copy(pageTheme = theme)
+    }
 
-    fun setUiLanguage(language: UiLanguage) =
-        write { putString(UI_LANGUAGE, language.name); it.copy(uiLanguage = language) }
+    fun setUiLanguage(language: UiLanguage) = write {
+        putString(UI_LANGUAGE, language.name)
+        it.copy(uiLanguage = language)
+    }
 
-    fun setTranslation(translation: TranslationId) =
-        write { putString(TRANSLATION, translation.value); it.copy(translation = translation) }
+    fun setTranslation(translation: TranslationId) = write {
+        putString(TRANSLATION, translation.value)
+        it.copy(translation = translation)
+    }
 
-    fun setFontSize(size: Int) = write { putInt(FONT_SIZE, size); it.copy(fontSize = size) }
+    fun setFontSize(size: Int) = write {
+        putInt(FONT_SIZE, size)
+        it.copy(fontSize = size)
+    }
 
     /** `null` turns the daily reminder off. */
     fun setReminderTime(time: LocalTime?) = write {
@@ -57,7 +70,10 @@ class AppPreferences(private val settings: Settings) {
         it.copy(reminderTime = time)
     }
 
-    fun setOnboardingDone(done: Boolean) = write { putBoolean(ONBOARDING_DONE, done); it.copy(onboardingDone = done) }
+    fun setOnboardingDone(done: Boolean) = write {
+        putBoolean(ONBOARDING_DONE, done)
+        it.copy(onboardingDone = done)
+    }
 
     private inline fun write(crossinline change: Settings.(AppPrefs) -> AppPrefs) {
         state.update { settings.change(it) }
@@ -76,7 +92,10 @@ class AppPreferences(private val settings: Settings) {
         )
     }
 
-    private inline fun <reified E : Enum<E>> enumOrNull(name: String?): E? = enumValues<E>().firstOrNull { it.name == name }
+    private inline fun <reified E : Enum<E>> enumOrNull(name: String?): E? = enumValues<E>().firstOrNull {
+        it.name ==
+            name
+    }
 
     private companion object {
         const val APP_THEME = "app.theme"

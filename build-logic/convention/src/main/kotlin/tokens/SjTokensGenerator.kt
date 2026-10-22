@@ -40,7 +40,9 @@ internal object SjTokensGenerator {
     private fun colors(root: Map<String, Any?>): String {
         val color = root.obj("color")
         val themes = color.list("themes").map { (it as Map<*, *>)["id"].toString() }
-        require("light" in themes && "dark" in themes) { "tokens.json: color.themes must include light and dark, got $themes" }
+        require("light" in themes && "dark" in themes) {
+            "tokens.json: color.themes must include light and dark, got $themes"
+        }
         val tokens = color.list("tokens").map { it as Map<*, *> }
 
         val props = tokens.joinToString("\n") { token ->
@@ -72,7 +74,8 @@ internal object SjTokensGenerator {
             |        )
             |    }
             |}
-            |""".trimMargin()
+            |
+        """.trimMargin()
     }
 
     private fun spacing(root: Map<String, Any?>): String {
@@ -83,14 +86,24 @@ internal object SjTokensGenerator {
         }
         val aliases = spacingAliases.map { (alias, target) ->
             val token = byName[target] ?: error("tokens.json: spacing alias $alias points at missing $target")
-            Prop(alias.camel(), "Same as ${target.camel()}: ${token.usage()}", "Dp", dimension(target, token["value"].toString()))
+            Prop(
+                alias.camel(),
+                "Same as ${target.camel()}: ${token.usage()}",
+                "Dp",
+                dimension(target, token["value"].toString()),
+            )
         }
         return tokenClass("SjSpacing", "Spacing scale, plus named aliases for the common gaps.", props + aliases, "dp")
     }
 
     private fun radius(root: Map<String, Any?>): String {
         val props = root.obj("radius").list("tokens").map { it as Map<*, *> }.map { token ->
-            Prop(token.name().removePrefix("radius-").camel(), token.usage(), "Dp", dimension(token.name(), token["value"].toString()))
+            Prop(
+                token.name().removePrefix("radius-").camel(),
+                token.usage(),
+                "Dp",
+                dimension(token.name(), token["value"].toString()),
+            )
         }
         return tokenClass("SjRadius", "Corner radii.", props, "dp")
     }
@@ -102,7 +115,12 @@ internal object SjTokensGenerator {
             Prop(token.name().camel(), token.usage(), type, dimension(token.name(), value))
         }
         val units = if (props.any { it.type == "TextUnit" }) "dp_em" else "dp"
-        return tokenClass("SjSize", "Fixed component sizes. `em` sizes are relative to the text they measure.", props, units)
+        return tokenClass(
+            "SjSize",
+            "Fixed component sizes. `em` sizes are relative to the text they measure.",
+            props,
+            units,
+        )
     }
 
     private fun typography(root: Map<String, Any?>): String {
@@ -118,7 +136,11 @@ internal object SjTokensGenerator {
 
         val props = styles.joinToString("\n") { (_, style) ->
             val notes = buildList {
-                if (style.name() in uppercaseStyles) add("Uppercase it in the component; the string stays sentence case.")
+                if (style.name() in
+                    uppercaseStyles
+                ) {
+                    add("Uppercase it in the component; the string stays sentence case.")
+                }
                 if (style.name() in tabularStyles) add("Tabular figures.")
             }
             val doc = (listOf(style.usage()) + notes).joinToString(" ")
@@ -155,14 +177,17 @@ internal object SjTokensGenerator {
             |        private val CssLineHeight = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
             |    }
             |}
-            |""".trimMargin()
+            |
+        """.trimMargin()
     }
 
     private fun textStyle(family: String, style: Map<*, *>): String {
         val name = style.name()
         val args = buildList {
             add("fontFamily = ${family.camel()}")
-            val weight = style["fontWeight"]?.toString()?.toIntOrNull() ?: error("tokens.json: style $name has no numeric fontWeight")
+            val weight =
+                style["fontWeight"]?.toString()?.toIntOrNull()
+                    ?: error("tokens.json: style $name has no numeric fontWeight")
             require(weight in 1..1000) { "tokens.json: style $name fontWeight is out of range: $weight" }
             add("fontWeight = FontWeight($weight)")
             when (val fontStyle = style["fontStyle"]?.toString()) {
@@ -170,7 +195,12 @@ internal object SjTokensGenerator {
                 "italic" -> add("fontStyle = FontStyle.Italic")
                 else -> error("tokens.json: style $name has unknown fontStyle $fontStyle")
             }
-            add("fontSize = ${textUnit(name, style["fontSize"]?.toString() ?: error("tokens.json: style $name has no fontSize"))}")
+            add(
+                "fontSize = ${textUnit(
+                    name,
+                    style["fontSize"]?.toString() ?: error("tokens.json: style $name has no fontSize"),
+                )}",
+            )
             style["lineHeight"]?.let { add("lineHeight = ${textUnit(name, it.toString())}") }
             style["letterSpacing"]?.let { add("letterSpacing = ${textUnit(name, it.toString())}") }
             if (name in tabularStyles) add("fontFeatureSettings = \"tnum\"")
@@ -215,7 +245,8 @@ internal object SjTokensGenerator {
             |        val Default: $name = $name()
             |    }
             |}
-            |""".trimMargin()
+            |
+        """.trimMargin()
     }
 
     private val hex = Regex("^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$")
@@ -248,10 +279,9 @@ internal object SjTokensGenerator {
     }
 
     /** `reader-paper` to `readerPaper`, `space-1` to `space1`. */
-    internal fun String.camel(): String =
-        split('-').filter { it.isNotEmpty() }.mapIndexed { i, part ->
-            if (i == 0) part else part.replaceFirstChar { it.titlecase(Locale.ROOT) }
-        }.joinToString("")
+    internal fun String.camel(): String = split('-').filter { it.isNotEmpty() }.mapIndexed { i, part ->
+        if (i == 0) part else part.replaceFirstChar { it.titlecase(Locale.ROOT) }
+    }.joinToString("")
 
     private fun Map<*, *>.name(): String = this["name"]?.toString() ?: error("tokens.json: token without a name: $this")
 

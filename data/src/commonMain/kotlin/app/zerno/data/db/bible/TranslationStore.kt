@@ -70,7 +70,19 @@ class TranslationStore(
         }
         return files
             .mapNotNull { describe(it, bundledIds) }
-            .sortedWith(compareBy({ bundledIds.indexOf(it.id).let { i -> if (i < 0) Int.MAX_VALUE else i } }, { it.id.value }))
+            .sortedWith(
+                compareBy({
+                    bundledIds.indexOf(it.id).let { i ->
+                        if (i <
+                            0
+                        ) {
+                            Int.MAX_VALUE
+                        } else {
+                            i
+                        }
+                    }
+                }, { it.id.value }),
+            )
     }
 
     /** Opens [id] read-only; the caller closes it. Fails when the translation is not on this device. */

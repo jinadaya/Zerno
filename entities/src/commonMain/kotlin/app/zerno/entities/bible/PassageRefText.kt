@@ -74,13 +74,17 @@ private class Location(
     fun toPassage(book: BookId, singleChapter: Boolean): PassageRef? = runCatching {
         when {
             toChapterEnd -> PassageRef(book, first, firstVerse, second ?: first, null)
+
             // "Jude 3", "Jude 3-5": numbers without a chapter in a one-chapter book are verses.
             singleChapter && firstVerse == null && secondVerse == null ->
                 PassageRef(book, 1, first, 1, second ?: first)
+
             second == null ->
                 if (firstVerse == null) PassageRef(book, first) else PassageRef.verse(book, first, firstVerse)
+
             // "4:1-26": the number after the dash is a verse in the same chapter.
             firstVerse != null && secondVerse == null -> PassageRef(book, first, firstVerse, first, second)
+
             else -> PassageRef(book, first, firstVerse, second, secondVerse)
         }
     }.getOrNull()
@@ -159,10 +163,14 @@ private fun PassageRef.location(singleChapter: Boolean): String {
     val start = if (startVerse == null) "$startChapter" else "$startChapter:$startVerse"
     return when {
         isWholeChapters && startChapter == endChapter -> start
+
         isWholeChapters -> "$start-$endChapter"
+
         startChapter == endChapter && startVerse != null && endVerse != null ->
             if (startVerse == endVerse) start else "$start-$endVerse"
+
         endVerse == null -> if (startChapter == endChapter) "${start}ff" else "$start-${endChapter}ff"
+
         else -> "$start-$endChapter:$endVerse"
     }
 }

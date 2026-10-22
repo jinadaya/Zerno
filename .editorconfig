@@ -1,0 +1,25 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 120
+ktlint_code_style = intellij_idea
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+# Composables are PascalCase by Compose convention.
+ktlint_function_naming_ignore_when_annotated_with = Composable
+# package-info style files hold only a package line and its KDoc.
+ktlint_standard_no-empty-file = disabled
+ktlint_standard_kdoc = disabled
+# Compose-style PascalCase for private vals (SealCorner, LocalSjColors); detekt checks naming.
+ktlint_standard_property-naming = disabled
+
+# Path data exported from the mascot artwork.
+[**/mascot/MascotVectors.kt]
+ktlint_standard = disabled

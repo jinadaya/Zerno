@@ -99,9 +99,11 @@ private fun BookPickerContent(state: BookPickerState, onEvent: (BookPickerEvent)
             items(rows.size, key = { rows[it].key }) { index ->
                 when (val row = rows[index]) {
                     is PickerRow.Header -> TestamentHeader(row.testament, colors, fonts)
+
                     is PickerRow.BookRow -> BookRow(row.book, row.expanded, colors, fonts) {
                         onEvent(BookPickerEvent.BookClicked(row.book.id))
                     }
+
                     is PickerRow.Chapters -> ChapterGrid(row.book, state.current, colors, fonts) { chapter ->
                         onEvent(BookPickerEvent.ChapterClicked(chapter))
                     }
@@ -167,7 +169,12 @@ private fun BookRow(book: Book, expanded: Boolean, colors: SjColors, fonts: SjFo
             .clickable(role = Role.Button, onClick = onClick)
             .drawBehind {
                 val stroke = SjSize.Default.hairline.toPx()
-                drawLine(colors.rule, Offset(0f, size.height - stroke / 2), Offset(size.width, size.height - stroke / 2), stroke)
+                drawLine(
+                    colors.rule,
+                    Offset(0f, size.height - stroke / 2),
+                    Offset(size.width, size.height - stroke / 2),
+                    stroke,
+                )
             }
             .padding(horizontal = spacing.space4, vertical = spacing.space3),
         verticalAlignment = Alignment.CenterVertically,

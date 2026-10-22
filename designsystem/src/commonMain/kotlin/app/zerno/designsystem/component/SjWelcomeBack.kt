@@ -36,7 +36,10 @@ fun SjWelcomeBack(
     val type = SjTheme.type
     StickerSurface(colors.lilac, modifier.fillMaxWidth()) {
         illustration?.invoke()
-        BasicText(headline, style = type.titleItalic.copy(fontSize = 44.sp, lineHeight = 46.sp, color = colors.stickerInk))
+        BasicText(
+            headline,
+            style = type.titleItalic.copy(fontSize = 44.sp, lineHeight = 46.sp, color = colors.stickerInk),
+        )
         BasicText(message, style = type.body.copy(color = colors.stickerInk))
         Row(
             horizontalArrangement = Arrangement.spacedBy(SjTheme.spacing.space4),

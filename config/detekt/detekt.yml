@@ -1,0 +1,50 @@
+# Overrides on top of detekt's default config (buildUponDefaultConfig). Keep each one explained.
+
+naming:
+  MatchingDeclarationName:
+    # A component file holds the composable plus its small state and enum types.
+    active: false
+  FunctionNaming:
+    # Composables are PascalCase by Compose convention.
+    ignoreAnnotated: ['Composable']
+  TopLevelPropertyNaming:
+    # Compose-style PascalCase for top-level vals (LocalSjColors, SjSealShape) and SCREAMING_CASE for consts.
+    constantPattern: '[A-Z][_A-Za-z0-9]*'
+    propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
+    privatePropertyPattern: '_?[A-Za-z][_A-Za-z0-9]*'
+
+complexity:
+  LongParameterList:
+    # Composables take their slots and modifiers as parameters; defaults are optional knobs, not a smell.
+    ignoreAnnotated: ['Composable']
+    ignoreDefaultParameters: true
+    constructorThreshold: 8
+  LongMethod:
+    ignoreAnnotated: ['Composable']
+
+style:
+  MaxLineLength:
+    maxLineLength: 120
+    # Path data exported from the mascot artwork.
+    excludes: ['**/mascot/MascotVectors.kt']
+  MagicNumber:
+    # Data tables: mascot path data, the book list, the Synodal versification table; tests read better with literals.
+    excludes:
+      - '**/commonTest/**'
+      - '**/iosTest/**'
+      - '**/androidUnitTest/**'
+      - '**/test/**'
+      - '**/mascot/MascotVectors.kt'
+      - '**/bible/BookNames.kt'
+      - '**/bible/SynodalMapping.kt'
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreNamedArgument: true
+    # Layout sizes and colours in composables and previews are design values, named by the call they sit in.
+    ignoreAnnotated: ['Composable', 'Preview']
+  UnusedPrivateMember:
+    # Previews are used by the IDE, not by code.
+    ignoreAnnotated: ['Preview']
+  ReturnCount:
+    max: 3
+    excludeGuardClauses: true

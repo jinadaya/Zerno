@@ -89,13 +89,25 @@ fun SjAchievementSeal(
         )
         BasicText(
             text = reason,
-            style = type.caption.copy(fontSize = 12.sp, lineHeight = 16.sp, color = colors.inkMuted, textAlign = TextAlign.Center),
+            style = type.caption.copy(
+                fontSize = 12.sp,
+                lineHeight = 16.sp,
+                color = colors.inkMuted,
+                textAlign = TextAlign.Center,
+            ),
         )
     }
 }
 
 @Composable
-private fun Medal(set: SjAchievementSet, unlocked: Boolean, icon: ImageVector, color: Color, tilt: Float, dropIn: Boolean) {
+private fun Medal(
+    set: SjAchievementSet,
+    unlocked: Boolean,
+    icon: ImageVector,
+    color: Color,
+    tilt: Float,
+    dropIn: Boolean,
+) {
     val colors = SjTheme.colors
     val reduced = SjTheme.motion.reduced
     val spring = SjTheme.motion.spring<Float>()
@@ -125,7 +137,10 @@ private fun Medal(set: SjAchievementSet, unlocked: Boolean, icon: ImageVector, c
                 drawOutline(
                     outline,
                     muted,
-                    style = Stroke(size.width * LockedStroke, pathEffect = PathEffect.dashPathEffect(floatArrayOf(dash, dash))),
+                    style = Stroke(
+                        size.width * LockedStroke,
+                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(dash, dash)),
+                    ),
                 )
             }
         }

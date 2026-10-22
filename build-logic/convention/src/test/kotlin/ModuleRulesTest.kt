@@ -5,7 +5,16 @@ import kotlin.test.assertTrue
 class ModuleRulesTest {
     @Test
     fun featureMayUseItsOwnApiOtherApisAndBaseModules() {
-        val deps = listOf(":feature:today:api", ":feature:reader:api", ":arch", ":designsystem", ":entities", ":data", ":navigation")
+        val deps =
+            listOf(
+                ":feature:today:api",
+                ":feature:reader:api",
+                ":arch",
+                ":designsystem",
+                ":entities",
+                ":data",
+                ":navigation",
+            )
         assertTrue(moduleRuleViolations(":feature:today", deps).isEmpty())
     }
 

@@ -66,7 +66,10 @@ class GamificationRepositoryTest {
         val repository = GamificationRepository(reopened.gamificationDao())
         // Only finished sessions count.
         assertEquals(listOf(session), repository.completedSessions.first())
-        assertEquals(listOf(Activity(ActivityKind.Reflection, finished, TimeZone.of("Europe/Moscow"))), repository.activity.first())
+        assertEquals(
+            listOf(Activity(ActivityKind.Reflection, finished, TimeZone.of("Europe/Moscow"))),
+            repository.activity.first(),
+        )
         assertEquals(mapOf(monday to DayStatus.Done), repository.dayMarks.first())
         assertEquals(mapOf(AchievementCode("first_steps") to finished), repository.unlocked.first())
         reopened.close()

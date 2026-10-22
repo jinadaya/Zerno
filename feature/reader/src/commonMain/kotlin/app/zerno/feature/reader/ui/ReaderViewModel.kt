@@ -74,11 +74,17 @@ class ReaderViewModel(
                     }
                 }
             }
+
             ReaderEvent.BookPickerClicked -> intent(NAVIGATE) { postEffect(ReaderEffect.OpenBookPicker) }
+
             ReaderEvent.PreviousChapterClicked -> page?.previous?.let { open(it.chapter) }
+
             ReaderEvent.NextChapterClicked -> page?.next?.let { open(it.chapter) }
+
             ReaderEvent.SettingsClicked -> intent(SETTINGS) { emit(SettingsShown(!state.value.settingsOpen)) }
+
             ReaderEvent.SettingsDismissed -> intent(SETTINGS) { emit(SettingsShown(false)) }
+
             is ReaderEvent.FontSizeStepped -> {
                 val size = ReaderFontSize.step(state.value.fontSize, event.steps)
                 intent(FONT_SIZE) {
@@ -86,6 +92,7 @@ class ReaderViewModel(
                     prefs.saveFontSize(size)
                 }
             }
+
             is ReaderEvent.TranslationSelected -> if (page != null) {
                 val from = page.location.copy(verse = topVerse)
                 intent(OPEN) { session.switchTranslation(from, event.id) }

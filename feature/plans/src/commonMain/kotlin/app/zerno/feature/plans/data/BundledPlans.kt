@@ -6,10 +6,10 @@ import app.zerno.feature.plans.resources.Res
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 /** The plans shipped for launch, `composeResources/files/plans`, until the backend serves the catalog. */
-class BundledPlans(
-    private val read: suspend (path: String) -> ByteArray = { readBundled(it) },
-) {
-    suspend fun load(): List<ReadingPlan> = IDS.map { id -> PlanFormat.parse(read("files/plans/$id.json").decodeToString()) }
+class BundledPlans(private val read: suspend (path: String) -> ByteArray = { readBundled(it) }) {
+    suspend fun load(): List<ReadingPlan> = IDS.map { id ->
+        PlanFormat.parse(read("files/plans/$id.json").decodeToString())
+    }
 
     companion object {
         /** Launch plans in the order the plan list shows them. */

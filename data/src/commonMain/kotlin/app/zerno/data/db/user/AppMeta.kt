@@ -12,10 +12,7 @@ import androidx.room.Upsert
  * with their own tasks.
  */
 @Entity(tableName = "app_meta")
-data class AppMeta(
-    @PrimaryKey val key: String,
-    val value: String,
-)
+data class AppMeta(@PrimaryKey val key: String, val value: String)
 
 @Dao
 interface AppMetaDao {

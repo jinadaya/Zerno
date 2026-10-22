@@ -21,11 +21,7 @@ import kotlinx.serialization.json.Json
  * Where the backend is and how loud the client is. The app picks it per build type: a local backend with logging in
  * debug, the production one without in release.
  */
-data class ApiConfig(
-    val baseUrl: String,
-    val logging: Boolean = false,
-    val maxRetries: Int = 3,
-)
+data class ApiConfig(val baseUrl: String, val logging: Boolean = false, val maxRetries: Int = 3)
 
 /** Access and refresh token of the signed-in user. */
 data class AuthTokens(val access: String, val refresh: String?)

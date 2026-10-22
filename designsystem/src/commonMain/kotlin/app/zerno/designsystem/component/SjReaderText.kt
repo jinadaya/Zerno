@@ -36,10 +36,10 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -53,11 +53,7 @@ import kotlin.math.min
  * breaks for poetry; [startsParagraph] begins a new paragraph before this verse.
  */
 @Immutable
-data class SjVerse(
-    val number: Int,
-    val text: AnnotatedString,
-    val startsParagraph: Boolean = false,
-)
+data class SjVerse(val number: Int, val text: AnnotatedString, val startsParagraph: Boolean = false)
 
 object SjReaderTextDefaults {
     /** Smallest Scripture size the reader offers. */
@@ -354,25 +350,39 @@ private fun DrawScope.drawWavyUnderline(layout: TextLayoutResult, start: Int, en
 private const val NarrowNoBreakSpace = ' '
 
 private val SampleVerses = listOf(
-    SjVerse(105, buildAnnotatedString {
-        append("Thy word ")
-        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("is") }
-        append(" a lamp unto my feet, and a light unto my path.")
-    }),
-    SjVerse(106, buildAnnotatedString {
-        append("I have sworn, and I will perform ")
-        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("it") }
-        append(", that I will keep thy righteous judgments.")
-    }),
+    SjVerse(
+        105,
+        buildAnnotatedString {
+            append("Thy word ")
+            withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("is") }
+            append(" a lamp unto my feet, and a light unto my path.")
+        },
+    ),
+    SjVerse(
+        106,
+        buildAnnotatedString {
+            append("I have sworn, and I will perform ")
+            withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("it") }
+            append(", that I will keep thy righteous judgments.")
+        },
+    ),
     SjVerse(107, AnnotatedString("I am afflicted very much: quicken me, O LORD, according unto thy word.")),
-    SjVerse(108, AnnotatedString("Accept, I beseech thee, the freewill offerings of my mouth, O LORD, and teach me thy judgments.")),
+    SjVerse(
+        108,
+        AnnotatedString(
+            "Accept, I beseech thee, the freewill offerings of my mouth, O LORD, and teach me thy judgments.",
+        ),
+    ),
 )
 
 private val SampleVersesRu = listOf(
     SjVerse(105, AnnotatedString("Слово Твоё — светильник ноге моей и свет стезе моей.")),
     SjVerse(106, AnnotatedString("Я клялся хранить праведные суды Твои, и исполню.")),
     SjVerse(107, AnnotatedString("Сильно угнетён я, Господи; оживи меня по слову Твоему.")),
-    SjVerse(108, AnnotatedString("Благоволи же, Господи, принять добровольную жертву уст моих, и судам Твоим научи меня.")),
+    SjVerse(
+        108,
+        AnnotatedString("Благоволи же, Господи, принять добровольную жертву уст моих, и судам Твоим научи меня."),
+    ),
 )
 
 @Preview
@@ -398,7 +408,15 @@ private fun SjReaderTextDarkPreview() {
         SjReaderText(
             translation = "Псалтирь · СП",
             chapterTitle = "Псалом 118",
-            verses = SampleVersesRu.mapIndexed { i, verse -> if (i == 2) verse.copy(startsParagraph = true) else verse },
+            verses = SampleVersesRu.mapIndexed { i, verse ->
+                if (i ==
+                    2
+                ) {
+                    verse.copy(startsParagraph = true)
+                } else {
+                    verse
+                }
+            },
             credit = "Псалом 118:105–108, Синодальный перевод (общественное достояние). Образец для вёрстки.",
             fontSize = 24.sp,
             highlighted = setOf(1),

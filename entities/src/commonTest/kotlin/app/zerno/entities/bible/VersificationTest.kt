@@ -22,9 +22,11 @@ class VersificationTest {
         assertEquals(ref(english), toEnglish(russian), "$russian in KJV")
     }
 
-    private fun assertToRussian(english: String, russian: String) = assertEquals(ref(russian), toRussian(english), english)
+    private fun assertToRussian(english: String, russian: String) =
+        assertEquals(ref(russian), toRussian(english), english)
 
-    private fun assertToEnglish(russian: String, english: String) = assertEquals(ref(english), toEnglish(russian), russian)
+    private fun assertToEnglish(russian: String, english: String) =
+        assertEquals(ref(english), toEnglish(russian), russian)
 
     // Reading the flag
 

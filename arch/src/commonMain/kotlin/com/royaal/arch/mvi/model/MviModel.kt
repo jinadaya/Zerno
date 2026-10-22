@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.StateFlow
  *  This is a plain Kotlin interface that can be used on other platforms.
  */
 interface MviModel<
-        State : ScreenState,
-        Event : UserEvent,
-        Effect : SideEffect,
-        > {
+    State : ScreenState,
+    Event : UserEvent,
+    Effect : SideEffect,
+    > {
 
     val state: StateFlow<State>
 

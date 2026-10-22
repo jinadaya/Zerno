@@ -81,10 +81,7 @@ fun SjSwitchRow(
  * springs right. It has no click handling; [SjSwitchRow] makes the whole row toggle it and fades it when disabled.
  */
 @Composable
-fun SjSwitch(
-    checked: Boolean,
-    modifier: Modifier = Modifier,
-) {
+fun SjSwitch(checked: Boolean, modifier: Modifier = Modifier) {
     val colors = SjTheme.colors
     val motion = SjTheme.motion
     val track by animateColorAsState(

@@ -50,7 +50,10 @@ class FakePrefs : ReaderPrefs {
         last = location
     }
 
-    override suspend fun position(versification: Versification, chapter: ChapterRef) = positions[versification to chapter]
+    override suspend fun position(versification: Versification, chapter: ChapterRef) = positions[
+        versification to
+            chapter,
+    ]
     override suspend fun savePosition(versification: Versification, chapter: ChapterRef, verse: Int?) {
         positions[versification to chapter] = verse
     }

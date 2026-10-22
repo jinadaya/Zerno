@@ -22,11 +22,7 @@ data class VerseText(
 
 /** [style] applies to `text.substring(start, end)`. */
 @Serializable
-data class VerseSpan(
-    val style: VerseStyle,
-    val start: Int,
-    val end: Int,
-) {
+data class VerseSpan(val style: VerseStyle, val start: Int, val end: Int) {
     init {
         require(start in 0 until end) { "Span $start..$end is empty or negative" }
     }

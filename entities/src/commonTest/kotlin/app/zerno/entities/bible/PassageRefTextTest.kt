@@ -25,8 +25,13 @@ class PassageRefTextTest {
     private val jude = BookId(720)
     private val revelation = BookId(730)
 
-    private fun ref(book: BookId, startChapter: Int, startVerse: Int? = null, endChapter: Int = startChapter, endVerse: Int? = null) =
-        PassageRef(book, startChapter, startVerse, endChapter, endVerse)
+    private fun ref(
+        book: BookId,
+        startChapter: Int,
+        startVerse: Int? = null,
+        endChapter: Int = startChapter,
+        endVerse: Int? = null,
+    ) = PassageRef(book, startChapter, startVerse, endChapter, endVerse)
 
     private fun assertParses(expected: PassageRef, text: String) = assertEquals(expected, PassageRef.parse(text), text)
 

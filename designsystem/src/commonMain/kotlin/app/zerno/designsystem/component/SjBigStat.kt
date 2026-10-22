@@ -19,12 +19,7 @@ import app.zerno.designsystem.theme.SjTheme
  * Count what was done, never what was missed. Screen readers hear number and line as one phrase.
  */
 @Composable
-fun SjBigStat(
-    value: String,
-    line: String,
-    modifier: Modifier = Modifier,
-    unit: String? = null,
-) {
+fun SjBigStat(value: String, line: String, modifier: Modifier = Modifier, unit: String? = null) {
     val content = SjTheme.contentColor
     val type = SjTheme.type
     Column(
@@ -35,7 +30,9 @@ fun SjBigStat(
             text = buildAnnotatedString {
                 append(value)
                 if (unit != null) {
-                    withStyle(SpanStyle(fontSize = UnitSize, letterSpacing = 0.sp, baselineShift = UnitShift)) { append(unit) }
+                    withStyle(SpanStyle(fontSize = UnitSize, letterSpacing = 0.sp, baselineShift = UnitShift)) {
+                        append(unit)
+                    }
                 }
             },
             style = type.mega.copy(color = content),

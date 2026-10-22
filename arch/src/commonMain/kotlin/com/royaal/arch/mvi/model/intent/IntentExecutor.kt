@@ -16,10 +16,12 @@ interface IntentExecutor<Event : InnerEvent> {
      *  All unhandled errors that may rise.
      */
     val unhandledErrors: SharedFlow<Throwable>
+
     /**
      *  Job's keys that are in use.
      */
     val activeKeys: StateFlow<Set<Any>>
+
     /**
      *  Current state of screen this intent is tied to.
      */

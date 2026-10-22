@@ -29,19 +29,39 @@ data class AchievementStats(
     /** The number [criteria] compares with its threshold. */
     fun count(criteria: Criteria): Int = when (criteria.type) {
         CriteriaType.SessionsCompleted -> sessionsCompleted
+
         CriteriaType.ChaptersRead -> chaptersRead
+
         CriteriaType.BooksFinished -> booksFinished.size
+
         CriteriaType.BooksInGroup -> booksFinished.count { it in BookGroups.byName[criteria.group].orEmpty() }
+
         CriteriaType.DistinctBooks -> booksStarted.size
-        CriteriaType.BothTestaments -> if (booksStarted.map { it.testament }.toSet().size == Testament.entries.size) 1 else 0
+
+        CriteriaType.BothTestaments -> if (booksStarted.map { it.testament }.toSet().size ==
+            Testament.entries.size
+        ) {
+            1
+        } else {
+            0
+        }
+
         CriteriaType.PlansCompleted -> plansCompleted
+
         CriteriaType.WholeBiblePlan -> wholeBiblePlansCompleted
+
         CriteriaType.ReflectionsWritten -> reflectionsWritten
+
         CriteriaType.PlanStepReflections -> planStepReflections
+
         CriteriaType.VersesSaved -> versesSaved
+
         CriteriaType.QuestionsAnswered -> questionsAnswered
+
         CriteriaType.StreakDays -> longestStreakDays
+
         CriteriaType.SteadyWeeks -> steadyWeeks
+
         CriteriaType.ReturnAfterDays -> longestReturnGapDays
     }
 }

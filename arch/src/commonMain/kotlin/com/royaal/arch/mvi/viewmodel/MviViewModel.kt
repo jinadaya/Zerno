@@ -20,28 +20,29 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 abstract class MviViewModel<
-        State : ScreenState,
-        Event : UserEvent,
-        InnEvent : InnerEvent,
-        Effect : SideEffect,
-        Snapshot : ScreenSnapshot,
-        >(
+    State : ScreenState,
+    Event : UserEvent,
+    InnEvent : InnerEvent,
+    Effect : SideEffect,
+    Snapshot : ScreenSnapshot,
+    >(
     private val savedStateHandle: SavedStateHandle,
     initialState: State,
     private val reducer: MviReducer<State, InnEvent>,
     private val snapshotHandler: SnapshotHandler<State, Snapshot>,
     ioDispatcher: CoroutineDispatcher = Dispatchers.Default,
-) : ViewModel(), MviModel<State, Event, Effect> {
+) : ViewModel(),
+    MviModel<State, Event, Effect> {
 
     private val _state = MutableStateFlow(
         (savedStateHandle.get<Any>(SAVE_KEY) as? Snapshot)
             ?.runCatching { snapshotHandler.restore(this) }
-            ?.getOrNull() ?: initialState
+            ?.getOrNull() ?: initialState,
     )
     override val state = _state.asStateFlow()
 
@@ -109,28 +110,22 @@ abstract class MviViewModel<
      *  }
      * ```
      */
-    protected fun intent(
-        key: Any,
-        block: suspend IntentScope<InnEvent>.() -> Unit,
-    ) = intentExecutor.intent(key, block = block)
+    protected fun intent(key: Any, block: suspend IntentScope<InnEvent>.() -> Unit) =
+        intentExecutor.intent(key, block = block)
 
     /**
      *  Start an [IntentScope]. All methods within will be tied to this intent.
      *  When next intentLatest comes in, the previous one is canceled.
      */
-    protected fun intentLatest(
-        block: suspend IntentScope<InnEvent>.() -> Unit,
-    ) = intentExecutor.intentLatest(block)
+    protected fun intentLatest(block: suspend IntentScope<InnEvent>.() -> Unit) = intentExecutor.intentLatest(block)
 
     /**
      *  An infinite subscription to something.
      *
      *  @param key key of subscription. When another enters, previous one is cancelled.
      */
-    protected fun subscription(
-        key: Any,
-        block: suspend SubscriptionScope<InnEvent>.() -> Unit
-    ) = intentExecutor.subscription(key, block)
+    protected fun subscription(key: Any, block: suspend SubscriptionScope<InnEvent>.() -> Unit) =
+        intentExecutor.subscription(key, block)
 
     companion object {
         private const val SAVE_KEY = "mvi_state"

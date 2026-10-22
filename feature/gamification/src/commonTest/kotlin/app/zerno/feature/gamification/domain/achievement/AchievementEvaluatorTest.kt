@@ -14,11 +14,22 @@ class AchievementEvaluatorTest {
     private val now = Instant.parse("2026-03-01T10:00:00Z")
     private val later = Instant.parse("2026-03-09T10:00:00Z")
 
-    @Test fun sessionsCompleted() = check(CriteriaType.SessionsCompleted, 3, AchievementStats(sessionsCompleted = 2), AchievementStats(sessionsCompleted = 3))
+    @Test fun sessionsCompleted() = check(
+        CriteriaType.SessionsCompleted,
+        3,
+        AchievementStats(sessionsCompleted = 2),
+        AchievementStats(sessionsCompleted = 3),
+    )
 
-    @Test fun chaptersRead() = check(CriteriaType.ChaptersRead, 50, AchievementStats(chaptersRead = 12), AchievementStats(chaptersRead = 51))
+    @Test fun chaptersRead() =
+        check(CriteriaType.ChaptersRead, 50, AchievementStats(chaptersRead = 12), AchievementStats(chaptersRead = 51))
 
-    @Test fun booksFinished() = check(CriteriaType.BooksFinished, 2, AchievementStats(booksFinished = setOf(MARK)), AchievementStats(booksFinished = setOf(MARK, GENESIS)))
+    @Test fun booksFinished() = check(
+        CriteriaType.BooksFinished,
+        2,
+        AchievementStats(booksFinished = setOf(MARK)),
+        AchievementStats(booksFinished = setOf(MARK, GENESIS)),
+    )
 
     @Test
     fun booksInGroupCountsOnlyBooksOfTheGroup() = check(
@@ -29,7 +40,12 @@ class AchievementEvaluatorTest {
         group = "gospels",
     )
 
-    @Test fun distinctBooks() = check(CriteriaType.DistinctBooks, 3, AchievementStats(booksStarted = setOf(MARK, JOHN)), AchievementStats(booksStarted = setOf(MARK, JOHN, GENESIS)))
+    @Test fun distinctBooks() = check(
+        CriteriaType.DistinctBooks,
+        3,
+        AchievementStats(booksStarted = setOf(MARK, JOHN)),
+        AchievementStats(booksStarted = setOf(MARK, JOHN, GENESIS)),
+    )
 
     @Test
     fun bothTestaments() = check(
@@ -40,19 +56,46 @@ class AchievementEvaluatorTest {
         counted = false,
     )
 
-    @Test fun plansCompleted() = check(CriteriaType.PlansCompleted, 3, AchievementStats(plansCompleted = 1), AchievementStats(plansCompleted = 3))
+    @Test fun plansCompleted() = check(
+        CriteriaType.PlansCompleted,
+        3,
+        AchievementStats(plansCompleted = 1),
+        AchievementStats(plansCompleted = 3),
+    )
 
     @Test
-    fun wholeBiblePlan() = check(CriteriaType.WholeBiblePlan, 1, AchievementStats(plansCompleted = 5), AchievementStats(wholeBiblePlansCompleted = 1), counted = false)
+    fun wholeBiblePlan() = check(
+        CriteriaType.WholeBiblePlan,
+        1,
+        AchievementStats(plansCompleted = 5),
+        AchievementStats(wholeBiblePlansCompleted = 1),
+        counted = false,
+    )
 
-    @Test fun reflectionsWritten() = check(CriteriaType.ReflectionsWritten, 10, AchievementStats(reflectionsWritten = 9), AchievementStats(reflectionsWritten = 10))
+    @Test fun reflectionsWritten() = check(
+        CriteriaType.ReflectionsWritten,
+        10,
+        AchievementStats(reflectionsWritten = 9),
+        AchievementStats(reflectionsWritten = 10),
+    )
 
     @Test
-    fun planStepReflections() = check(CriteriaType.PlanStepReflections, 1, AchievementStats(reflectionsWritten = 4), AchievementStats(planStepReflections = 1))
+    fun planStepReflections() = check(
+        CriteriaType.PlanStepReflections,
+        1,
+        AchievementStats(reflectionsWritten = 4),
+        AchievementStats(planStepReflections = 1),
+    )
 
-    @Test fun versesSaved() = check(CriteriaType.VersesSaved, 10, AchievementStats(versesSaved = 3), AchievementStats(versesSaved = 12))
+    @Test fun versesSaved() =
+        check(CriteriaType.VersesSaved, 10, AchievementStats(versesSaved = 3), AchievementStats(versesSaved = 12))
 
-    @Test fun questionsAnswered() = check(CriteriaType.QuestionsAnswered, 5, AchievementStats(questionsAnswered = 4), AchievementStats(questionsAnswered = 5))
+    @Test fun questionsAnswered() = check(
+        CriteriaType.QuestionsAnswered,
+        5,
+        AchievementStats(questionsAnswered = 4),
+        AchievementStats(questionsAnswered = 5),
+    )
 
     @Test
     fun streakDaysUsesTheLongestStreak() = check(
@@ -63,18 +106,26 @@ class AchievementEvaluatorTest {
         reached = AchievementStats(currentStreakDays = 0, longestStreakDays = 7),
     )
 
-    @Test fun steadyWeeks() = check(CriteriaType.SteadyWeeks, 4, AchievementStats(steadyWeeks = 3), AchievementStats(steadyWeeks = 4))
+    @Test fun steadyWeeks() =
+        check(CriteriaType.SteadyWeeks, 4, AchievementStats(steadyWeeks = 3), AchievementStats(steadyWeeks = 4))
 
     @Test
-    fun returnAfterDays() = check(CriteriaType.ReturnAfterDays, 7, AchievementStats(longestReturnGapDays = 6), AchievementStats(longestReturnGapDays = 9), counted = false)
+    fun returnAfterDays() = check(
+        CriteriaType.ReturnAfterDays,
+        7,
+        AchievementStats(longestReturnGapDays = 6),
+        AchievementStats(longestReturnGapDays = 9),
+        counted = false,
+    )
 
     @Test
     fun everyCriteriaTypeIsCovered() {
         val tested = setOf(
-            CriteriaType.SessionsCompleted, CriteriaType.ChaptersRead, CriteriaType.BooksFinished, CriteriaType.BooksInGroup,
-            CriteriaType.DistinctBooks, CriteriaType.BothTestaments, CriteriaType.PlansCompleted, CriteriaType.WholeBiblePlan,
-            CriteriaType.ReflectionsWritten, CriteriaType.PlanStepReflections, CriteriaType.VersesSaved,
-            CriteriaType.QuestionsAnswered, CriteriaType.StreakDays, CriteriaType.SteadyWeeks, CriteriaType.ReturnAfterDays,
+            CriteriaType.SessionsCompleted, CriteriaType.ChaptersRead, CriteriaType.BooksFinished,
+            CriteriaType.BooksInGroup, CriteriaType.DistinctBooks, CriteriaType.BothTestaments,
+            CriteriaType.PlansCompleted, CriteriaType.WholeBiblePlan, CriteriaType.ReflectionsWritten,
+            CriteriaType.PlanStepReflections, CriteriaType.VersesSaved, CriteriaType.QuestionsAnswered,
+            CriteriaType.StreakDays, CriteriaType.SteadyWeeks, CriteriaType.ReturnAfterDays,
         )
         assertEquals(CriteriaType.entries.toSet(), tested)
     }
@@ -103,7 +154,14 @@ class AchievementEvaluatorTest {
 
     @Test
     fun newUserHasNothingUnlocked() {
-        val catalog = AchievementCatalog(1, listOf(definition(CriteriaType.ChaptersRead, 50), definition(CriteriaType.StreakDays, 3, code = "streak_3")))
+        val catalog =
+            AchievementCatalog(
+                1,
+                listOf(
+                    definition(CriteriaType.ChaptersRead, 50),
+                    definition(CriteriaType.StreakDays, 3, code = "streak_3"),
+                ),
+            )
         val result = AchievementEvaluator(catalog).evaluate(AchievementStats(), emptyMap(), now)
 
         assertEquals(listOf("chapters", "streak_3"), result.achievements.map { it.code.value })
@@ -126,7 +184,10 @@ class AchievementEvaluatorTest {
         assertNull(lockedAchievement.unlockedAt, "$type should be locked below the threshold")
         assertTrue(locked.newlyUnlocked.isEmpty())
         if (counted) {
-            assertEquals(AchievementProgress(below.count(Criteria(type, threshold, group)), threshold), lockedAchievement.progress)
+            assertEquals(
+                AchievementProgress(below.count(Criteria(type, threshold, group)), threshold),
+                lockedAchievement.progress,
+            )
         } else {
             assertNull(lockedAchievement.progress)
         }

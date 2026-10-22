@@ -36,12 +36,7 @@ enum class Testament { Old, New }
  * @property name full name, e.g. "От Иоанна" or "John".
  */
 @Serializable
-data class Book(
-    val id: BookId,
-    val shortName: String,
-    val name: String,
-    val chapterCount: Int,
-) {
+data class Book(val id: BookId, val shortName: String, val name: String, val chapterCount: Int) {
     init {
         require(chapterCount > 0) { "Book $id must have at least one chapter" }
     }
@@ -49,16 +44,12 @@ data class Book(
 
 /** One chapter of a book, independent of translation. */
 @Serializable
-data class ChapterRef(
-    val book: BookId,
-    val chapter: Int,
-) : Comparable<ChapterRef> {
+data class ChapterRef(val book: BookId, val chapter: Int) : Comparable<ChapterRef> {
     init {
         require(chapter > 0) { "Chapter must be positive, was $chapter" }
     }
 
-    override fun compareTo(other: ChapterRef): Int =
-        compareValuesBy(this, other, ChapterRef::book, ChapterRef::chapter)
+    override fun compareTo(other: ChapterRef): Int = compareValuesBy(this, other, ChapterRef::book, ChapterRef::chapter)
 }
 
 /**
@@ -67,12 +58,7 @@ data class ChapterRef(
  * @property text verse text with MyBible markup turned into plain text and annotations.
  */
 @Serializable
-data class Verse(
-    val translation: TranslationId,
-    val chapter: ChapterRef,
-    val number: Int,
-    val text: VerseText,
-) {
+data class Verse(val translation: TranslationId, val chapter: ChapterRef, val number: Int, val text: VerseText) {
     init {
         require(number > 0) { "Verse number must be positive, was $number" }
     }

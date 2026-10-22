@@ -20,11 +20,7 @@ import app.zerno.designsystem.theme.SjTheme
  * Write [text] in sentence case, four words at most; it is uppercased here.
  */
 @Composable
-fun SjTag(
-    text: String,
-    modifier: Modifier = Modifier,
-    solid: Boolean = false,
-) {
+fun SjTag(text: String, modifier: Modifier = Modifier, solid: Boolean = false) {
     val colors = SjTheme.colors
     val content = if (solid) colors.stickerInk else SjTheme.contentColor
     val shape = SjTheme.shapes.pill

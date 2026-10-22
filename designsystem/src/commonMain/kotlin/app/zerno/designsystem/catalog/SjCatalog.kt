@@ -135,7 +135,9 @@ private fun Inputs() {
     var reminder by remember { mutableStateOf(true) }
     SjTextField(name, { name = it }, label = "Your name", placeholder = "What should we call you?")
     SjTextField("25:00", {}, label = "Reminder time", error = "Enter a time between 00:00 and 23:59.")
-    SjReflectionField(reflection, { reflection = it }, label = "Размышление", placeholder = "Что вам запомнилось сегодня?")
+    SjReflectionField(reflection, {
+        reflection = it
+    }, label = "Размышление", placeholder = "Что вам запомнилось сегодня?")
     SjSwitchRow("Daily reminder", reminder, { reminder = it })
 }
 
@@ -143,15 +145,31 @@ private fun Inputs() {
 private fun Progress() {
     var progress by remember { mutableFloatStateOf(0.4f) }
     SjBigStat("38", "of John read", unit = "%")
-    SjProgressLine(progress, "Chapter progress", startLabel = "Verse 22 / 54", endLabel = "${(progress * 100).toInt()}%")
+    SjProgressLine(
+        progress,
+        "Chapter progress",
+        startLabel = "Verse 22 / 54",
+        endLabel = "${(progress * 100).toInt()}%",
+    )
     SjOutlineButton("Advance", onClick = { progress = if (progress >= 1f) 0.1f else progress + 0.2f })
     SjStreakWeek(
-        days = listOf(DayMark.Read, DayMark.Done, DayMark.Empty, DayMark.Read, DayMark.Read, DayMark.Empty, DayMark.Empty),
+        days = listOf(
+            DayMark.Read,
+            DayMark.Done,
+            DayMark.Empty,
+            DayMark.Read,
+            DayMark.Read,
+            DayMark.Empty,
+            DayMark.Empty,
+        ),
         dayLetters = listOf("M", "T", "W", "T", "F", "S", "S"),
         labels = SjStreakWeekLabels(read = "read", done = "read and reflected", today = "today", notRead = "not read"),
         today = 5,
     )
-    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(SjTheme.spacing.space4)) {
+    Row(
+        Modifier.horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(SjTheme.spacing.space4),
+    ) {
         SjAchievementSeal("First step", "First chapter read", SjAchievementSet.Sheep, unlocked = true)
         SjAchievementSeal("Week", "7 days with Scripture", SjAchievementSet.Bird, unlocked = true, tilt = 6f)
         SjAchievementSeal("Reflective", "10 reflections", SjAchievementSet.Lamp, unlocked = true)
@@ -195,7 +213,10 @@ private fun Reading() {
         chapterTitle = "Psalm 119",
         verses = listOf(
             SjVerse(105, AnnotatedString("Thy word is a lamp unto my feet, and a light unto my path.")),
-            SjVerse(106, AnnotatedString("I have sworn, and I will perform it, that I will keep thy righteous judgments.")),
+            SjVerse(
+                106,
+                AnnotatedString("I have sworn, and I will perform it, that I will keep thy righteous judgments."),
+            ),
             SjVerse(107, AnnotatedString("Сильно угнетён я, Господи; оживи меня по слову Твоему.")),
         ),
         credit = "Psalm 119:105–107, King James Version (public domain).",
@@ -233,7 +254,8 @@ private fun Icons() {
     val icons = with(SjIcons) {
         listOf(
             Today, Bible, Plans, Journey, Highlight, Save, Reflect, Share, Copy, ArrowRight, ArrowLeft, ChevronLeft,
-            ChevronRight, ChevronDown, Close, Check, Lock, Settings, Reminder, Streak, TextSize, Translation, Search, Add,
+            ChevronRight, ChevronDown, Close, Check, Lock, Settings, Reminder, Streak, TextSize, Translation, Search,
+            Add,
         )
     }
     icons.chunked(8).forEach { row ->
@@ -252,7 +274,10 @@ private fun Mascots() {
         MascotCharacter.Pip to colors.rose,
     ).forEach { (character, sticker) ->
         StickerSurface(sticker) {
-            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(SjTheme.spacing.space2)) {
+            Row(
+                Modifier.horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(SjTheme.spacing.space2),
+            ) {
                 MascotPose.entries.forEach { pose -> Mascot(character, pose, size = 96.dp) }
             }
         }
