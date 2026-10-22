@@ -46,3 +46,7 @@ Shared Gradle setup lives in `build-logic/convention`:
 Wrap every screen in `SjTheme` (the app root already does) and read tokens through `SjTheme.colors`, `SjTheme.type`, `SjTheme.spacing`, `SjTheme.shapes` and `SjTheme.motion`. There is no Material theme underneath. `SjTheme.motion` hands out the animation specs, and they all snap when the system asks for reduced motion.
 
 Versions live in `gradle/libs.versions.toml`.
+
+## Decisions
+
+Architecture decisions are in [`docs/adr/`](docs/adr): [001 Compose Multiplatform](docs/adr/001-compose-multiplatform.md), [002 MVI on `:arch`](docs/adr/002-mvi-on-arch.md), [003 module rules](docs/adr/003-module-rules.md), [004 translations and the Bible file format](docs/adr/004-translations-and-bible-file-format.md).
