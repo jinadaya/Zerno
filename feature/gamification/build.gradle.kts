@@ -5,5 +5,9 @@ plugins {
 kotlin {
     sourceSets.commonMain.dependencies {
         implementation(libs.kotlinx.datetime)
+        implementation(libs.kotlinx.serialization.json)
+    }
+    sourceSets.commonTest.dependencies {
+        implementation(libs.kotlinx.coroutines.test)
     }
 }

@@ -2,6 +2,7 @@ package app.zerno.feature.gamification.di
 
 import app.zerno.designsystem.component.SjPlaceholderScreen
 import app.zerno.feature.gamification.api.AchievementsRoute
+import app.zerno.feature.gamification.data.BundledAchievementCatalog
 import app.zerno.feature.gamification.resources.Res
 import app.zerno.feature.gamification.resources.gamification_placeholder
 import app.zerno.feature.gamification.resources.gamification_title
@@ -12,6 +13,8 @@ import org.koin.dsl.module
 
 /** The feature's Koin module, loaded by `initKoin()` in `:composeApp`. Bindings land here as the feature grows. */
 val gamificationModule = module {
+    single { BundledAchievementCatalog() }
+
     // Placeholder until the feature's first screen lands; reached from the debug menu.
     screen<AchievementsRoute>(showBottomBar = false) {
         val navigator = LocalNavigator.current
