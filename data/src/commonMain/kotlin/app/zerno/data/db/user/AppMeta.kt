@@ -7,8 +7,9 @@ import androidx.room.Query
 import androidx.room.Upsert
 
 /**
- * Small facts about the database itself, such as which bundled Bible files were last copied.
- * Feature tables (sessions, achievements, reflections) arrive with their own tasks.
+ * Small facts about the database itself, such as which bundled Bible files were last copied, and small key-value
+ * settings, such as the reader's place (`reader.*`). Feature tables (sessions, achievements, reflections) arrive
+ * with their own tasks.
  */
 @Entity(tableName = "app_meta")
 data class AppMeta(
