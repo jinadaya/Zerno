@@ -11,6 +11,9 @@ kotlin {
         api(libs.kotlinx.io.core)
         // ZernoHttpClient hands out a Ktor HttpClient; feature data layers call it directly.
         api(libs.bundles.ktor)
+        // AppPreferences is built on a platform Settings (SharedPreferences, NSUserDefaults) the app passes in.
+        api(libs.multiplatform.settings)
+        api(libs.kotlinx.datetime)
     }
     sourceSets.androidMain.dependencies {
         implementation(libs.ktor.client.okhttp)
@@ -20,6 +23,7 @@ kotlin {
     }
     sourceSets.commonTest.dependencies {
         implementation(libs.ktor.client.mock)
+        implementation(libs.multiplatform.settings.test)
         implementation(libs.kotlinx.coroutines.test)
     }
 }
