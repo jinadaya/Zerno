@@ -53,6 +53,8 @@ Debug builds show a small "debug" tag in the bottom corner. It opens the debug m
 
 `AppPreferences` in `:data` (`app.zerno.data.prefs`) holds what the user sets once: app theme, page theme, UI language, translation, font size, reminder time, onboarding done. It sits on multiplatform-settings (SharedPreferences on Android, NSUserDefaults on iOS), exposes one `StateFlow<AppPrefs>` and writes through on every setter. Bigger or relational data goes in `UserDb`.
 
+Time comes from Koin too: `kotlin.time.Clock` and `TimeZoneProvider` (`app.zerno.data.time`). Rules about days (streaks, plans) never call `Clock.System` or `TimeZone.currentSystemDefault()` themselves; tests pass `FakeClock` and `FakeTimeZone`.
+
 ## Strings
 
 Every module keeps its user-facing text in `src/commonMain/composeResources/values/strings.xml` (English) and `values-ru/strings.xml` (Russian), with keys prefixed by the module (`today_title`). A feature's `Res` class is internal, in `app.zerno.feature.<name>.resources`. `./gradlew checkStrings` (part of `check` and CI) fails when a key is in one language and not the other. Use typographic quotes (’) rather than escaped apostrophes.
