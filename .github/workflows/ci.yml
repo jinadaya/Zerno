@@ -23,6 +23,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       # Compiles every module for Android, so a broken shared file fails here first.
       - run: ./gradlew :composeApp:assembleDebug --stacktrace
+      # Room exports UserDb's schema while compiling; migrations and their tests read the committed copies, so a
+      # schema change must come with its JSON. The diff shows the file to commit.
+      - name: Room schemas are committed
+        run: |
+          git add --intent-to-add data/schemas
+          git diff --exit-code -- data/schemas
       # Module rules and strings (README): build-logic's own tests, then the checks on every module.
       - run: ./gradlew -p build-logic test
       - run: ./gradlew checkModuleRules checkStrings
