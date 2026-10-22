@@ -1,5 +1,6 @@
 package app.zerno.feature.gamification.domain.achievement
 
+import app.zerno.entities.achievement.AchievementSet
 import app.zerno.feature.gamification.data.BundledAchievementCatalog
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -77,7 +78,7 @@ class AchievementCatalogTest {
         """{"version": $version, "achievements": [${achievements.joinToString()}]}"""
 
     private fun achievement(code: String, criteria: String) =
-        """{"code": "$code", "set": "sheep", "titleKey": "t", "descriptionKey": "d", "criteria": $criteria, "icon": "Bible"}"""
+        """{"code": "$code", "set": "Sheep", "titleKey": "t", "descriptionKey": "d", "criteria": $criteria, "icon": "Bible"}"""
 
     private companion object {
         val EXPECTED_CODES = setOf(

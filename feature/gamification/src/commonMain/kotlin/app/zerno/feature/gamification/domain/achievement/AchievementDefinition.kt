@@ -1,23 +1,8 @@
 package app.zerno.feature.gamification.domain.achievement
 
+import app.zerno.entities.achievement.AchievementSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-/** The three sets on the achievements screen, each with its mascot: Pip the bird, Woolly the sheep, Lumi the lamp. */
-@Serializable
-enum class AchievementSet {
-    /** Habit and returning. */
-    @SerialName("bird")
-    Bird,
-
-    /** Reading: chapters, books, plans. */
-    @SerialName("sheep")
-    Sheep,
-
-    /** Reflection and understanding. */
-    @SerialName("lamp")
-    Lamp,
-}
 
 /**
  * What an achievement counts. Every type counts actions, never correct answers. The evaluator (GM-03) compares the

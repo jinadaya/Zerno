@@ -3,7 +3,7 @@
   "achievements": [
     {
       "code": "first_steps",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_first_steps_title",
       "descriptionKey": "achievement_first_steps_description",
       "criteria": {
@@ -14,7 +14,7 @@
     },
     {
       "code": "first_chapter",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_first_chapter_title",
       "descriptionKey": "achievement_first_chapter_description",
       "criteria": {
@@ -25,7 +25,7 @@
     },
     {
       "code": "chapters_10",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_chapters_10_title",
       "descriptionKey": "achievement_chapters_10_description",
       "criteria": {
@@ -36,7 +36,7 @@
     },
     {
       "code": "chapters_50",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_chapters_50_title",
       "descriptionKey": "achievement_chapters_50_description",
       "criteria": {
@@ -47,7 +47,7 @@
     },
     {
       "code": "chapters_100",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_chapters_100_title",
       "descriptionKey": "achievement_chapters_100_description",
       "criteria": {
@@ -58,7 +58,7 @@
     },
     {
       "code": "chapters_250",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_chapters_250_title",
       "descriptionKey": "achievement_chapters_250_description",
       "criteria": {
@@ -69,7 +69,7 @@
     },
     {
       "code": "chapters_500",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_chapters_500_title",
       "descriptionKey": "achievement_chapters_500_description",
       "criteria": {
@@ -80,7 +80,7 @@
     },
     {
       "code": "chapters_1189",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_chapters_1189_title",
       "descriptionKey": "achievement_chapters_1189_description",
       "criteria": {
@@ -91,7 +91,7 @@
     },
     {
       "code": "book_finished",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_book_finished_title",
       "descriptionKey": "achievement_book_finished_description",
       "criteria": {
@@ -102,7 +102,7 @@
     },
     {
       "code": "gospel_reader",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_gospel_reader_title",
       "descriptionKey": "achievement_gospel_reader_description",
       "criteria": {
@@ -114,7 +114,7 @@
     },
     {
       "code": "explorer_5",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_explorer_5_title",
       "descriptionKey": "achievement_explorer_5_description",
       "criteria": {
@@ -125,7 +125,7 @@
     },
     {
       "code": "explorer_10",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_explorer_10_title",
       "descriptionKey": "achievement_explorer_10_description",
       "criteria": {
@@ -136,7 +136,7 @@
     },
     {
       "code": "explorer_20",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_explorer_20_title",
       "descriptionKey": "achievement_explorer_20_description",
       "criteria": {
@@ -147,7 +147,7 @@
     },
     {
       "code": "old_and_new",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_old_and_new_title",
       "descriptionKey": "achievement_old_and_new_description",
       "criteria": {
@@ -158,7 +158,7 @@
     },
     {
       "code": "plan_finished",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_plan_finished_title",
       "descriptionKey": "achievement_plan_finished_description",
       "criteria": {
@@ -169,7 +169,7 @@
     },
     {
       "code": "plans_3",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_plans_3_title",
       "descriptionKey": "achievement_plans_3_description",
       "criteria": {
@@ -180,7 +180,7 @@
     },
     {
       "code": "plans_5",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_plans_5_title",
       "descriptionKey": "achievement_plans_5_description",
       "criteria": {
@@ -191,7 +191,7 @@
     },
     {
       "code": "plans_10",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_plans_10_title",
       "descriptionKey": "achievement_plans_10_description",
       "criteria": {
@@ -202,7 +202,7 @@
     },
     {
       "code": "whole_bible",
-      "set": "sheep",
+      "set": "Sheep",
       "titleKey": "achievement_whole_bible_title",
       "descriptionKey": "achievement_whole_bible_description",
       "criteria": {
@@ -213,7 +213,7 @@
     },
     {
       "code": "first_light",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_first_light_title",
       "descriptionKey": "achievement_first_light_description",
       "criteria": {
@@ -224,7 +224,7 @@
     },
     {
       "code": "treasured_verse",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_treasured_verse_title",
       "descriptionKey": "achievement_treasured_verse_description",
       "criteria": {
@@ -235,7 +235,7 @@
     },
     {
       "code": "keeper_10",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_keeper_10_title",
       "descriptionKey": "achievement_keeper_10_description",
       "criteria": {
@@ -246,7 +246,7 @@
     },
     {
       "code": "keeper_50",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_keeper_50_title",
       "descriptionKey": "achievement_keeper_50_description",
       "criteria": {
@@ -257,7 +257,7 @@
     },
     {
       "code": "journal_10",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_journal_10_title",
       "descriptionKey": "achievement_journal_10_description",
       "criteria": {
@@ -268,7 +268,7 @@
     },
     {
       "code": "journal_50",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_journal_50_title",
       "descriptionKey": "achievement_journal_50_description",
       "criteria": {
@@ -279,7 +279,7 @@
     },
     {
       "code": "journal_100",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_journal_100_title",
       "descriptionKey": "achievement_journal_100_description",
       "criteria": {
@@ -290,7 +290,7 @@
     },
     {
       "code": "thoughtful_5",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_thoughtful_5_title",
       "descriptionKey": "achievement_thoughtful_5_description",
       "criteria": {
@@ -301,7 +301,7 @@
     },
     {
       "code": "thoughtful_25",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_thoughtful_25_title",
       "descriptionKey": "achievement_thoughtful_25_description",
       "criteria": {
@@ -312,7 +312,7 @@
     },
     {
       "code": "paused_to_think",
-      "set": "lamp",
+      "set": "Lamp",
       "titleKey": "achievement_paused_to_think_title",
       "descriptionKey": "achievement_paused_to_think_description",
       "criteria": {
@@ -323,7 +323,7 @@
     },
     {
       "code": "streak_3",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_streak_3_title",
       "descriptionKey": "achievement_streak_3_description",
       "criteria": {
@@ -334,7 +334,7 @@
     },
     {
       "code": "streak_7",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_streak_7_title",
       "descriptionKey": "achievement_streak_7_description",
       "criteria": {
@@ -345,7 +345,7 @@
     },
     {
       "code": "streak_14",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_streak_14_title",
       "descriptionKey": "achievement_streak_14_description",
       "criteria": {
@@ -356,7 +356,7 @@
     },
     {
       "code": "streak_30",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_streak_30_title",
       "descriptionKey": "achievement_streak_30_description",
       "criteria": {
@@ -367,7 +367,7 @@
     },
     {
       "code": "streak_100",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_streak_100_title",
       "descriptionKey": "achievement_streak_100_description",
       "criteria": {
@@ -378,7 +378,7 @@
     },
     {
       "code": "streak_365",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_streak_365_title",
       "descriptionKey": "achievement_streak_365_description",
       "criteria": {
@@ -389,7 +389,7 @@
     },
     {
       "code": "steady",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_steady_title",
       "descriptionKey": "achievement_steady_description",
       "criteria": {
@@ -400,7 +400,7 @@
     },
     {
       "code": "welcome_back",
-      "set": "bird",
+      "set": "Bird",
       "titleKey": "achievement_welcome_back_title",
       "descriptionKey": "achievement_welcome_back_description",
       "criteria": {
