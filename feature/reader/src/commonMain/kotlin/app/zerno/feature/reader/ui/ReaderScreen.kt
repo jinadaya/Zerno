@@ -18,8 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
@@ -40,8 +40,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -103,6 +103,7 @@ private fun ReaderContent(state: ReaderState, onEvent: (ReaderEvent) -> Unit) {
         Box(Modifier.weight(1f).fillMaxWidth()) {
             when {
                 page != null -> ReaderPageContent(page, state.fontSize, colors, fonts, onEvent)
+
                 state.failed -> BasicText(
                     text = stringResource(Res.string.reader_failed),
                     style = fonts.body(colors.inkMuted).copy(textAlign = TextAlign.Center),
@@ -128,7 +129,12 @@ private fun ReaderTopBar(page: ReaderPage?, colors: SjColors, fonts: SjFonts, on
             .height(BarHeight)
             .drawBehind {
                 val stroke = SjSize.Default.hairline.toPx()
-                drawLine(colors.rule, Offset(0f, size.height - stroke / 2), Offset(size.width, size.height - stroke / 2), stroke)
+                drawLine(
+                    colors.rule,
+                    Offset(0f, size.height - stroke / 2),
+                    Offset(size.width, size.height - stroke / 2),
+                    stroke,
+                )
             }
             .padding(horizontal = spacing.space2),
         verticalAlignment = Alignment.CenterVertically,

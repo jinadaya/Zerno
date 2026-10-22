@@ -109,11 +109,19 @@ private fun MinutesSeal(minutes: String, unit: String, modifier: Modifier) {
             text = buildAnnotatedString {
                 append(minutes)
                 append("\n")
-                withStyle(SpanStyle(fontSize = 9.sp, fontWeight = SjTheme.type.tag.fontWeight, letterSpacing = 0.06.em)) {
+                withStyle(
+                    SpanStyle(fontSize = 9.sp, fontWeight = SjTheme.type.tag.fontWeight, letterSpacing = 0.06.em),
+                ) {
                     append(unit.uppercase())
                 }
             },
-            style = display.copy(fontSize = 15.sp, lineHeight = 15.sp, letterSpacing = (-0.02).em, color = colors.stickerInk, textAlign = TextAlign.Center),
+            style = display.copy(
+                fontSize = 15.sp,
+                lineHeight = 15.sp,
+                letterSpacing = (-0.02).em,
+                color = colors.stickerInk,
+                textAlign = TextAlign.Center,
+            ),
         )
     }
 }
@@ -127,7 +135,9 @@ private const val CaptionAlpha = 0.78f
 @Composable
 private fun TodaySamples() {
     Column(
-        modifier = Modifier.background(SjTheme.colors.paper).padding(SjTheme.spacing.gutter).padding(top = SjTheme.spacing.space4),
+        modifier = Modifier.background(
+            SjTheme.colors.paper,
+        ).padding(SjTheme.spacing.gutter).padding(top = SjTheme.spacing.space4),
         verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space8),
     ) {
         SjTodayCard(

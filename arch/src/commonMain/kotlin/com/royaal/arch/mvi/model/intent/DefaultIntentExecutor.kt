@@ -60,11 +60,13 @@ class DefaultIntentExecutor<State : ScreenState, Event : InnerEvent>(
     init {
         scope.launch {
             for (event in queue) {
-                val isValid = (if (event.key == null) {
-                    event.generation == latestGeneration.value
-                } else {
-                    event.generation == keyedGenerations.value[event.key]
-                }) || event.isSubscription
+                val isValid = (
+                    if (event.key == null) {
+                        event.generation == latestGeneration.value
+                    } else {
+                        event.generation == keyedGenerations.value[event.key]
+                    }
+                    ) || event.isSubscription
                 if (isValid) {
                     try {
                         state.emit(reducer.reduce(state.value, event.event))
@@ -129,9 +131,7 @@ class DefaultIntentExecutor<State : ScreenState, Event : InnerEvent>(
         }
     }
 
-    override fun subscription(
-        key: Any, block: suspend SubscriptionScope<Event>.() -> Unit
-    ) {
+    override fun subscription(key: Any, block: suspend SubscriptionScope<Event>.() -> Unit) {
         subscriptions.getAndUpdate { it - key }[key]?.cancel()
         val job = scope.launch {
             try {
@@ -154,11 +154,13 @@ class DefaultIntentExecutor<State : ScreenState, Event : InnerEvent>(
     override suspend fun emit(event: IntentExecutor.ScopedEvent<Event>) {
         val isSubscription = event.isSubscription
         val isKeyed = event.key != null
-        val isValid = (if (!isKeyed) {
-            event.generation == latestGeneration.value
-        } else {
-            event.generation == keyedGenerations.value[event.key]
-        }) || isSubscription
+        val isValid = (
+            if (!isKeyed) {
+                event.generation == latestGeneration.value
+            } else {
+                event.generation == keyedGenerations.value[event.key]
+            }
+            ) || isSubscription
         if (isValid) queue.send(event)
     }
 }

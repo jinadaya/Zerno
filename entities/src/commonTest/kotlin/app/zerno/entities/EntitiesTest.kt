@@ -69,7 +69,13 @@ class EntitiesTest {
     fun planDaysMustBeNumberedInOrder() {
         val day = PlanDay(2, listOf(PassageRef.chapter(john, 1)), 10)
         assertFailsWith<IllegalArgumentException> {
-            ReadingPlan(PlanId("john"), PlanType.Sequential, LocalizedText(emptyMap()), LocalizedText(emptyMap()), listOf(day))
+            ReadingPlan(
+                PlanId("john"),
+                PlanType.Sequential,
+                LocalizedText(emptyMap()),
+                LocalizedText(emptyMap()),
+                listOf(day),
+            )
         }
     }
 

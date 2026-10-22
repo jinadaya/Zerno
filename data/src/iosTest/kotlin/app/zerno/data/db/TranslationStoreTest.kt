@@ -56,7 +56,9 @@ class TranslationStoreTest {
 
         assertEquals(listOf(rst, kjv), store.list().map { it.id })
         assertTrue(store.list().all { it.bundled })
-        store.open(kjv).use { assertEquals("In the beginning", it.chapter(ChapterRef(BookId(10), 1)).first().text.text) }
+        store.open(kjv).use {
+            assertEquals("In the beginning", it.chapter(ChapterRef(BookId(10), 1)).first().text.text)
+        }
         store.open(rst).use { assertEquals("В начале", it.chapter(ChapterRef(BookId(10), 1)).first().text.text) }
         assertEquals("1", meta.values["bundled.kjv"])
     }
@@ -90,7 +92,12 @@ class TranslationStoreTest {
     /** A schema v1 file with Genesis 1:1, built on disk and read back as bytes. */
     private fun fixture(id: String, language: String, genesis: String): ByteArray {
         val path = "$root/fixture-$id-${Random.nextInt()}.SQLite3"
-        NSFileManager.defaultManager.createDirectoryAtPath(root, withIntermediateDirectories = true, attributes = null, error = null)
+        NSFileManager.defaultManager.createDirectoryAtPath(
+            root,
+            withIntermediateDirectories = true,
+            attributes = null,
+            error = null,
+        )
         BundledSQLiteDriver().open(path, SQLITE_OPEN_READWRITE or SQLITE_OPEN_CREATE).apply {
             execSQL("CREATE TABLE info (name TEXT, value TEXT)")
             execSQL("INSERT INTO info VALUES ('language', '$language'), ('description', '$id Bible')")

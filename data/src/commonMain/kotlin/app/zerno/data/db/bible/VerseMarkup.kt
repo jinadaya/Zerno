@@ -59,6 +59,7 @@ object VerseMarkup {
                     lineBreak()
                     if (paragraphs.lastOrNull() != out.length) paragraphs += out.length
                 }
+
                 "br" -> lineBreak()
             }
         }

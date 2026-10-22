@@ -49,12 +49,7 @@ data class SjNavItem(val label: String, val icon: ImageVector)
  * The app shell hides it while reading; it has no hidden state of its own.
  */
 @Composable
-fun SjBottomNav(
-    items: List<SjNavItem>,
-    selected: Int,
-    onSelect: (index: Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun SjBottomNav(items: List<SjNavItem>, selected: Int, onSelect: (index: Int) -> Unit, modifier: Modifier = Modifier) {
     val colors = SjTheme.colors
     Row(
         modifier = modifier

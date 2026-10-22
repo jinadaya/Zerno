@@ -12,13 +12,13 @@ import kotlin.time.Duration
     The policy is used to set up environment around block of executed code.
 
     It uses PolicyConfig to configure the environment.
-     * retries - amount of times code will try to retry the execution after error was thrown.
-     * retryPredicate - a condition when we should stop retrying or not. Invoked before next try after first failure.
-     * beforeRetry - invoked before each retry.
-     * backoff - amount of time to wait before next retry. Can be configured with max backoff and backoff factor.
-     * onError - invoked on error when no retry needed. For logging or reacting on errors. Is executed in IntentScope.
-     * timeoutDuration - timeout before execution.
-     * onEach - invoked on each retry
+ * retries - amount of times code will try to retry the execution after error was thrown.
+ * retryPredicate - a condition when we should stop retrying or not. Invoked before next try after first failure.
+ * beforeRetry - invoked before each retry.
+ * backoff - amount of time to wait before next retry. Can be configured with max backoff and backoff factor.
+ * onError - invoked on error when no retry needed. For logging or reacting on errors. Is executed in IntentScope.
+ * timeoutDuration - timeout before execution.
+ * onEach - invoked on each retry
  */
 
 data class PolicyConfig<Event : InnerEvent>(
@@ -42,7 +42,7 @@ private class PolicyBuilder<Event : InnerEvent> : PolicyScope<Event> {
     override fun retry(
         amount: Int,
         retryPredicate: ((error: Throwable) -> Boolean)?,
-        beforeRetry: (IntentScope<Event>.(error: Throwable) -> Unit)?
+        beforeRetry: (IntentScope<Event>.(error: Throwable) -> Unit)?,
     ) {
         config = config.copy(
             retries = amount,
@@ -51,11 +51,7 @@ private class PolicyBuilder<Event : InnerEvent> : PolicyScope<Event> {
         )
     }
 
-    override fun backoff(
-        timeout: Duration,
-        factor: Double,
-        max: Duration
-    ) {
+    override fun backoff(timeout: Duration, factor: Double, max: Duration) {
         config = config.copy(
             backoff = timeout,
             backoffMax = max,
@@ -86,7 +82,7 @@ interface PolicyScope<Event : InnerEvent> {
     fun retry(
         amount: Int,
         retryPredicate: ((error: Throwable) -> Boolean)? = null,
-        beforeRetry: (IntentScope<Event>.(error: Throwable) -> Unit)? = null
+        beforeRetry: (IntentScope<Event>.(error: Throwable) -> Unit)? = null,
     )
 
     fun each(onEach: () -> Unit)
@@ -131,6 +127,5 @@ suspend fun <Event : InnerEvent> IntentScope<Event>.policy(
     }
 }
 
-fun <Event : InnerEvent> PolicyScope<Event>.retryForever(
-    retryPredicate: (Throwable) -> Boolean = { true },
-) = retry(Int.MAX_VALUE, retryPredicate)
+fun <Event : InnerEvent> PolicyScope<Event>.retryForever(retryPredicate: (Throwable) -> Boolean = { true }) =
+    retry(Int.MAX_VALUE, retryPredicate)

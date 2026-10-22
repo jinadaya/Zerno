@@ -10,10 +10,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
  * @property version bump it when the file in `composeResources/files/bibles` changes, so installed apps copy the
  * new one over the old on their next launch.
  */
-data class BundledTranslation(
-    val id: TranslationId,
-    val version: Int,
-) {
+data class BundledTranslation(val id: TranslationId, val version: Int) {
     /** Path under `composeResources`, e.g. `files/bibles/kjv.SQLite3`. */
     val resource: String
         get() = "files/bibles/${id.value}$BIBLE_FILE_SUFFIX"

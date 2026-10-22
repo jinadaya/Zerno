@@ -88,7 +88,13 @@ class GamificationServiceTest {
         assertEquals(1, unlocked.count { it == "first_steps" })
         assertEquals(2, service.streak.value.current)
         // The first unlock date is kept.
-        assertEquals(Instant.parse("2026-03-02T07:00:00Z"), GamificationRepository(dao).unlocked.first().entries.first { it.key.value == "first_steps" }.value)
+        assertEquals(
+            Instant.parse("2026-03-02T07:00:00Z"),
+            GamificationRepository(dao).unlocked.first().entries.first {
+                it.key.value ==
+                    "first_steps"
+            }.value,
+        )
     }
 
     @Test
@@ -124,7 +130,12 @@ class GamificationServiceTest {
 
         val unlocked = service.achievements.value.filter { it.isUnlocked }.map { it.code.value }.toSet()
         assertEquals(setOf("plan_finished", "whole_bible", "treasured_verse"), unlocked)
-        assertEquals("1 of 5", service.achievements.value.single { it.code.value == "thoughtful_5" }.progress!!.let { "${it.current} of ${it.target}" })
+        assertEquals(
+            "1 of 5",
+            service.achievements.value.single {
+                it.code.value == "thoughtful_5"
+            }.progress!!.let { "${it.current} of ${it.target}" },
+        )
     }
 
     // Unconfined, so each emission is collected at once: advanceUntilIdle does not run backgroundScope work.

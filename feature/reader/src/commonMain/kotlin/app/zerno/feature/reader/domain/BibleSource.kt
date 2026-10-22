@@ -7,11 +7,7 @@ import app.zerno.entities.bible.Verse
 import app.zerno.entities.bible.Versification
 
 /** A translation the reader can open. [name] is the file's own, e.g. "King James Version". */
-data class ReaderTranslation(
-    val id: TranslationId,
-    val name: String,
-    val language: String,
-)
+data class ReaderTranslation(val id: TranslationId, val name: String, val language: String)
 
 /**
  * What the reader needs to know about a translation besides its text.
@@ -19,10 +15,7 @@ data class ReaderTranslation(
  * @property psalmName the word for one psalm ("Psalm", "Псалом"), used in chapter titles instead of the book name;
  * null when the file does not say.
  */
-data class TranslationDetails(
-    val versification: Versification,
-    val psalmName: String?,
-)
+data class TranslationDetails(val versification: Versification, val psalmName: String?)
 
 /** Bible text on this device, as the reader reads it. */
 interface BibleSource {

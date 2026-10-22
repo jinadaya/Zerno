@@ -1,6 +1,6 @@
 package com.royaal.arch.mvi
 
-fun interface MviReducer<State: ScreenState, Event: InnerEvent> {
+fun interface MviReducer<State : ScreenState, Event : InnerEvent> {
 
     /**
      * This method is used to produce new state by event and original state.

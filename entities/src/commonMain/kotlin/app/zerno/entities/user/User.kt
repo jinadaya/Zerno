@@ -14,9 +14,4 @@ value class UserId(val value: String) {
  * first session to back up progress (B2), so [email] and [displayName] are null for guests.
  */
 @Serializable
-data class User(
-    val id: UserId,
-    val isGuest: Boolean,
-    val displayName: String? = null,
-    val email: String? = null,
-)
+data class User(val id: UserId, val isGuest: Boolean, val displayName: String? = null, val email: String? = null)

@@ -21,7 +21,14 @@ import kotlinx.datetime.TimeZone
 import kotlin.time.Instant
 
 /** Things other features report that achievements count. Stored by name, so never rename an entry. */
-enum class ActivityKind { Reflection, PlanStepReflection, VerseSaved, QuestionAnswered, PlanCompleted, WholeBiblePlanCompleted }
+enum class ActivityKind {
+    Reflection,
+    PlanStepReflection,
+    VerseSaved,
+    QuestionAnswered,
+    PlanCompleted,
+    WholeBiblePlanCompleted,
+}
 
 data class Activity(val kind: ActivityKind, val at: Instant, val zone: TimeZone)
 

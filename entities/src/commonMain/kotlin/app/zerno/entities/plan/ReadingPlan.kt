@@ -61,11 +61,7 @@ data class ReadingPlan(
  * @property minutes estimated reading time.
  */
 @Serializable
-data class PlanDay(
-    val day: Int,
-    val passages: List<PassageRef>,
-    val minutes: Int,
-) {
+data class PlanDay(val day: Int, val passages: List<PassageRef>, val minutes: Int) {
     init {
         require(day > 0) { "Plan day must be positive, was $day" }
         require(passages.isNotEmpty()) { "Plan day $day has no passages" }

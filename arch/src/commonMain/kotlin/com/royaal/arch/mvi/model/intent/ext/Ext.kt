@@ -18,9 +18,7 @@ import kotlinx.coroutines.withContext
  *  }
  *  ```
  */
-inline fun <Event : InnerEvent> IntentScope<Event>.launchIo(
-    crossinline block: suspend () -> Unit,
-) = launch {
+inline fun <Event : InnerEvent> IntentScope<Event>.launchIo(crossinline block: suspend () -> Unit) = launch {
     io {
         block()
     }
@@ -38,19 +36,13 @@ inline fun <Event : InnerEvent> IntentScope<Event>.launchIo(
  *  }
  *  ```
  */
-inline fun IntentScope<*>.switch(
-    dispatcher: CoroutineDispatcher,
-    crossinline block: suspend () -> Unit,
-) = launch {
+inline fun IntentScope<*>.switch(dispatcher: CoroutineDispatcher, crossinline block: suspend () -> Unit) = launch {
     withContext(dispatcher) {
         block()
     }
 }
 
-inline fun IntentScope<*>.onMainDispatcher(
-    crossinline block: suspend () -> Unit,
-) = switch(Dispatchers.Main, block)
+inline fun IntentScope<*>.onMainDispatcher(crossinline block: suspend () -> Unit) = switch(Dispatchers.Main, block)
 
-inline fun IntentScope<*>.onDefaultDispatcher(
-    crossinline block: suspend () -> Unit,
-) = switch(Dispatchers.Default, block)
+inline fun IntentScope<*>.onDefaultDispatcher(crossinline block: suspend () -> Unit) =
+    switch(Dispatchers.Default, block)

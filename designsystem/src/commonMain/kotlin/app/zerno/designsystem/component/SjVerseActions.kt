@@ -72,10 +72,7 @@ fun SjVerseActions(
  * label in `on-ink`. An applied action is `butter` with `sticker-ink`.
  */
 @Composable
-fun SjVerseActionBar(
-    actions: List<SjVerseAction>,
-    modifier: Modifier = Modifier,
-) {
+fun SjVerseActionBar(actions: List<SjVerseAction>, modifier: Modifier = Modifier) {
     require(actions.size <= MaxActions) { "SjVerseActionBar takes at most $MaxActions actions, got ${actions.size}" }
     val colors = SjTheme.colors
     Row(
@@ -117,7 +114,12 @@ private fun ActionButton(action: SjVerseAction) {
             SjIcon(action.icon, contentDescription = null, tint = content, size = ActionIconSize)
             BasicText(
                 text = action.label.uppercase(),
-                style = SjTheme.type.tag.copy(fontSize = 10.sp, lineHeight = 12.sp, letterSpacing = 0.05.em, color = content),
+                style = SjTheme.type.tag.copy(
+                    fontSize = 10.sp,
+                    lineHeight = 12.sp,
+                    letterSpacing = 0.05.em,
+                    color = content,
+                ),
                 maxLines = 1,
             )
         }
@@ -134,7 +136,11 @@ private val ActionIconSize = 20.dp
 private fun ActionSamples(labels: List<String>) {
     val icons = listOf(SjIcons.Highlight, SjIcons.Save, SjIcons.Reflect, SjIcons.Share)
     Box(Modifier.background(SjTheme.colors.readerPaper).padding(SjTheme.spacing.gutter)) {
-        SjVerseActionBar(labels.zip(icons).mapIndexed { i, (label, icon) -> SjVerseAction(label, icon, applied = i == 0, onClick = {}) })
+        SjVerseActionBar(
+            labels.zip(icons).mapIndexed { i, (label, icon) ->
+                SjVerseAction(label, icon, applied = i == 0, onClick = {})
+            },
+        )
     }
 }
 

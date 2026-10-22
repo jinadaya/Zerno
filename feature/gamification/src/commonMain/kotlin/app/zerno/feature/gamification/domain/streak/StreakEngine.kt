@@ -20,9 +20,7 @@ import kotlin.time.Instant
  * - The current streak stays alive until the end of the day after the last read day. If travel west put
  *   the last read day after today's date, the streak is counted from that day.
  */
-class StreakEngine(
-    private val firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
-) {
+class StreakEngine(private val firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY) {
 
     fun dayStatuses(
         readings: Collection<ReadingCompleted>,

@@ -53,10 +53,7 @@ fun SjColors.forPlan(kind: SjPlanKind): Color = when (kind) {
 
 /** Plans as a table of contents (`sj-list`): an `ink` rule on top, then [SjPlanRow]s divided by `rule`. */
 @Composable
-fun SjPlanList(
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit,
-) {
+fun SjPlanList(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
     Column(modifier.fillMaxWidth().sjHairline(SjTheme.colors.ink, SjEdge.Top), content = content)
 }
 
@@ -124,11 +121,19 @@ fun SjPlanRow(
                 Canvas(Modifier.padding(top = 10.dp).fillMaxWidth().height(FillHeight)) {
                     val trackHeight = TrackHeight.toPx()
                     drawRect(track, Offset(0f, (size.height - trackHeight) / 2), Size(size.width, trackHeight))
-                    drawRoundRect(fill, Offset.Zero, Size(size.width * shown, size.height), CornerRadius(size.height / 2))
+                    drawRoundRect(
+                        fill,
+                        Offset.Zero,
+                        Size(size.width * shown, size.height),
+                        CornerRadius(size.height / 2),
+                    )
                 }
             }
         }
-        Box(Modifier.size(DotSize).background(colors.forPlan(kind), SjTheme.shapes.pill), contentAlignment = Alignment.Center) {
+        Box(
+            Modifier.size(DotSize).background(colors.forPlan(kind), SjTheme.shapes.pill),
+            contentAlignment = Alignment.Center,
+        ) {
             if (finished != null) {
                 SjIcon(SjIcons.Check, contentDescription = null, tint = colors.stickerInk, size = CheckSize)
             }

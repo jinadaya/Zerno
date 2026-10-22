@@ -33,9 +33,10 @@ class BibleFile private constructor(
     private val lock = Mutex()
 
     /** A value from the `info` table, e.g. `language` or `description`; null when the key is absent. */
-    suspend fun infoValue(name: String): String? = query("SELECT value FROM info WHERE name = ?", { bindText(1, name) }) {
-        if (step() && !isNull(0)) getText(0) else null
-    }
+    suspend fun infoValue(name: String): String? =
+        query("SELECT value FROM info WHERE name = ?", { bindText(1, name) }) {
+            if (step() && !isNull(0)) getText(0) else null
+        }
 
     /**
      * Books present in the file with their chapter counts, in display order: `sorting_order` when the file has that
@@ -71,20 +72,25 @@ class BibleFile private constructor(
      * versifications). An open start or end takes the chapter from its first or to its last verse; verses past the
      * end of the book are simply absent.
      */
-    suspend fun verses(passage: PassageRef): List<Verse> =
-        verses(passage.book, "chapter BETWEEN ? AND ? AND NOT (chapter = ? AND verse < ?) AND NOT (chapter = ? AND verse > ?)") {
-            bindInt(2, passage.startChapter)
-            bindInt(3, passage.endChapter)
-            bindInt(4, passage.startChapter)
-            bindInt(5, passage.startVerse ?: 1)
-            bindInt(6, passage.endChapter)
-            bindInt(7, passage.endVerse ?: Int.MAX_VALUE)
-        }
+    suspend fun verses(passage: PassageRef): List<Verse> = verses(
+        passage.book,
+        "chapter BETWEEN ? AND ? AND NOT (chapter = ? AND verse < ?) AND NOT (chapter = ? AND verse > ?)",
+    ) {
+        bindInt(2, passage.startChapter)
+        bindInt(3, passage.endChapter)
+        bindInt(4, passage.startChapter)
+        bindInt(5, passage.startVerse ?: 1)
+        bindInt(6, passage.endChapter)
+        bindInt(7, passage.endVerse ?: Int.MAX_VALUE)
+    }
 
     /** Verses of [book] matching [where]; [bind] binds its parameters from index 2, after the book. */
     private suspend fun verses(book: BookId, where: String, bind: SQLiteStatement.() -> Unit): List<Verse> = query(
         "SELECT chapter, verse, text FROM verses WHERE book_number = ? AND $where ORDER BY chapter, verse",
-        { bindInt(1, book.value); bind() },
+        {
+            bindInt(1, book.value)
+            bind()
+        },
     ) {
         buildList {
             while (step()) {
@@ -97,15 +103,18 @@ class BibleFile private constructor(
         query("SELECT 1 FROM pragma_table_info('books') WHERE name = ?", { bindText(1, name) }) { step() }
 
     /** Runs [sql] with [bind] applied and reads the rows with [read]. */
-    internal suspend fun <T> query(sql: String, bind: SQLiteStatement.() -> Unit = {}, read: SQLiteStatement.() -> T): T =
-        withContext(Dispatchers.IO) {
-            lock.withLock {
-                connection.prepare(sql).use { statement ->
-                    statement.bind()
-                    statement.read()
-                }
+    internal suspend fun <T> query(
+        sql: String,
+        bind: SQLiteStatement.() -> Unit = {},
+        read: SQLiteStatement.() -> T,
+    ): T = withContext(Dispatchers.IO) {
+        lock.withLock {
+            connection.prepare(sql).use { statement ->
+                statement.bind()
+                statement.read()
             }
         }
+    }
 
     override fun close() = connection.close()
 

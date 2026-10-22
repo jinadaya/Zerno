@@ -48,31 +48,31 @@ fun SjIcon(
 }
 
 /** A Lucide icon: stroked paths on a 24 x 24 grid, 2 wide, round caps and joins. Black, so a tint replaces it. */
-internal fun lucide(name: String, vararg paths: String): ImageVector =
-    ImageVector.Builder(
-        name = name,
-        defaultWidth = SjIconSize,
-        defaultHeight = SjIconSize,
-        viewportWidth = 24f,
-        viewportHeight = 24f,
-    ).apply {
-        paths.forEach { d ->
-            addPath(
-                pathData = addPathNodes(d),
-                fill = null,
-                stroke = SolidColor(Color.Black),
-                strokeLineWidth = 2f,
-                strokeLineCap = StrokeCap.Round,
-                strokeLineJoin = StrokeJoin.Round,
-            )
-        }
-    }.build()
+internal fun lucide(name: String, vararg paths: String): ImageVector = ImageVector.Builder(
+    name = name,
+    defaultWidth = SjIconSize,
+    defaultHeight = SjIconSize,
+    viewportWidth = 24f,
+    viewportHeight = 24f,
+).apply {
+    paths.forEach { d ->
+        addPath(
+            pathData = addPathNodes(d),
+            fill = null,
+            stroke = SolidColor(Color.Black),
+            strokeLineWidth = 2f,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round,
+        )
+    }
+}.build()
 
 private val AllIcons: List<ImageVector>
     get() = with(SjIcons) {
         listOf(
             Today, Bible, Plans, Journey, Highlight, Save, Reflect, Share, Copy, ArrowRight, ArrowLeft, ChevronLeft,
-            ChevronRight, ChevronDown, Close, Check, Lock, Settings, Reminder, Streak, TextSize, Translation, Search, Add,
+            ChevronRight, ChevronDown, Close, Check, Lock, Settings, Reminder, Streak, TextSize, Translation, Search,
+            Add,
         )
     }
 

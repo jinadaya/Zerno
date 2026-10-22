@@ -63,6 +63,7 @@ internal fun mascotVector(character: MascotCharacter, pose: MascotPose): ImageVe
             MascotPose.WelcomeBack -> WoollyWelcomeBack
             MascotPose.Achievement -> WoollyAchievement
         }
+
         MascotCharacter.Lumi -> when (pose) {
             MascotPose.Welcome -> LumiWelcome
             MascotPose.Reading -> LumiReading
@@ -70,6 +71,7 @@ internal fun mascotVector(character: MascotCharacter, pose: MascotPose): ImageVe
             MascotPose.WelcomeBack -> LumiWelcomeBack
             MascotPose.Achievement -> LumiAchievement
         }
+
         MascotCharacter.Pip -> when (pose) {
             MascotPose.Welcome -> PipWelcome
             MascotPose.Reading -> PipReading

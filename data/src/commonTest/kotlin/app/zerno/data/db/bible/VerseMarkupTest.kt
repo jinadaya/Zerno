@@ -25,9 +25,11 @@ class VerseMarkupTest {
     @Test
     fun john316InRstIsCleanText() {
         val verse = VerseMarkup.parse(
-            "<pb/><J>Ибо<S>1063</S> так<S>3779</S> возлюбил<S>25</S><S>3588</S> Бог<S>2316</S><S>3588</S> " +
-                "мир,<S>2889</S> что<S>5620</S><S>3588</S> отдал<S>1325</S> Сына<S>5207</S> Своего<S>846</S><S>3588</S> " +
-                "Единородного,<S>3439</S> дабы<S>2443</S> всякий<S>3956</S><S>3588</S> верующий<S>4100</S> в<S>1519</S> " +
+            "<pb/><J>Ибо<S>1063</S> так<S>3779</S> возлюбил<S>25</S><S>3588</S> " +
+                "Бог<S>2316</S><S>3588</S> мир,<S>2889</S> что<S>5620</S><S>3588</S> отдал<S>1325</S> " +
+                "Сына<S>5207</S> Своего<S>846</S><S>3588</S> " +
+                "Единородного,<S>3439</S> дабы<S>2443</S> всякий<S>3956</S><S>3588</S> " +
+                "верующий<S>4100</S> в<S>1519</S> " +
                 "Него,<S>846</S> не<S>3361</S> погиб,<S>622</S> но<S>235</S> имел<S>2192</S> жизнь<S>2222</S> " +
                 "вечную.<S>166</S></J>",
         )
@@ -39,7 +41,10 @@ class VerseMarkupTest {
 
     @Test
     fun strongsNumberBetweenSpacesLeavesOneSpace() {
-        assertEquals("God created the heaven", VerseMarkup.parse("God<S>430</S> created<S>1254</S> <S>853</S> the heaven").text)
+        assertEquals(
+            "God created the heaven",
+            VerseMarkup.parse("God<S>430</S> created<S>1254</S> <S>853</S> the heaven").text,
+        )
     }
 
     @Test

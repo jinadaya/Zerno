@@ -16,6 +16,8 @@ actual val platformDataModule: Module = module {
     single { openUserDb(userDbBuilder(androidContext())) }
     single { TranslationStore(bibleDirectory(androidContext()), get<UserDb>().appMetaDao()) }
     single {
-        AppPreferences(SharedPreferencesSettings(androidContext().getSharedPreferences("zerno.prefs", Context.MODE_PRIVATE)))
+        AppPreferences(
+            SharedPreferencesSettings(androidContext().getSharedPreferences("zerno.prefs", Context.MODE_PRIVATE)),
+        )
     }
 }

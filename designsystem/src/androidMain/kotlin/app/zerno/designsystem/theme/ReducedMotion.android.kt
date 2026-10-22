@@ -24,7 +24,11 @@ internal actual fun systemReducedMotion(): Boolean {
                 reduced = resolver.animationsOff()
             }
         }
-        resolver.registerContentObserver(Settings.Global.getUriFor(Settings.Global.ANIMATOR_DURATION_SCALE), false, observer)
+        resolver.registerContentObserver(
+            Settings.Global.getUriFor(Settings.Global.ANIMATOR_DURATION_SCALE),
+            false,
+            observer,
+        )
         onDispose { resolver.unregisterContentObserver(observer) }
     }
     return reduced

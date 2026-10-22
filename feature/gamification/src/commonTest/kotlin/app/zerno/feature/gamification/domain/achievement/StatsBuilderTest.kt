@@ -17,7 +17,14 @@ class StatsBuilderTest {
 
     private fun build(vararg passages: String) = builder.build(
         sessions = passages.mapIndexed { i, p ->
-            ReadingSession(SessionId("s$i"), PassageRef.parseOrThrow(p), TranslationId("kjv"), startedAt = at, completedAt = at, timeZoneId = "UTC")
+            ReadingSession(
+                SessionId("s$i"),
+                PassageRef.parseOrThrow(p),
+                TranslationId("kjv"),
+                startedAt = at,
+                completedAt = at,
+                timeZoneId = "UTC",
+            )
         },
         activity = ActivityCounts(),
         readDays = emptySet(),
@@ -55,6 +62,9 @@ class StatsBuilderTest {
     fun returnGapIsTheLongestBreakBetweenReadings() {
         assertEquals(0, builder.longestReturnGap(emptySet()))
         assertEquals(0, builder.longestReturnGap(setOf(LocalDate(2026, 3, 2), LocalDate(2026, 3, 3))))
-        assertEquals(7, builder.longestReturnGap(setOf(LocalDate(2026, 3, 2), LocalDate(2026, 3, 10), LocalDate(2026, 3, 12))))
+        assertEquals(
+            7,
+            builder.longestReturnGap(setOf(LocalDate(2026, 3, 2), LocalDate(2026, 3, 10), LocalDate(2026, 3, 12))),
+        )
     }
 }

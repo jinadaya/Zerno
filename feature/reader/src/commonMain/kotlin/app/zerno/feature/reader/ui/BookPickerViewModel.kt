@@ -41,7 +41,12 @@ sealed interface BookPickerEffect : SideEffect {
 
 object BookPickerReducer : MviReducer<BookPickerState, BookPickerInnerEvent> {
     override fun reduce(oldState: BookPickerState, event: BookPickerInnerEvent): BookPickerState = when (event) {
-        is BookPickerInnerEvent.Loaded -> oldState.copy(books = event.books, current = event.current, expanded = event.current.book)
+        is BookPickerInnerEvent.Loaded -> oldState.copy(
+            books = event.books,
+            current = event.current,
+            expanded = event.current.book,
+        )
+
         is BookPickerInnerEvent.Expanded -> oldState.copy(expanded = event.book)
     }
 }
@@ -69,10 +74,12 @@ class BookPickerViewModel(
             is BookPickerEvent.BookClicked -> intent(EXPAND) {
                 emit(BookPickerInnerEvent.Expanded(event.book.takeIf { it != state.value.expanded }))
             }
+
             is BookPickerEvent.ChapterClicked -> intent(OPEN) {
                 session.openChapter(event.chapter)
                 postEffect(BookPickerEffect.Close)
             }
+
             BookPickerEvent.BackClicked -> intent(OPEN) { postEffect(BookPickerEffect.Close) }
         }
     }

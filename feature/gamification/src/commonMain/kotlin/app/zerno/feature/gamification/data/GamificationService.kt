@@ -44,7 +44,8 @@ class GamificationService(
     scope: CoroutineScope,
     private val streakEngine: StreakEngine = StreakEngine(),
     private val statsBuilder: StatsBuilder = StatsBuilder(),
-) : GamificationEvents, GamificationState {
+) : GamificationEvents,
+    GamificationState {
     private val mutex = Mutex()
     private var evaluator: AchievementEvaluator? = null
 
@@ -95,7 +96,9 @@ class GamificationService(
         val reflections = activity.filter { it.kind in ReflectionKinds }.map { ReflectionGiven(it.at, it.zone) }
         val summary = streakEngine.summarize(readings, reflections, now, zones.current())
         val marked = repository.dayMarks.first()
-        summary.days.filter { (date, status) -> marked[date] != status }.forEach { (date, status) -> repository.markDay(date, status) }
+        summary.days.filter { (date, status) ->
+            marked[date] != status
+        }.forEach { (date, status) -> repository.markDay(date, status) }
 
         val stats = statsBuilder.build(
             sessions = sessions,

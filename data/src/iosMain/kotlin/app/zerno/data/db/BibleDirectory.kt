@@ -22,7 +22,12 @@ fun bibleDirectory(): Path {
         error = null,
     )
     val dir = requireNotNull(support?.URLByAppendingPathComponent("bibles")) { "No Application Support directory" }
-    NSFileManager.defaultManager.createDirectoryAtURL(dir, withIntermediateDirectories = true, attributes = null, error = null)
+    NSFileManager.defaultManager.createDirectoryAtURL(
+        dir,
+        withIntermediateDirectories = true,
+        attributes = null,
+        error = null,
+    )
     dir.setResourceValue(NSNumber(bool = true), forKey = NSURLIsExcludedFromBackupKey, error = null)
     return Path(requireNotNull(dir.path))
 }

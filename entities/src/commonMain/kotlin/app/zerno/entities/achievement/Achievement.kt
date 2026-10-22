@@ -48,10 +48,7 @@ data class Achievement(
 
 /** Progress toward a threshold, shown as "[current] of [target]". */
 @Serializable
-data class AchievementProgress(
-    val current: Int,
-    val target: Int,
-) {
+data class AchievementProgress(val current: Int, val target: Int) {
     init {
         require(target > 0) { "Target must be positive, was $target" }
         require(current >= 0) { "Current must not be negative, was $current" }

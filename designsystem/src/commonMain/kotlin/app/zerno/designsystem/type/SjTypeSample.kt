@@ -12,7 +12,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.zerno.designsystem.theme.SjTheme
 import app.zerno.designsystem.tokens.SjTypography
 
-private class TypeSample(val name: String, val style: (SjTypography) -> TextStyle, val en: String, val ru: String, val upper: Boolean = false)
+private class TypeSample(
+    val name: String,
+    val style: (SjTypography) -> TextStyle,
+    val en: String,
+    val ru: String,
+    val upper: Boolean = false,
+)
 
 private val Samples = listOf(
     TypeSample("mega", { it.mega }, "38%", "38%"),

@@ -13,8 +13,9 @@ class SjReaderTextTest {
     private val number = SpanStyle(color = Color.Gray)
     private val highlight = Color.Yellow
 
-    private fun verses(vararg paragraphStarts: Int) = listOf("In the beginning", "And the earth", "And God said", "And God saw")
-        .mapIndexed { i, text -> SjVerse(i + 1, AnnotatedString(text), startsParagraph = i in paragraphStarts) }
+    private fun verses(vararg paragraphStarts: Int) =
+        listOf("In the beginning", "And the earth", "And God said", "And God saw")
+            .mapIndexed { i, text -> SjVerse(i + 1, AnnotatedString(text), startsParagraph = i in paragraphStarts) }
 
     @Test
     fun versesWithoutParagraphMarksFormOneParagraph() {

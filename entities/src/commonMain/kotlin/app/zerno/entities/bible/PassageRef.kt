@@ -38,7 +38,6 @@ data class PassageRef(
     companion object {
         fun chapter(book: BookId, chapter: Int): PassageRef = PassageRef(book, chapter)
 
-        fun verse(book: BookId, chapter: Int, verse: Int): PassageRef =
-            PassageRef(book, chapter, verse, chapter, verse)
+        fun verse(book: BookId, chapter: Int, verse: Int): PassageRef = PassageRef(book, chapter, verse, chapter, verse)
     }
 }

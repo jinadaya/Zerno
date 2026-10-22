@@ -49,13 +49,21 @@ class PlanFormatTest {
     @Test
     fun psalmsMoveToSynodalNumbering() {
         val ps23 = assertNotNull(PassageRef.parse("Ps 23"))
-        assertEquals("Пс 22", ps23.mapVersification(Versification.English, Versification.Russian).format(BookNameLanguage.Russian))
+        assertEquals(
+            "Пс 22",
+            ps23.mapVersification(Versification.English, Versification.Russian).format(BookNameLanguage.Russian),
+        )
     }
 
     @Test
     fun johnIsOneChapterADay() = runTest {
         val john = BundledPlans().load().single { it.id.value == "gospel-of-john" }
-        assertEquals((1..21).map { "John $it" }, john.days.map { it.passages.single().format(BookNameLanguage.English) })
+        assertEquals(
+            (1..21).map {
+                "John $it"
+            },
+            john.days.map { it.passages.single().format(BookNameLanguage.English) },
+        )
     }
 
     @Test
@@ -80,10 +88,7 @@ class PlanFormatTest {
         assertFailsWith<InvalidPlanFile> { PlanFormat.parse(text) }
     }
 
-    private fun plan(
-        passages: String = """["John 1"]""",
-        title: String = """{"en": "John", "ru": "Иоанн"}""",
-    ) = """
+    private fun plan(passages: String = """["John 1"]""", title: String = """{"en": "John", "ru": "Иоанн"}""") = """
         {"id": "test", "type": "Sequential", "title": $title, "description": {"en": "d", "ru": "о"},
          "days": [{"day": 1, "passages": $passages, "minutes": 5}]}
     """.trimIndent()

@@ -27,7 +27,9 @@ object AchievementCatalogParser {
 
     fun validate(catalog: AchievementCatalog): List<String> = buildList {
         if (catalog.version != VERSION) add("version ${catalog.version} is not $VERSION")
-        catalog.achievements.groupBy { it.code }.filterValues { it.size > 1 }.keys.forEach { add("$it: code used twice") }
+        catalog.achievements.groupBy {
+            it.code
+        }.filterValues { it.size > 1 }.keys.forEach { add("$it: code used twice") }
         catalog.achievements.forEach { a ->
             if (!a.code.matches(CODE)) add("${a.code}: code must be lower_snake_case")
             if (a.titleKey.isBlank()) add("${a.code}: no title key")
@@ -38,9 +40,12 @@ object AchievementCatalogParser {
             when {
                 a.criteria.type == CriteriaType.BooksInGroup && group !in BookGroups.byName ->
                     add("${a.code}: booksInGroup needs a group from ${BookGroups.byName.keys}")
+
                 a.criteria.type != CriteriaType.BooksInGroup && group != null ->
                     add("${a.code}: group is only for booksInGroup")
-                a.criteria.type == CriteriaType.BooksInGroup && a.criteria.threshold > BookGroups.byName.getValue(group!!).size ->
+
+                a.criteria.type == CriteriaType.BooksInGroup &&
+                    a.criteria.threshold > BookGroups.byName.getValue(group!!).size ->
                     add("${a.code}: threshold is more than the books in $group")
             }
         }

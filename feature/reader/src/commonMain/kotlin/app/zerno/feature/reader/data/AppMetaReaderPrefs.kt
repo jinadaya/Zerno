@@ -23,7 +23,12 @@ class AppMetaReaderPrefs(private val meta: AppMetaDao) : ReaderPrefs {
 
     override suspend fun saveLastLocation(location: ReaderLocation) {
         val verse = location.verse?.toString().orEmpty()
-        meta.put(AppMeta(LOCATION, "${location.translation.value}|${location.chapter.book.value}|${location.chapter.chapter}|$verse"))
+        meta.put(
+            AppMeta(
+                LOCATION,
+                "${location.translation.value}|${location.chapter.book.value}|${location.chapter.chapter}|$verse",
+            ),
+        )
     }
 
     override suspend fun position(versification: Versification, chapter: ChapterRef): Int? =

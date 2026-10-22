@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:AchievementCatalogParser.kt$AchievementCatalogParser$fun validate(catalog: AchievementCatalog): List&lt;String&gt;</ID>
+    <ID>CyclomaticComplexMethod:AchievementStats.kt$AchievementStats$fun count(criteria: Criteria): Int</ID>
+    <ID>CyclomaticComplexMethod:Mascot.kt$internal fun mascotVector(character: MascotCharacter, pose: MascotPose): ImageVector</ID>
+    <ID>CyclomaticComplexMethod:PassageRefText.kt$private fun PassageRef.location(singleChapter: Boolean): String</ID>
+    <ID>DestructuringDeclarationWithTooManyEntries:AppMetaReaderPrefs.kt$AppMetaReaderPrefs$val (translation, book, chapter, verse) = value.split('|').also { require(it.size == 4) }</ID>
+    <ID>ForEachOnRange:BookPickerScreen.kt$(1..book.chapterCount).chunked(COLUMNS)</ID>
+    <ID>LongParameterList:BookNames.kt$BookNames$( id: Int, chapters: Int, enName: String, enShort: String, ruName: String, ruShort: String, vararg aliases: String, )</ID>
+    <ID>MagicNumber:AppMetaReaderPrefs.kt$AppMetaReaderPrefs$4</ID>
+    <ID>MagicNumber:BibleFile.kt$BibleFile$3</ID>
+    <ID>MagicNumber:BibleFile.kt$BibleFile$4</ID>
+    <ID>MagicNumber:BibleFile.kt$BibleFile$5</ID>
+    <ID>MagicNumber:BibleFile.kt$BibleFile$6</ID>
+    <ID>MagicNumber:BibleFile.kt$BibleFile$7</ID>
+    <ID>MagicNumber:StreakEngine.kt$StreakEngine$7</ID>
+    <ID>MaxLineLength:AchievementCatalogTest.kt$AchievementCatalogTest$"""{"code": "$code", "set": "Sheep", "titleKey": "t", "descriptionKey": "d", "criteria": $criteria, "icon": "Bible"}"""</ID>
+    <ID>MaxLineLength:DatabasesTest.kt$DatabasesTest$"CREATE TABLE IF NOT EXISTS `app_meta` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))"</ID>
+    <ID>MaxLineLength:DatabasesTest.kt$DatabasesTest$"INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f331993ec2a767bea9ecb5fdd6719503')"</ID>
+    <ID>MaxLineLength:PackageInfo.kt$* Shared data infrastructure: Room databases (user DB and Bible files), network client, preferences. No feature repositories.</ID>
+    <ID>MaxLineLength:SjIcons.kt$SjIcons$"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"</ID>
+    <ID>MaxLineLength:SjIcons.kt$SjIcons$"M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"</ID>
+    <ID>MaxLineLength:SjIcons.kt$SjIcons$"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"</ID>
+    <ID>MaxLineLength:SjIcons.kt$SjIcons$"M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"</ID>
+    <ID>MaxLineLength:SjTheme.kt$/** True when the system asks for reduced motion. Same as `SjTheme.motion.reduced`; here for code that only needs the flag. */</ID>
+    <ID>MaxLineLength:VerseMarkupTest.kt$VerseMarkupTest$"not&lt;S&gt;3361&lt;/S&gt; perish,&lt;S&gt;622&lt;/S&gt; but&lt;S&gt;235&lt;/S&gt; have&lt;S&gt;2192&lt;/S&gt; everlasting&lt;S&gt;166&lt;/S&gt; life.&lt;/J&gt;&lt;S&gt;2222&lt;/S&gt;"</ID>
+    <ID>MaxLineLength:Versification.kt$Versification.Companion$/** Reads the `info` value of `russian_numbering`: "true" is [Russian], anything else or a missing key is [English]. */</ID>
+    <ID>ReturnCount:PassageRefText.kt$Location.Companion$fun read(text: String): Location?</ID>
+    <ID>ReturnCount:PassageRefText.kt$fun PassageRef.Companion.parse(text: String): PassageRef?</ID>
+    <ID>ReturnCount:PassageRefText.kt$private fun PassageRef.location(singleChapter: Boolean): String</ID>
+    <ID>SwallowedException:AchievementCatalogParser.kt$AchievementCatalogParser$e: SerializationException</ID>
+    <ID>SwallowedException:PlanFormat.kt$PlanFormat$e: IllegalArgumentException</ID>
+    <ID>SwallowedException:PlanFormat.kt$PlanFormat$e: SerializationException</ID>
+    <ID>SwallowedException:ReaderViewModel.kt$ReaderViewModel$e: Exception</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:Result.kt$IllegalStateException()</ID>
+    <ID>ThrowsCount:PlanFormat.kt$PlanFormat$fun parse(text: String): ReadingPlan</ID>
+    <ID>TooGenericExceptionCaught:DefaultIntentExecutor.kt$DefaultIntentExecutor$e: Throwable</ID>
+    <ID>TooGenericExceptionCaught:Policy.kt$e: Throwable</ID>
+    <ID>TooGenericExceptionCaught:ReaderViewModel.kt$ReaderViewModel$e: Exception</ID>
+    <ID>TooManyFunctions:SjCatalog.kt$app.zerno.designsystem.catalog.SjCatalog.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>

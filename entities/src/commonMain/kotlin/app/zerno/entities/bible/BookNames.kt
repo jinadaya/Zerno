@@ -174,7 +174,10 @@ object BookNames {
         book(700, 1, "2 John", "2 John", "2 Иоанна", "2 Ин", "2 Jn", "2 Jhn", "2 Jo", "2 Joh", "2 Иоан"),
         book(710, 1, "3 John", "3 John", "3 Иоанна", "3 Ин", "3 Jn", "3 Jhn", "3 Jo", "3 Joh", "3 Иоан"),
         book(720, 1, "Jude", "Jude", "Иуды", "Иуд", "Jud", "Jd", "Иуда"),
-        book(730, 22, "Revelation", "Rev", "Откровение", "Откр", "Re", "Rv", "Revelations", "Apocalypse", "Отк", "Апокалипсис"),
+        book(
+            730, 22, "Revelation", "Rev", "Откровение", "Откр",
+            "Re", "Rv", "Revelations", "Apocalypse", "Отк", "Апокалипсис",
+        ),
     )
 
     private val byId: Map<Int, Entry> = books.associateBy { it.id }

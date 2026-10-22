@@ -18,10 +18,13 @@ internal fun moduleRuleViolations(path: String, dependencies: Collection<String>
     return dependencies.distinct().sorted().mapNotNull { dependency ->
         when {
             dependency == path -> null
+
             api && dependency != ":entities" && !dependency.isFeatureApi() ->
                 "$path -> $dependency: an :api module may depend only on :entities and other :api modules"
+
             !api && dependency.isFeature() && dependency != "$path:api" && !dependency.isFeatureApi() ->
                 "$path -> $dependency: depend on $dependency:api instead"
+
             else -> null
         }
     }

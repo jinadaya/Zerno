@@ -192,7 +192,9 @@ private fun FieldSamples() {
         verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space6),
     ) {
         SjTextField(name, { name = it }, label = "Your name", placeholder = "What should we call you?")
-        SjReflectionField(reflection, { reflection = it }, label = "Размышление", placeholder = "Что вам запомнилось сегодня?")
+        SjReflectionField(reflection, {
+            reflection = it
+        }, label = "Размышление", placeholder = "Что вам запомнилось сегодня?")
         SjTextField(time, { time = it }, label = "Reminder time", error = "Enter a time between 00:00 and 23:59.")
     }
 }

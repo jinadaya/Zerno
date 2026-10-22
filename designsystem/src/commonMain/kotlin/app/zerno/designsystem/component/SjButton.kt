@@ -50,12 +50,7 @@ import app.zerno.designsystem.theme.SjTheme
  * Inside a `StickerSurface` the fill switches to `sticker-ink`.
  */
 @Composable
-fun SjPrimaryButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
+fun SjPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     val colors = SjTheme.colors
     val onSticker = LocalOnSticker.current
     val fill = if (onSticker) colors.stickerInk else colors.ink
@@ -73,7 +68,10 @@ fun SjPrimaryButton(
         ) {
             ButtonLabel(text, label, Modifier.weight(1f, fill = false))
             Spacer(Modifier.width(SjTheme.spacing.space4))
-            Box(Modifier.size(GoSize).background(colors.flare, SjTheme.shapes.pill), contentAlignment = Alignment.Center) {
+            Box(
+                Modifier.size(GoSize).background(colors.flare, SjTheme.shapes.pill),
+                contentAlignment = Alignment.Center,
+            ) {
                 SjIcon(SjIcons.ArrowRight, contentDescription = null, tint = colors.stickerInk, size = GoIconSize)
             }
         }
@@ -82,12 +80,7 @@ fun SjPrimaryButton(
 
 /** The outline button (`sj-btn-outline`) for neutral choices: a hairline pill, 56 dp tall, label centred. */
 @Composable
-fun SjOutlineButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
+fun SjOutlineButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     val content = SjTheme.contentColor
     ButtonFrame(onClick, modifier, enabled) {
         Box(
@@ -104,12 +97,7 @@ fun SjOutlineButton(
 
 /** The text link (`sj-btn-link`) for skip and dismiss: an underlined label in a 48 dp tall tap area. */
 @Composable
-fun SjLinkButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
+fun SjLinkButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     val content = SjTheme.contentColor
     val hairline = SjTheme.sizes.hairline
     var baseline by remember { mutableFloatStateOf(Float.NaN) }
@@ -134,12 +122,7 @@ fun SjLinkButton(
 
 /** Click handling shared by the three buttons: focus ring, button role, 35% when disabled, a small press. */
 @Composable
-private fun ButtonFrame(
-    onClick: () -> Unit,
-    modifier: Modifier,
-    enabled: Boolean,
-    content: @Composable () -> Unit,
-) {
+private fun ButtonFrame(onClick: () -> Unit, modifier: Modifier, enabled: Boolean, content: @Composable () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     val reduced = SjTheme.motion.reduced

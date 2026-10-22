@@ -46,10 +46,7 @@ typealias NavScaffold = @Composable (showBottomBar: Boolean, content: @Composabl
 
 /** Single-stack host: no tabs, no bottom bar. */
 @Composable
-fun NavHost(
-    startRoute: NavKey,
-    modifier: Modifier = Modifier,
-) {
+fun NavHost(startRoute: NavKey, modifier: Modifier = Modifier) {
     NavHost(tabs = listOf(startRoute), modifier = modifier)
 }
 

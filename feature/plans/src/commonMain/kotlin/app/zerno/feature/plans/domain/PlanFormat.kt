@@ -36,11 +36,7 @@ internal data class PlanFile(
 )
 
 @Serializable
-internal data class PlanFileDay(
-    val day: Int,
-    val passages: List<String>,
-    val minutes: Int,
-)
+internal data class PlanFileDay(val day: Int, val passages: List<String>, val minutes: Int)
 
 /** A plan file that does not parse, or a reference in it that is not a passage. */
 class InvalidPlanFile(message: String) : IllegalArgumentException(message)
@@ -62,7 +58,11 @@ object PlanFormat {
         }
         PlanLanguages.forEach { language ->
             if (file.title.values[language].isNullOrBlank()) throw InvalidPlanFile("${file.id}: no title in $language")
-            if (file.description.values[language].isNullOrBlank()) throw InvalidPlanFile("${file.id}: no description in $language")
+            if (file.description.values[language].isNullOrBlank()) {
+                throw InvalidPlanFile(
+                    "${file.id}: no description in $language",
+                )
+            }
         }
         val days = file.days.map { day ->
             val passages = day.passages.map { text ->

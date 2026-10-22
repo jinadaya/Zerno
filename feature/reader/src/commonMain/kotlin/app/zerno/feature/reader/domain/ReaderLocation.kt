@@ -10,11 +10,7 @@ import app.zerno.entities.bible.mapVersification
  * A place in the reader: a chapter of one translation, in that translation's numbering, and the verse at the top of
  * the page. A null [verse] is the top of the chapter, above its first verse.
  */
-data class ReaderLocation(
-    val translation: TranslationId,
-    val chapter: ChapterRef,
-    val verse: Int? = null,
-)
+data class ReaderLocation(val translation: TranslationId, val chapter: ChapterRef, val verse: Int? = null)
 
 /**
  * The same place in [target], whose numbering is [to] while this one's is [from]: KJV Psalm 23:4 is RST Psalm 22:4,

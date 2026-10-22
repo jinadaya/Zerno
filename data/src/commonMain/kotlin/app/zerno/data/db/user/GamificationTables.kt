@@ -48,10 +48,7 @@ data class DayMarkRow(
 )
 
 @Entity(tableName = "unlocked_achievement")
-data class UnlockedAchievementRow(
-    @PrimaryKey val code: String,
-    @ColumnInfo(name = "unlocked_at") val unlockedAt: Long,
-)
+data class UnlockedAchievementRow(@PrimaryKey val code: String, @ColumnInfo(name = "unlocked_at") val unlockedAt: Long)
 
 @Dao
 interface GamificationDao {

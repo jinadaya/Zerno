@@ -15,12 +15,9 @@ enum class SjEdge { Top, Bottom }
  * Use `rule` between list rows and `ink` for a section top (`sj-list`, `sj-nav`). Separation comes from rules
  * and colour blocks, never shadows.
  */
-fun Modifier.sjHairline(
-    color: Color,
-    edge: SjEdge = SjEdge.Bottom,
-    width: Dp = SjSize.Default.hairline,
-): Modifier = drawBehind {
-    val stroke = width.toPx()
-    val y = if (edge == SjEdge.Top) stroke / 2 else size.height - stroke / 2
-    drawLine(color, Offset(0f, y), Offset(size.width, y), stroke)
-}
+fun Modifier.sjHairline(color: Color, edge: SjEdge = SjEdge.Bottom, width: Dp = SjSize.Default.hairline): Modifier =
+    drawBehind {
+        val stroke = width.toPx()
+        val y = if (edge == SjEdge.Top) stroke / 2 else size.height - stroke / 2
+        drawLine(color, Offset(0f, y), Offset(size.width, y), stroke)
+    }

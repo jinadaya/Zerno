@@ -60,9 +60,13 @@ class DatabasesTest {
     fun userDbMigratesFromVersion1() = runBlocking {
         // A version 1 file as Room wrote it (data/schemas/.../1.json), with a value to carry over.
         BundledSQLiteDriver().open(userPath, SQLITE_OPEN_READWRITE or SQLITE_OPEN_CREATE).apply {
-            execSQL("CREATE TABLE IF NOT EXISTS `app_meta` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))")
+            execSQL(
+                "CREATE TABLE IF NOT EXISTS `app_meta` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))",
+            )
             execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)")
-            execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f331993ec2a767bea9ecb5fdd6719503')")
+            execSQL(
+                "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f331993ec2a767bea9ecb5fdd6719503')",
+            )
             execSQL("INSERT INTO app_meta VALUES ('reader.book', '500')")
             execSQL("PRAGMA user_version = 1")
             close()
@@ -143,8 +147,9 @@ class DatabasesTest {
 
     private companion object {
         const val JOHN_3_16 = "<pb/><J>For<S>1063</S> God<S>2316</S> so<S>3779</S> loved<S>25</S> the<S>3588</S> " +
-            "world,<S>2889</S> that<S>5620</S> he gave<S>1325</S> his<S>848</S> only begotten<S>3439</S> Son,<S>5207</S> " +
-            "that<S>2443</S> whosoever<S>3956</S> believeth<S>4100</S> in<S>1519</S> him<S>846</S> should not<S>3361</S> " +
+            "world,<S>2889</S> that<S>5620</S> he gave<S>1325</S> his<S>848</S> " +
+            "only begotten<S>3439</S> Son,<S>5207</S> that<S>2443</S> whosoever<S>3956</S> " +
+            "believeth<S>4100</S> in<S>1519</S> him<S>846</S> should not<S>3361</S> " +
             "perish,<S>622</S> but<S>235</S> have<S>2192</S> everlasting<S>166</S> life.</J><S>2222</S>"
         const val JOHN_3_16_TEXT = "For God so loved the world, that he gave his only begotten Son, that whosoever " +
             "believeth in him should not perish, but have everlasting life."

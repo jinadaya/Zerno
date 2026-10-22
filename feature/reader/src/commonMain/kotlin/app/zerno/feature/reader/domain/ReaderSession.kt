@@ -14,10 +14,7 @@ import kotlinx.coroutines.sync.withLock
  * [location] is the last place asked for, with the verse to open at; the reader follows it. Scrolling does not
  * change it: [savePosition] only writes the place down, so a page is never reloaded under the reader's finger.
  */
-class ReaderSession(
-    private val bible: BibleSource,
-    private val prefs: ReaderPrefs,
-) {
+class ReaderSession(private val bible: BibleSource, private val prefs: ReaderPrefs) {
     private val lock = Mutex()
     private val _location = MutableStateFlow<ReaderLocation?>(null)
     val location: StateFlow<ReaderLocation?> = _location.asStateFlow()
@@ -60,7 +57,12 @@ class ReaderSession(
         val book = books.firstOrNull { it.id == mapped.chapter.book }
         _location.value = when {
             book == null -> ReaderLocation(translation, ChapterRef(books.first().id, 1))
-            mapped.chapter.chapter > book.chapterCount -> ReaderLocation(translation, ChapterRef(book.id, book.chapterCount))
+
+            mapped.chapter.chapter > book.chapterCount -> ReaderLocation(
+                translation,
+                ChapterRef(book.id, book.chapterCount),
+            )
+
             else -> mapped
         }
     }

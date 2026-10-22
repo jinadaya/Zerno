@@ -34,7 +34,10 @@ internal class ChapterSpan(val chapter: Int, val first: Int, val last: Int?) {
  */
 internal class VerseSegment(val english: ChapterSpan, val russian: ChapterSpan, val moved: Boolean = false) {
     init {
-        require(english.size == russian.size || (english.size != null && russian.size != null && (english.size == 1 || russian.size == 1))) {
+        require(
+            english.size == russian.size ||
+                (english.size != null && russian.size != null && (english.size == 1 || russian.size == 1)),
+        ) {
             "Segment $english = $russian must keep its size or split one verse"
         }
     }
@@ -56,12 +59,14 @@ internal class VerseSegment(val english: ChapterSpan, val russian: ChapterSpan, 
  */
 internal object SynodalMapping {
     val segments: Map<Int, List<VerseSegment>> = buildMap {
-        book(30) { // Leviticus
+        book(30) {
+            // Leviticus
             same("14:1-54")
             map("14:55-56", "14:55")
             map("14:57", "14:56")
         }
-        book(40) { // Numbers
+        book(40) {
+            // Numbers
             same("12:1-15")
             map("12:16", "13:1")
             map("13:1-", "13:2-")
@@ -69,19 +74,22 @@ internal object SynodalMapping {
             map("29:40", "30:1")
             map("30:1-", "30:2-")
         }
-        book(60) { // Joshua
+        book(60) {
+            // Joshua
             same("5:1-15")
             map("6:1", "5:16")
             map("6:2-", "6:1-")
         }
-        book(90) { // 1 Samuel
+        book(90) {
+            // 1 Samuel
             same("20:1-41")
             map("20:42", "20:42-43")
             same("23:1-28")
             map("23:29", "24:1")
             map("24:1-", "24:2-")
         }
-        book(220) { // Job
+        book(220) {
+            // Job
             same("39:1-30")
             map("40:1-5", "39:31-35")
             map("40:6-24", "40:1-19")
@@ -89,60 +97,71 @@ internal object SynodalMapping {
             map("41:9-", "41:1-")
         }
         book(PSALMS) { psalms() }
-        book(250) { // Ecclesiastes
+        book(250) {
+            // Ecclesiastes
             same("4:1-16")
             map("5:1", "4:17")
             map("5:2-", "5:1-")
         }
-        book(260) { // Song of Songs
+        book(260) {
+            // Song of Songs
             map("1:1-2", "1:1")
             map("1:3-", "1:2-")
             same("6:1-12")
             map("6:13", "7:1")
             map("7:1-", "7:2-")
         }
-        book(290) { // Isaiah
+        book(290) {
+            // Isaiah
             same("3:1-18")
             map("3:19-20", "3:19")
             map("3:21-", "3:20-")
         }
-        book(340) { // Daniel
+        book(340) {
+            // Daniel
             same("3:1-30")
             map("4:1-3", "3:31-33")
             map("4:4-", "4:1-")
         }
-        book(350) { // Hosea
+        book(350) {
+            // Hosea
             same("13:1-15")
             map("13:16", "14:1")
             map("14:1-", "14:2-")
         }
-        book(390) { // Jonah
+        book(390) {
+            // Jonah
             same("1:1-16")
             map("1:17", "2:1")
             map("2:1-", "2:2-")
         }
-        book(510) { // Acts
+        book(510) {
+            // Acts
             same("19:1-39")
             map("19:40-41", "19:40")
         }
-        book(520) { // Romans
+        book(520) {
+            // Romans
             same("14:1-23")
             same("16:1-24")
             map("16:25-27", "14:24-26", moved = true)
         }
-        book(540) { // 2 Corinthians
+        book(540) {
+            // 2 Corinthians
             same("11:1-31")
             map("11:32-33", "11:32")
             same("13:1-11")
             map("13:12-13", "13:12")
             map("13:14", "13:13")
         }
-        book(640) { // Philemon
+        book(640) {
+            // Philemon
             same("1:1-22")
             map("1:23-24", "1:23")
             map("1:25", "1:24")
         }
-        book(710) { // 3 John
+        book(710) {
+            // 3 John
             same("1:1-13")
             map("1:14", "1:14-15")
         }
@@ -169,29 +188,37 @@ internal object SynodalMapping {
                     map("9:1", "9:1-2")
                     map("9:2-20", "9:3-21")
                 }
+
                 10 -> map("10:1-", "9:22-")
+
                 // Title split off as in the others, and the last two KJV verses are one in RST.
                 13 -> {
                     map("13:1", "12:1-2")
                     map("13:2-4", "12:3-5")
                     map("13:5-6", "12:6")
                 }
+
                 90 -> {
                     map("90:1", "89:1-2")
                     map("90:2-4", "89:3-5")
                     map("90:5-6", "89:6")
                     map("90:7-", "89:7-")
                 }
+
                 114 -> map("114:1-8", "113:1-8")
+
                 115 -> map("115:1-", "113:9-")
+
                 116 -> {
                     map("116:1-9", "114:1-9")
                     map("116:10-", "115:1-")
                 }
+
                 147 -> {
                     map("147:1-11", "146:1-11")
                     map("147:12-", "147:1-")
                 }
+
                 else -> {
                     val rst = if (kjv < 9) kjv else kjv - 1
                     val titles = titleVerses[kjv] ?: 0

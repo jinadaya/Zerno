@@ -103,9 +103,17 @@ private fun DayCircle(letter: String, mark: DayMark, isToday: Boolean, modifier:
                 filled -> {
                     drawCircle(colors.flare, radius)
                     if (mark == DayMark.Done) {
-                        drawCircle(colors.stickerInk, DoneDot.toPx() / 2, Offset(center.x, center.y + radius * DoneDotDrop))
+                        drawCircle(
+                            colors.stickerInk,
+                            DoneDot.toPx() / 2,
+                            Offset(
+                                center.x,
+                                center.y + radius * DoneDotDrop,
+                            ),
+                        )
                     }
                 }
+
                 isToday -> {
                     val stroke = TodayRing.toPx()
                     val dash = TodayDash.toPx()
@@ -115,6 +123,7 @@ private fun DayCircle(letter: String, mark: DayMark, isToday: Boolean, modifier:
                         style = Stroke(stroke, pathEffect = PathEffect.dashPathEffect(floatArrayOf(dash, dash))),
                     )
                 }
+
                 else -> {
                     val stroke = SjTheme.sizes.hairline.toPx()
                     drawCircle(colors.rule, radius - stroke / 2, style = Stroke(stroke))
@@ -123,7 +132,13 @@ private fun DayCircle(letter: String, mark: DayMark, isToday: Boolean, modifier:
         }
         BasicText(
             text = letter,
-            style = SjTheme.type.tag.copy(fontSize = 12.sp, lineHeight = 12.sp, letterSpacing = 0.sp, color = textColor, textAlign = TextAlign.Center),
+            style = SjTheme.type.tag.copy(
+                fontSize = 12.sp,
+                lineHeight = 12.sp,
+                letterSpacing = 0.sp,
+                color = textColor,
+                textAlign = TextAlign.Center,
+            ),
             maxLines = 1,
             modifier = if (mark == DayMark.Done) Modifier.padding(bottom = DoneDot) else Modifier,
         )
@@ -147,15 +162,41 @@ private fun StreakSamples() {
     ) {
         SjBigStat("4", "days read this week")
         SjStreakWeek(
-            days = listOf(DayMark.Read, DayMark.Done, DayMark.Empty, DayMark.Read, DayMark.Read, DayMark.Empty, DayMark.Empty),
+            days = listOf(
+                DayMark.Read,
+                DayMark.Done,
+                DayMark.Empty,
+                DayMark.Read,
+                DayMark.Read,
+                DayMark.Empty,
+                DayMark.Empty,
+            ),
             dayLetters = listOf("M", "T", "W", "T", "F", "S", "S"),
-            labels = SjStreakWeekLabels(read = "read", done = "read and reflected", today = "today", notRead = "not read"),
+            labels = SjStreakWeekLabels(
+                read = "read",
+                done = "read and reflected",
+                today = "today",
+                notRead = "not read",
+            ),
             today = 5,
         )
         SjStreakWeek(
-            days = listOf(DayMark.Read, DayMark.Read, DayMark.Done, DayMark.Empty, DayMark.Empty, DayMark.Empty, DayMark.Empty),
+            days = listOf(
+                DayMark.Read,
+                DayMark.Read,
+                DayMark.Done,
+                DayMark.Empty,
+                DayMark.Empty,
+                DayMark.Empty,
+                DayMark.Empty,
+            ),
             dayLetters = listOf("П", "В", "С", "Ч", "П", "С", "В"),
-            labels = SjStreakWeekLabels(read = "прочитано", done = "прочитано, есть заметка", today = "сегодня", notRead = "не прочитано"),
+            labels = SjStreakWeekLabels(
+                read = "прочитано",
+                done = "прочитано, есть заметка",
+                today = "сегодня",
+                notRead = "не прочитано",
+            ),
             today = 2,
         )
     }

@@ -75,6 +75,11 @@ class ZernoHttpClientTest {
         }
         assertEquals("OK", zernoHttpClient(config, tokens, engine).get("me").bodyAsText())
         assertEquals(AuthTokens("old", "r1"), tokens.refreshedFrom)
-        assertEquals(listOf("Bearer old", "Bearer new"), engine.requestHistory.map { it.headers[HttpHeaders.Authorization] })
+        assertEquals(
+            listOf("Bearer old", "Bearer new"),
+            engine.requestHistory.map {
+                it.headers[HttpHeaders.Authorization]
+            },
+        )
     }
 }
