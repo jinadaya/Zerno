@@ -4,7 +4,7 @@ package app.zerno.designsystem.screenshot
  * Sample strings for the screenshots, one set per UI language. Components take their copy as parameters, so each
  * one is shot with both sets to catch Cyrillic and length problems. Not app copy.
  */
-internal data class SampleCopy(
+data class SampleCopy(
     val primary: String,
     val outline: String,
     val link: String,
