@@ -10,7 +10,7 @@ The app is split into base modules (`:entities`, `:arch`, `:designsystem`, `:dat
 
 - Every feature is two modules: `:feature:x` (implementation) and `:feature:x:api` (routes and contracts other features may use).
 - `:feature:x` may depend on its own `:api`, on other features' `:api` modules and on the base modules. It never depends on another `:feature:y`.
-- `:feature:x:api` depends only on `:entities` and other `:api` modules. No Compose UI and no implementation module.
+- `:feature:x:api` depends only on `:entities`, other `:api` modules and the Navigation 3 runtime (for `NavKey` route keys). No Compose UI and no implementation module.
 - `:composeApp` is the only module that sees every feature implementation; it wires them together through Koin and `:navigation`.
 - Convention plugins in `build-logic` (`zerno.feature`, `zerno.feature.api`) add the allowed dependencies, so a module's build file lists only what is special to it.
 - `checkModuleRules` (SK-04) enforces the two dependency rules on every feature module; it runs in `check` and in CI.

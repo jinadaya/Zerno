@@ -3,10 +3,6 @@ plugins {
 }
 
 kotlin {
-    sourceSets.commonMain.dependencies {
-        // `screen<T>` registration and LocalNavigator.
-        implementation(projects.navigation)
-    }
     sourceSets.commonTest.dependencies {
         implementation(libs.kotlinx.coroutines.test)
     }

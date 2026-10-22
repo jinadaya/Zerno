@@ -1,6 +1,7 @@
 package app.zerno.feature.reader.di
 
 import app.zerno.data.db.user.UserDb
+import app.zerno.feature.reader.api.ReaderRoute
 import app.zerno.feature.reader.data.AppMetaReaderPrefs
 import app.zerno.feature.reader.data.StoreBibleSource
 import app.zerno.feature.reader.domain.BibleSource
@@ -9,7 +10,6 @@ import app.zerno.feature.reader.domain.ReaderSession
 import app.zerno.feature.reader.ui.BookPickerRoute
 import app.zerno.feature.reader.ui.BookPickerScreen
 import app.zerno.feature.reader.ui.BookPickerViewModel
-import app.zerno.feature.reader.ui.ReaderRoute
 import app.zerno.feature.reader.ui.ReaderScreen
 import app.zerno.feature.reader.ui.ReaderViewModel
 import com.royaal.navigation.screen

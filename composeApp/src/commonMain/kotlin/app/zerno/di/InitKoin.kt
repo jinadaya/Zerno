@@ -1,5 +1,7 @@
 package app.zerno.di
 
+import app.zerno.debug.debugModule
+import app.zerno.debug.isDebugBuild
 import app.zerno.feature.account.di.accountModule
 import app.zerno.feature.gamification.di.gamificationModule
 import app.zerno.feature.onboarding.di.onboardingModule
@@ -33,5 +35,5 @@ val featureModules: List<Module> = listOf(
  */
 fun initKoin(platform: KoinAppDeclaration = {}): KoinApplication = startKoin {
     platform()
-    modules(listOf(platformDataModule) + featureModules)
+    modules(listOf(platformDataModule) + featureModules + listOfNotNull(debugModule.takeIf { isDebugBuild }))
 }
