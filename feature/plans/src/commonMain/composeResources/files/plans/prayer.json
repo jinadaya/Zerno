@@ -1,0 +1,113 @@
+{
+  "id": "prayer",
+  "type": "Thematic",
+  "version": 1,
+  "title": {
+    "en": "Learning to Pray",
+    "ru": "Учимся молиться"
+  },
+  "description": {
+    "en": "Two weeks with the prayers of Jesus, the psalms and people who prayed when it was hard.",
+    "ru": "Две недели с молитвами Иисуса, псалмами и людьми, которые молились, когда было трудно."
+  },
+  "days": [
+    {
+      "day": 1,
+      "passages": [
+        "Matt 6:5-15"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 2,
+      "passages": [
+        "Luke 11:1-13"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 3,
+      "passages": [
+        "Ps 23"
+      ],
+      "minutes": 2
+    },
+    {
+      "day": 4,
+      "passages": [
+        "Ps 51"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 5,
+      "passages": [
+        "Dan 6:1-23"
+      ],
+      "minutes": 5
+    },
+    {
+      "day": 6,
+      "passages": [
+        "Neh 1"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 7,
+      "passages": [
+        "1 Kgs 18:20-39"
+      ],
+      "minutes": 4
+    },
+    {
+      "day": 8,
+      "passages": [
+        "Matt 26:36-46"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 9,
+      "passages": [
+        "John 17"
+      ],
+      "minutes": 4
+    },
+    {
+      "day": 10,
+      "passages": [
+        "Luke 18:1-14"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 11,
+      "passages": [
+        "Eph 6:10-20"
+      ],
+      "minutes": 3
+    },
+    {
+      "day": 12,
+      "passages": [
+        "Phil 4:4-9"
+      ],
+      "minutes": 2
+    },
+    {
+      "day": 13,
+      "passages": [
+        "1 Thess 5:16-18"
+      ],
+      "minutes": 2
+    },
+    {
+      "day": 14,
+      "passages": [
+        "James 5:13-18"
+      ],
+      "minutes": 2
+    }
+  ]
+}
