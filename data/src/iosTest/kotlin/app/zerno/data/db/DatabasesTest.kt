@@ -9,6 +9,7 @@ import androidx.sqlite.driver.bundled.SQLITE_OPEN_READWRITE
 import androidx.sqlite.execSQL
 import app.zerno.data.db.bible.BibleFile
 import app.zerno.data.db.user.AppMeta
+import app.zerno.data.db.user.DayMarkRow
 import app.zerno.data.db.user.UserDb
 import app.zerno.data.db.user.openUserDb
 import app.zerno.entities.bible.BookId
@@ -17,6 +18,7 @@ import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.TranslationId
 import app.zerno.entities.bible.VerseStyle
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import platform.Foundation.NSData
 import platform.Foundation.NSFileManager
@@ -52,6 +54,25 @@ class DatabasesTest {
         assertEquals("kjv,rst", reopened.appMetaDao().get("bundled"))
         assertNull(reopened.appMetaDao().get("missing"))
         reopened.close()
+    }
+
+    @Test
+    fun userDbMigratesFromVersion1() = runBlocking {
+        // A version 1 file as Room wrote it (data/schemas/.../1.json), with a value to carry over.
+        BundledSQLiteDriver().open(userPath, SQLITE_OPEN_READWRITE or SQLITE_OPEN_CREATE).apply {
+            execSQL("CREATE TABLE IF NOT EXISTS `app_meta` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))")
+            execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)")
+            execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f331993ec2a767bea9ecb5fdd6719503')")
+            execSQL("INSERT INTO app_meta VALUES ('reader.book', '500')")
+            execSQL("PRAGMA user_version = 1")
+            close()
+        }
+
+        val db = openUserDb(Room.databaseBuilder<UserDb>(name = userPath))
+        assertEquals("500", db.appMetaDao().get("reader.book"))
+        db.gamificationDao().putDayMark(DayMarkRow("2026-03-02", "Read"))
+        assertEquals(listOf(DayMarkRow("2026-03-02", "Read")), db.gamificationDao().dayMarks().first())
+        db.close()
     }
 
     @Test
