@@ -2,6 +2,7 @@ package app.zerno.feature.reader.ui
 
 import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.SavedStateHandle
+import app.zerno.data.prefs.AppPreferences
 import app.zerno.entities.bible.ChapterRef
 import app.zerno.feature.reader.domain.BibleSource
 import app.zerno.feature.reader.domain.ReaderFontSize
@@ -33,6 +34,7 @@ class ReaderViewModel(
     private val session: ReaderSession,
     private val bible: BibleSource,
     private val prefs: ReaderPrefs,
+    private val appPrefs: AppPreferences,
 ) : MviViewModel<ReaderState, ReaderEvent, ReaderInnerEvent, ReaderEffect, ScreenSnapshot.NoSnapshot>(
     savedStateHandle = savedStateHandle,
     initialState = ReaderState(),
@@ -53,7 +55,7 @@ class ReaderViewModel(
             emit(FontSizeChanged(prefs.fontSize() ?: ReaderFontSize.DEFAULT))
             try {
                 emit(TranslationsLoaded(bible.translations()))
-                session.start(Locale.current.language)
+                session.start(appPrefs.prefs.value.translation, Locale.current.language)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
