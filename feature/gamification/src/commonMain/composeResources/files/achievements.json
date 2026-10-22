@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "achievements": [
+    {
+      "code": "first_steps",
+      "set": "sheep",
+      "titleKey": "achievement_first_steps_title",
+      "descriptionKey": "achievement_first_steps_description",
+      "criteria": {
+        "type": "sessionsCompleted",
+        "threshold": 1
+      },
+      "icon": "Today"
+    },
+    {
+      "code": "first_chapter",
+      "set": "sheep",
+      "titleKey": "achievement_first_chapter_title",
+      "descriptionKey": "achievement_first_chapter_description",
+      "criteria": {
+        "type": "chaptersRead",
+        "threshold": 1
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "chapters_10",
+      "set": "sheep",
+      "titleKey": "achievement_chapters_10_title",
+      "descriptionKey": "achievement_chapters_10_description",
+      "criteria": {
+        "type": "chaptersRead",
+        "threshold": 10
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "chapters_50",
+      "set": "sheep",
+      "titleKey": "achievement_chapters_50_title",
+      "descriptionKey": "achievement_chapters_50_description",
+      "criteria": {
+        "type": "chaptersRead",
+        "threshold": 50
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "chapters_100",
+      "set": "sheep",
+      "titleKey": "achievement_chapters_100_title",
+      "descriptionKey": "achievement_chapters_100_description",
+      "criteria": {
+        "type": "chaptersRead",
+        "threshold": 100
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "chapters_250",
+      "set": "sheep",
+      "titleKey": "achievement_chapters_250_title",
+      "descriptionKey": "achievement_chapters_250_description",
+      "criteria": {
+        "type": "chaptersRead",
+        "threshold": 250
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "chapters_500",
+      "set": "sheep",
+      "titleKey": "achievement_chapters_500_title",
+      "descriptionKey": "achievement_chapters_500_description",
+      "criteria": {
+        "type": "chaptersRead",
+        "threshold": 500
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "chapters_1189",
+      "set": "sheep",
+      "titleKey": "achievement_chapters_1189_title",
+      "descriptionKey": "achievement_chapters_1189_description",
+      "criteria": {
+        "type": "chaptersRead",
+        "threshold": 1189
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "book_finished",
+      "set": "sheep",
+      "titleKey": "achievement_book_finished_title",
+      "descriptionKey": "achievement_book_finished_description",
+      "criteria": {
+        "type": "booksFinished",
+        "threshold": 1
+      },
+      "icon": "Check"
+    },
+    {
+      "code": "gospel_reader",
+      "set": "sheep",
+      "titleKey": "achievement_gospel_reader_title",
+      "descriptionKey": "achievement_gospel_reader_description",
+      "criteria": {
+        "type": "booksInGroup",
+        "threshold": 4,
+        "group": "gospels"
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "explorer_5",
+      "set": "sheep",
+      "titleKey": "achievement_explorer_5_title",
+      "descriptionKey": "achievement_explorer_5_description",
+      "criteria": {
+        "type": "distinctBooks",
+        "threshold": 5
+      },
+      "icon": "Search"
+    },
+    {
+      "code": "explorer_10",
+      "set": "sheep",
+      "titleKey": "achievement_explorer_10_title",
+      "descriptionKey": "achievement_explorer_10_description",
+      "criteria": {
+        "type": "distinctBooks",
+        "threshold": 10
+      },
+      "icon": "Search"
+    },
+    {
+      "code": "explorer_20",
+      "set": "sheep",
+      "titleKey": "achievement_explorer_20_title",
+      "descriptionKey": "achievement_explorer_20_description",
+      "criteria": {
+        "type": "distinctBooks",
+        "threshold": 20
+      },
+      "icon": "Search"
+    },
+    {
+      "code": "old_and_new",
+      "set": "sheep",
+      "titleKey": "achievement_old_and_new_title",
+      "descriptionKey": "achievement_old_and_new_description",
+      "criteria": {
+        "type": "bothTestaments",
+        "threshold": 1
+      },
+      "icon": "Bible"
+    },
+    {
+      "code": "plan_finished",
+      "set": "sheep",
+      "titleKey": "achievement_plan_finished_title",
+      "descriptionKey": "achievement_plan_finished_description",
+      "criteria": {
+        "type": "plansCompleted",
+        "threshold": 1
+      },
+      "icon": "Plans"
+    },
+    {
+      "code": "plans_3",
+      "set": "sheep",
+      "titleKey": "achievement_plans_3_title",
+      "descriptionKey": "achievement_plans_3_description",
+      "criteria": {
+        "type": "plansCompleted",
+        "threshold": 3
+      },
+      "icon": "Plans"
+    },
+    {
+      "code": "plans_5",
+      "set": "sheep",
+      "titleKey": "achievement_plans_5_title",
+      "descriptionKey": "achievement_plans_5_description",
+      "criteria": {
+        "type": "plansCompleted",
+        "threshold": 5
+      },
+      "icon": "Plans"
+    },
+    {
+      "code": "plans_10",
+      "set": "sheep",
+      "titleKey": "achievement_plans_10_title",
+      "descriptionKey": "achievement_plans_10_description",
+      "criteria": {
+        "type": "plansCompleted",
+        "threshold": 10
+      },
+      "icon": "Plans"
+    },
+    {
+      "code": "whole_bible",
+      "set": "sheep",
+      "titleKey": "achievement_whole_bible_title",
+      "descriptionKey": "achievement_whole_bible_description",
+      "criteria": {
+        "type": "wholeBiblePlan",
+        "threshold": 1
+      },
+      "icon": "Journey"
+    },
+    {
+      "code": "first_light",
+      "set": "lamp",
+      "titleKey": "achievement_first_light_title",
+      "descriptionKey": "achievement_first_light_description",
+      "criteria": {
+        "type": "reflectionsWritten",
+        "threshold": 1
+      },
+      "icon": "Reflect"
+    },
+    {
+      "code": "treasured_verse",
+      "set": "lamp",
+      "titleKey": "achievement_treasured_verse_title",
+      "descriptionKey": "achievement_treasured_verse_description",
+      "criteria": {
+        "type": "versesSaved",
+        "threshold": 1
+      },
+      "icon": "Save"
+    },
+    {
+      "code": "keeper_10",
+      "set": "lamp",
+      "titleKey": "achievement_keeper_10_title",
+      "descriptionKey": "achievement_keeper_10_description",
+      "criteria": {
+        "type": "versesSaved",
+        "threshold": 10
+      },
+      "icon": "Save"
+    },
+    {
+      "code": "keeper_50",
+      "set": "lamp",
+      "titleKey": "achievement_keeper_50_title",
+      "descriptionKey": "achievement_keeper_50_description",
+      "criteria": {
+        "type": "versesSaved",
+        "threshold": 50
+      },
+      "icon": "Save"
+    },
+    {
+      "code": "journal_10",
+      "set": "lamp",
+      "titleKey": "achievement_journal_10_title",
+      "descriptionKey": "achievement_journal_10_description",
+      "criteria": {
+        "type": "reflectionsWritten",
+        "threshold": 10
+      },
+      "icon": "Reflect"
+    },
+    {
+      "code": "journal_50",
+      "set": "lamp",
+      "titleKey": "achievement_journal_50_title",
+      "descriptionKey": "achievement_journal_50_description",
+      "criteria": {
+        "type": "reflectionsWritten",
+        "threshold": 50
+      },
+      "icon": "Reflect"
+    },
+    {
+      "code": "journal_100",
+      "set": "lamp",
+      "titleKey": "achievement_journal_100_title",
+      "descriptionKey": "achievement_journal_100_description",
+      "criteria": {
+        "type": "reflectionsWritten",
+        "threshold": 100
+      },
+      "icon": "Reflect"
+    },
+    {
+      "code": "thoughtful_5",
+      "set": "lamp",
+      "titleKey": "achievement_thoughtful_5_title",
+      "descriptionKey": "achievement_thoughtful_5_description",
+      "criteria": {
+        "type": "questionsAnswered",
+        "threshold": 5
+      },
+      "icon": "Highlight"
+    },
+    {
+      "code": "thoughtful_25",
+      "set": "lamp",
+      "titleKey": "achievement_thoughtful_25_title",
+      "descriptionKey": "achievement_thoughtful_25_description",
+      "criteria": {
+        "type": "questionsAnswered",
+        "threshold": 25
+      },
+      "icon": "Highlight"
+    },
+    {
+      "code": "paused_to_think",
+      "set": "lamp",
+      "titleKey": "achievement_paused_to_think_title",
+      "descriptionKey": "achievement_paused_to_think_description",
+      "criteria": {
+        "type": "planStepReflections",
+        "threshold": 1
+      },
+      "icon": "Reflect"
+    },
+    {
+      "code": "streak_3",
+      "set": "bird",
+      "titleKey": "achievement_streak_3_title",
+      "descriptionKey": "achievement_streak_3_description",
+      "criteria": {
+        "type": "streakDays",
+        "threshold": 3
+      },
+      "icon": "Streak"
+    },
+    {
+      "code": "streak_7",
+      "set": "bird",
+      "titleKey": "achievement_streak_7_title",
+      "descriptionKey": "achievement_streak_7_description",
+      "criteria": {
+        "type": "streakDays",
+        "threshold": 7
+      },
+      "icon": "Streak"
+    },
+    {
+      "code": "streak_14",
+      "set": "bird",
+      "titleKey": "achievement_streak_14_title",
+      "descriptionKey": "achievement_streak_14_description",
+      "criteria": {
+        "type": "streakDays",
+        "threshold": 14
+      },
+      "icon": "Streak"
+    },
+    {
+      "code": "streak_30",
+      "set": "bird",
+      "titleKey": "achievement_streak_30_title",
+      "descriptionKey": "achievement_streak_30_description",
+      "criteria": {
+        "type": "streakDays",
+        "threshold": 30
+      },
+      "icon": "Streak"
+    },
+    {
+      "code": "streak_100",
+      "set": "bird",
+      "titleKey": "achievement_streak_100_title",
+      "descriptionKey": "achievement_streak_100_description",
+      "criteria": {
+        "type": "streakDays",
+        "threshold": 100
+      },
+      "icon": "Streak"
+    },
+    {
+      "code": "streak_365",
+      "set": "bird",
+      "titleKey": "achievement_streak_365_title",
+      "descriptionKey": "achievement_streak_365_description",
+      "criteria": {
+        "type": "streakDays",
+        "threshold": 365
+      },
+      "icon": "Streak"
+    },
+    {
+      "code": "steady",
+      "set": "bird",
+      "titleKey": "achievement_steady_title",
+      "descriptionKey": "achievement_steady_description",
+      "criteria": {
+        "type": "steadyWeeks",
+        "threshold": 4
+      },
+      "icon": "Streak"
+    },
+    {
+      "code": "welcome_back",
+      "set": "bird",
+      "titleKey": "achievement_welcome_back_title",
+      "descriptionKey": "achievement_welcome_back_description",
+      "criteria": {
+        "type": "returnAfterDays",
+        "threshold": 7
+      },
+      "icon": "Today"
+    }
+  ]
+}
