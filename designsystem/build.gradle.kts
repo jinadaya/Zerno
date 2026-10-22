@@ -35,5 +35,5 @@ tasks.withType<Test>().configureEach {
     val record = recordScreenshots.get()
     systemProperty("roborazzi.test.record", record)
     systemProperty("roborazzi.test.verify", !record)
-    inputs.dir(layout.projectDirectory.dir("src/androidHostTest/screenshots")).optional()
+    inputs.files(fileTree("src/androidHostTest/screenshots")).withPropertyName("screenshots")
 }
