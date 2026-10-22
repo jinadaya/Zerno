@@ -1,6 +1,9 @@
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.AbstractTestTask
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -33,6 +36,14 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
             }
             sourceSets.commonTest.dependencies {
                 implementation(libs.lib("kotlin-test"))
+            }
+        }
+
+        // CI keeps only the log, so a failing test prints its message and stack there.
+        tasks.withType<AbstractTestTask>().configureEach {
+            testLogging {
+                events(TestLogEvent.FAILED)
+                exceptionFormat = TestExceptionFormat.FULL
             }
         }
     }

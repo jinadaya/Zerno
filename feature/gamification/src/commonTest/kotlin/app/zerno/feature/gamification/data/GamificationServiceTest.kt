@@ -8,6 +8,7 @@ import app.zerno.entities.bible.parseOrThrow
 import app.zerno.entities.session.ReadingSession
 import app.zerno.entities.session.SessionId
 import app.zerno.feature.gamification.api.StreakDayStatus
+import app.zerno.feature.gamification.domain.achievement.AchievementCatalog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -30,9 +31,15 @@ class GamificationServiceTest {
     private val dao = FakeGamificationDao()
     private var sessionCount = 0
 
-    private fun TestScope.service(scope: CoroutineScope = this) = GamificationService(
+    private suspend fun TestScope.service(scope: CoroutineScope = this): GamificationService {
+        // Loaded up front so the service never waits on real file IO inside virtual time.
+        val catalog = BundledAchievementCatalog().load()
+        return newService(scope, catalog)
+    }
+
+    private fun newService(scope: CoroutineScope, catalog: AchievementCatalog) = GamificationService(
         repository = GamificationRepository(dao),
-        loadCatalog = { BundledAchievementCatalog().load() },
+        loadCatalog = { catalog },
         clock = clock,
         zones = zone,
         scope = scope,
