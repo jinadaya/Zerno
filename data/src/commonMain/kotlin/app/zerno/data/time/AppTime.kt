@@ -24,13 +24,23 @@ fun interface TimeZoneProvider {
 /** Today's date where the user is. */
 fun Clock.today(zones: TimeZoneProvider): LocalDate = todayIn(zones.current())
 
-/** A clock tests and the debug menu move by hand. */
+/** A clock tests move by hand. */
 class FakeClock(var now: Instant) : Clock {
     override fun now(): Instant = now
 
     fun advanceBy(duration: Duration) {
         now += duration
     }
+}
+
+/**
+ * The real time moved by [offset], for the debug menu: testers jump days ahead to check streak and plan rules while
+ * time keeps running.
+ */
+class OffsetClock(private val base: Clock = Clock.System) : Clock {
+    var offset: Duration = Duration.ZERO
+
+    override fun now(): Instant = base.now() + offset
 }
 
 /** A time zone tests change by hand, to travel or cross a DST change. */

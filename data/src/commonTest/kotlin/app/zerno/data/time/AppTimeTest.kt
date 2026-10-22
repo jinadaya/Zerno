@@ -4,6 +4,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Instant
 
@@ -33,5 +34,18 @@ class AppTimeTest {
         assertEquals(LocalDate(2026, 3, 1), clock.today(zones))
         zones.zone = TimeZone.of("Asia/Tokyo")
         assertEquals(LocalDate(2026, 3, 2), clock.today(zones))
+    }
+
+    @Test
+    fun offsetClockShiftsTheBaseClock() {
+        val base = FakeClock(lateEvening)
+        val clock = OffsetClock(base)
+        assertEquals(lateEvening, clock.now())
+
+        clock.offset = 2.days
+        assertEquals(LocalDate(2026, 3, 3), clock.today(FakeTimeZone(TimeZone.of("Europe/Moscow"))))
+        // Time keeps running underneath.
+        base.advanceBy(1.hours)
+        assertEquals(lateEvening + 2.days + 1.hours, clock.now())
     }
 }

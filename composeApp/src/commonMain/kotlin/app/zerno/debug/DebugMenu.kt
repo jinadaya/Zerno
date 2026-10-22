@@ -25,6 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import app.zerno.data.net.ApiConfig
 import app.zerno.data.net.HealthApi
+import app.zerno.data.time.OffsetClock
+import app.zerno.data.time.TimeZoneProvider
+import app.zerno.data.time.today
 import app.zerno.designsystem.catalog.SjCatalog
 import app.zerno.designsystem.component.SjLinkButton
 import app.zerno.designsystem.foundation.sjHairline
@@ -45,8 +48,14 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.koin.compose.koinInject
 import org.koin.dsl.module
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
-/** Developer menu: every feature's entry screen and the design system catalog. Debug builds only. */
+/**
+ * Developer menu: clock offset, seeded sessions, onboarding reset, every feature's entry screen and the design
+ * system catalog. Debug builds only.
+ */
 @Serializable
 data object DebugMenuRoute : NavKey
 
@@ -56,6 +65,11 @@ data object CatalogRoute : NavKey
 
 /** Loaded by `initKoin()` only when [isDebugBuild]. */
 val debugModule = module {
+    // Replaces timeModule's Clock.System, so every rule sees the moved time.
+    single { OffsetClock() }
+    single<Clock> { get<OffsetClock>() }
+    single { DebugActions(clock = get(), zones = get(), prefs = get(), events = get(), state = get()) }
+
     screen<DebugMenuRoute>(showBottomBar = false) { DebugMenuScreen() }
     screen<CatalogRoute>(showBottomBar = false) {
         val navigator = LocalNavigator.current
@@ -100,6 +114,7 @@ private fun DebugMenuScreen() {
         SjLinkButton("Back", navigator::back)
         BasicText("Debug", style = type.headline.copy(color = colors.ink))
         BackendHealthRow()
+        DebugToolRows()
         destinations.forEach { (label, route) ->
             BasicText(
                 label,
@@ -131,6 +146,45 @@ private fun BackendHealthRow(health: HealthApi = koinInject(), config: ApiConfig
                 status = "checking"
                 scope.launch { status = if (health.isUp()) "up" else "down" }
             }
+            .sjHairline(colors.rule)
+            .padding(vertical = SjTheme.spacing.space3),
+    )
+}
+
+/** Clock, seeding and onboarding tools; the last line shows what the last tap did. */
+@Composable
+private fun DebugToolRows(actions: DebugActions = koinInject(), zones: TimeZoneProvider = koinInject()) {
+    val scope = rememberCoroutineScope()
+    var result by remember { mutableStateOf("") }
+    var offset by remember { mutableStateOf(actions.clock.offset) }
+    fun perform(label: String, action: suspend () -> Unit) {
+        result = "$label…"
+        scope.launch {
+            result = runCatching { action() }.fold({ "$label: done" }, { "$label: ${it.message}" })
+            offset = actions.clock.offset
+        }
+    }
+
+    DebugRow("Clock ${offset.inWholeHours}h ahead, today ${actions.clock.today(zones)}") {}
+    DebugRow("Clock +1 day") { perform("+1 day") { actions.moveClock(1.days) } }
+    DebugRow("Clock +1 hour") { perform("+1 hour") { actions.moveClock(1.hours) } }
+    DebugRow("Clock reset") { perform("Clock reset") { actions.resetClock() } }
+    DebugRow("Seed 6-day streak ending yesterday") { perform("Seed streak") { actions.seedStreak(6) } }
+    DebugRow("Seed a session 8 days ago") { perform("Seed session") { actions.seedSession(daysAgo = 8) } }
+    DebugRow("Reset onboarding") { perform("Reset onboarding") { actions.resetOnboarding() } }
+    if (result.isNotEmpty()) BasicText(result, style = SjTheme.type.body.copy(color = SjTheme.colors.ink))
+}
+
+@Composable
+private fun DebugRow(label: String, onClick: () -> Unit) {
+    val colors = SjTheme.colors
+    BasicText(
+        label,
+        style = SjTheme.type.body.copy(color = colors.ink),
+        modifier = Modifier
+            .fillMaxWidth()
+            .sjMinTapTarget()
+            .clickable(onClick = onClick)
             .sjHairline(colors.rule)
             .padding(vertical = SjTheme.spacing.space3),
     )
