@@ -24,7 +24,7 @@ Requires JDK 17+ (Android Studio's bundled JBR works) and Xcode 16+ for iOS.
 
 Features: `onboarding`, `today`, `reader`, `plans`, `progress`, `gamification`, `reflection`, `account`, `settings`.
 
-Rules: a feature depends on other features only through their `:api` modules; an `:api` module depends only on `:entities`; the `domain` package is pure Kotlin.
+Rules: a feature depends on other features only through their `:api` modules; an `:api` module depends only on `:entities` (and other `:api` modules); the `domain` package is pure Kotlin. `./gradlew checkModuleRules` (also part of `check` and CI) fails on a broken dependency.
 
 ## Convention plugins
 

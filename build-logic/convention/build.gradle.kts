@@ -24,6 +24,8 @@ dependencies {
     compileOnly(libs.composeCompiler.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
+
+    testImplementation(kotlin("test-junit"))
 }
 
 gradlePlugin {
