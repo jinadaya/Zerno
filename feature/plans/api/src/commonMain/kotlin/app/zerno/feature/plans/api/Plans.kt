@@ -14,6 +14,12 @@ interface Plans {
     /** Makes [planId] the active plan from today, pausing any other; a paused plan resumes where it stopped. */
     suspend fun start(planId: PlanId)
 
+    /** Pauses the active plan, keeping its days; Today then offers no plan day until one is started. */
+    suspend fun pause()
+
+    /** Every catalog plan with the user's progress in it, in catalog order, updated as plans change. */
+    val overview: Flow<List<PlanOverview>>
+
     /**
      * Marks [day] of [planId] read today. Days can be completed in any order; completing one again keeps its first
      * date, and the plan completes with its last day. A plan never started is left alone.
@@ -29,3 +35,18 @@ interface Plans {
 
 /** One day of a plan as the Today card shows it. [done] is true once it was completed on the date asked for. */
 data class PlanToday(val plan: ReadingPlan, val day: PlanDay, val done: Boolean)
+
+enum class PlanRunStatus { NotStarted, Active, Paused, Completed }
+
+/**
+ * A plan and how far the user is in it. [completedDays] are the days done in the current run, kept when the plan is
+ * paused or another is started; [nextDay] is the lowest day not done, null once finished.
+ */
+data class PlanOverview(
+    val plan: ReadingPlan,
+    val status: PlanRunStatus,
+    val completedDays: Set<Int> = emptySet(),
+    val nextDay: Int? = 1,
+    val completedOn: LocalDate? = null,
+    val timesCompleted: Int = 0,
+)

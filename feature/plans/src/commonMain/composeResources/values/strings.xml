@@ -1,4 +1,29 @@
 <resources>
     <string name="plans_title">Plans</string>
-    <string name="plans_placeholder">Reading plans and their progress.</string>
+    <string name="plans_intro">One plan at a time. Switching keeps the days you have read.</string>
+    <string name="plans_row_progress">Day %1$d / %2$d · %3$d min a day</string>
+    <string name="plans_row_paused">Paused at day %1$d / %2$d</string>
+    <string name="plans_row_new">%1$d days · %2$d min a day</string>
+    <string name="plans_row_finished">Finished %1$s</string>
+    <string name="plans_back">Back</string>
+    <string name="plans_current">Current plan</string>
+    <plurals name="plans_length">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="plans_minutes">%1$d min a day</string>
+    <string name="plans_difficulty_gentle">Gentle</string>
+    <string name="plans_difficulty_steady">Steady</string>
+    <string name="plans_difficulty_deep">Deep</string>
+    <string name="plans_read_count">%1$d of %2$d days read</string>
+    <string name="plans_start">Start plan</string>
+    <string name="plans_resume">Resume plan</string>
+    <string name="plans_restart">Start again</string>
+    <string name="plans_switch">Switch to this plan</string>
+    <string name="plans_switch_note">Your current plan is paused, and the days you read stay marked.</string>
+    <string name="plans_pause">Pause plan</string>
+    <string name="plans_failed">That did not work. Please try again.</string>
+    <string name="plans_days">Days</string>
+    <string name="plans_day">Day %1$d</string>
+    <string name="plans_day_done">Read</string>
 </resources>

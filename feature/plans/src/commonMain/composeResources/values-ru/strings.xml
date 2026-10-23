@@ -1,4 +1,31 @@
 <resources>
     <string name="plans_title">Планы</string>
-    <string name="plans_placeholder">Планы чтения и прогресс по ним.</string>
+    <string name="plans_intro">Один план за раз. При переключении прочитанные дни сохраняются.</string>
+    <string name="plans_row_progress">День %1$d / %2$d · %3$d мин в день</string>
+    <string name="plans_row_paused">На паузе, день %1$d / %2$d</string>
+    <string name="plans_row_new">Дней: %1$d · %2$d мин в день</string>
+    <string name="plans_row_finished">Пройден %1$s</string>
+    <string name="plans_back">Назад</string>
+    <string name="plans_current">Текущий план</string>
+    <plurals name="plans_length">
+        <item quantity="one">%1$d день</item>
+        <item quantity="few">%1$d дня</item>
+        <item quantity="many">%1$d дней</item>
+        <item quantity="other">%1$d дня</item>
+    </plurals>
+    <string name="plans_minutes">%1$d мин в день</string>
+    <string name="plans_difficulty_gentle">Спокойный</string>
+    <string name="plans_difficulty_steady">Ровный</string>
+    <string name="plans_difficulty_deep">Глубокий</string>
+    <string name="plans_read_count">Прочитано дней: %1$d из %2$d</string>
+    <string name="plans_start">Начать план</string>
+    <string name="plans_resume">Продолжить план</string>
+    <string name="plans_restart">Начать заново</string>
+    <string name="plans_switch">Перейти на этот план</string>
+    <string name="plans_switch_note">Текущий план встанет на паузу, прочитанные дни останутся отмеченными.</string>
+    <string name="plans_pause">Поставить на паузу</string>
+    <string name="plans_failed">Не получилось. Попробуйте ещё раз.</string>
+    <string name="plans_days">Дни</string>
+    <string name="plans_day">День %1$d</string>
+    <string name="plans_day_done">Прочитано</string>
 </resources>
