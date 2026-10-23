@@ -6,6 +6,7 @@ import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.plan.PlanId
 import app.zerno.entities.plan.ReadingPlan
 import app.zerno.feature.gamification.api.GamificationState
+import app.zerno.feature.gamification.api.ReadingHistory
 import app.zerno.feature.gamification.api.StreakState
 import app.zerno.feature.plans.api.PlanOverview
 import app.zerno.feature.plans.api.PlanToday
@@ -244,6 +245,7 @@ class TodayViewModelTest {
         override val streak = MutableStateFlow(StreakState(date, 0, 0, emptyList(), 0))
         override val achievements: StateFlow<List<Achievement>> = MutableStateFlow(emptyList())
         override val newlyUnlocked: Flow<List<Achievement>> = emptyFlow()
+        override val history: StateFlow<ReadingHistory> = MutableStateFlow(ReadingHistory())
 
         override suspend fun refresh() {
             refreshes++
