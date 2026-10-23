@@ -49,10 +49,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.zerno.data.prefs.PageTheme
 import app.zerno.designsystem.component.SjPrimaryButton
 import app.zerno.designsystem.component.SjReaderText
 import app.zerno.designsystem.component.SjReaderTextLayout
 import app.zerno.designsystem.foundation.rememberShareText
+import app.zerno.designsystem.theme.SjPageTheme
 import app.zerno.designsystem.theme.SjTheme
 import app.zerno.designsystem.tokens.SjColors
 import app.zerno.designsystem.tokens.SjRadius
@@ -110,8 +112,15 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
         }
     }
     val state by viewModel.state.collectAsState()
-    ReaderContent(state, viewModel::sendEvent)
+    SjPageTheme(state.pageTheme.sj) { ReaderContent(state, viewModel::sendEvent) }
 }
+
+private val PageTheme.sj: SjPageTheme
+    get() = when (this) {
+        PageTheme.Light -> SjPageTheme.Light
+        PageTheme.Sepia -> SjPageTheme.Sepia
+        PageTheme.Dark -> SjPageTheme.Dark
+    }
 
 @Composable
 private fun ReaderContent(state: ReaderState, onEvent: (ReaderEvent) -> Unit) {

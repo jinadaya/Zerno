@@ -24,6 +24,7 @@ import app.zerno.feature.reader.ui.ReaderInnerEvent.Finishing
 import app.zerno.feature.reader.ui.ReaderInnerEvent.FontSizeChanged
 import app.zerno.feature.reader.ui.ReaderInnerEvent.LoadFailed
 import app.zerno.feature.reader.ui.ReaderInnerEvent.PageLoaded
+import app.zerno.feature.reader.ui.ReaderInnerEvent.PageThemeChanged
 import app.zerno.feature.reader.ui.ReaderInnerEvent.SettingsShown
 import app.zerno.feature.reader.ui.ReaderInnerEvent.TranslationsLoaded
 import app.zerno.feature.reader.ui.ReaderInnerEvent.VerseSelected
@@ -36,7 +37,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 
 /**
  * The reader page. Follows [ReaderSession.location], so the book picker opens a chapter by telling the session.
@@ -72,8 +75,24 @@ class ReaderViewModel(
         subscription(BOOKMARKS) {
             bookmarks.all.collect { all -> emit(BookmarksLoaded(all.associate { it.passage to it.id })) }
         }
+        // Text size and page colour are app settings, so a change in settings shows here at once.
+        subscription(LOOK) {
+            appPrefs.prefs.collect {
+                emit(FontSizeChanged(it.fontSize ?: ReaderFontSize.DEFAULT))
+                emit(PageThemeChanged(it.pageTheme))
+            }
+        }
+        // The chosen translation is an app setting too: the page follows it, wherever it was chosen.
+        subscription(TRANSLATION) {
+            combine(
+                session.location.filterNotNull(),
+                appPrefs.prefs.map { it.translation }.distinctUntilChanged(),
+            ) { location, chosen -> location to chosen }
+                .collect { (location, chosen) -> follow(location, chosen) }
+        }
         intent(START) {
-            emit(FontSizeChanged(prefs.fontSize() ?: ReaderFontSize.DEFAULT))
+            // Text size used to be kept by the reader alone.
+            if (appPrefs.prefs.value.fontSize == null) prefs.fontSize()?.let(appPrefs::setFontSize)
             try {
                 emit(TranslationsLoaded(bible.translations()))
                 session.start(appPrefs.prefs.value.translation, Locale.current.language)
@@ -102,21 +121,22 @@ class ReaderViewModel(
 
             is ReaderEvent.FontSizeStepped -> {
                 val size = ReaderFontSize.step(state.value.fontSize, event.steps)
-                intent(FONT_SIZE) {
-                    emit(FontSizeChanged(size))
-                    prefs.saveFontSize(size)
-                }
+                appPrefs.setFontSize(size)
             }
 
-            is ReaderEvent.TranslationSelected -> if (page != null) {
-                val from = page.location.copy(verse = topVerse)
-                intent(OPEN) { session.switchTranslation(from, event.id) }
-            }
+            is ReaderEvent.TranslationSelected -> appPrefs.setTranslation(event.id)
 
             ReaderEvent.FinishClicked -> finish(page)
 
             is VerseEvent -> onVerseEvent(event, page)
         }
+    }
+
+    private suspend fun follow(location: ReaderLocation, chosen: TranslationId?) {
+        if (chosen == null || chosen == location.translation) return
+        if (bible.translations().none { it.id == chosen }) return
+        val from = if (location == state.value.page?.location) location.copy(verse = topVerse) else location
+        session.switchTranslation(from, chosen)
     }
 
     private fun topVerseChanged(verse: Int?, page: ReaderPage?) {
@@ -222,7 +242,8 @@ class ReaderViewModel(
         const val OPEN = "open"
         const val NAVIGATE = "navigate"
         const val SETTINGS = "settings"
-        const val FONT_SIZE = "font-size"
+        const val LOOK = "look"
+        const val TRANSLATION = "translation"
         const val SAVE_POSITION = "save-position"
         const val FINISH = "finish"
         const val VERSE = "verse"

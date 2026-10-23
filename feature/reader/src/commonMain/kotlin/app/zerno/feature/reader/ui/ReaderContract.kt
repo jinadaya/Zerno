@@ -1,5 +1,6 @@
 package app.zerno.feature.reader.ui
 
+import app.zerno.data.prefs.PageTheme
 import app.zerno.entities.bible.Book
 import app.zerno.entities.bible.ChapterRef
 import app.zerno.entities.bible.PassageRef
@@ -23,6 +24,7 @@ data class ReaderState(
     val failed: Boolean = false,
     val translations: List<ReaderTranslation> = emptyList(),
     val fontSize: Int = ReaderFontSize.DEFAULT,
+    val pageTheme: PageTheme = PageTheme.Light,
     val settingsOpen: Boolean = false,
     /** "Finish reading" was tapped and the session is being recorded. */
     val finishing: Boolean = false,
@@ -82,6 +84,7 @@ sealed interface ReaderInnerEvent : InnerEvent {
     data object LoadFailed : ReaderInnerEvent
     data class TranslationsLoaded(val translations: List<ReaderTranslation>) : ReaderInnerEvent
     data class FontSizeChanged(val size: Int) : ReaderInnerEvent
+    data class PageThemeChanged(val theme: PageTheme) : ReaderInnerEvent
     data class SettingsShown(val open: Boolean) : ReaderInnerEvent
     data object Finishing : ReaderInnerEvent
     data object FinishFailed : ReaderInnerEvent
@@ -117,6 +120,8 @@ object ReaderReducer : MviReducer<ReaderState, ReaderInnerEvent> {
         is ReaderInnerEvent.TranslationsLoaded -> oldState.copy(translations = event.translations)
 
         is ReaderInnerEvent.FontSizeChanged -> oldState.copy(fontSize = event.size)
+
+        is ReaderInnerEvent.PageThemeChanged -> oldState.copy(pageTheme = event.theme)
 
         is ReaderInnerEvent.SettingsShown -> oldState.copy(settingsOpen = event.open)
 

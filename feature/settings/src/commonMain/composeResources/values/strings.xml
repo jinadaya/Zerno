@@ -1,4 +1,27 @@
 <resources>
     <string name="settings_title">Settings</string>
-    <string name="settings_placeholder">Language, text size and reminders.</string>
+    <string name="settings_back">Back</string>
+    <string name="settings_reading">Reading</string>
+    <string name="settings_translation">Translation</string>
+    <string name="settings_text_size">Text size</string>
+    <string name="settings_smaller">Smaller</string>
+    <string name="settings_larger">Larger</string>
+    <string name="settings_sample">In the beginning was the Word, and the Word was with God.</string>
+    <string name="settings_page_theme">Page colour</string>
+    <string name="settings_page_light">Light</string>
+    <string name="settings_page_sepia">Sepia</string>
+    <string name="settings_page_dark">Dark</string>
+    <string name="settings_app">App</string>
+    <string name="settings_app_theme">Theme</string>
+    <string name="settings_theme_system">As the system</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_system">As the device</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_russian">Русский</string>
+    <string name="settings_about">About</string>
+    <string name="settings_attribution_kjv">King James Version, 1769 Oxford edition. Public domain.</string>
+    <string name="settings_attribution_rst">Russian Synodal Translation, 1876. Public domain.</string>
+    <string name="settings_fonts">Fonts: Onest, Spectral and Unbounded, under the SIL Open Font License 1.1.</string>
 </resources>

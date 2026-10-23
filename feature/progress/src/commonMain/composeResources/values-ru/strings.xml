@@ -52,4 +52,5 @@
     <string name="progress_saved">Сохранённое</string>
     <string name="progress_saved_line">Сохранённые стихи и ваши размышления.</string>
     <string name="progress_saved_open">Открыть</string>
+    <string name="progress_settings">Настройки</string>
 </resources>

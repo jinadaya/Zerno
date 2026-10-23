@@ -46,4 +46,5 @@
     <string name="progress_saved">Saved</string>
     <string name="progress_saved_line">Verses you kept and your reflections.</string>
     <string name="progress_saved_open">Open saved</string>
+    <string name="progress_settings">Settings</string>
 </resources>

@@ -36,6 +36,7 @@ class JourneyViewModel(savedStateHandle: SavedStateHandle, private val gamificat
             JourneyEvent.CurrentPlanClicked -> intent(OPEN) { postEffect(JourneyEffect.OpenPlans) }
             JourneyEvent.AchievementsClicked -> intent(OPEN) { postEffect(JourneyEffect.OpenAchievements) }
             JourneyEvent.SavedClicked -> intent(OPEN) { postEffect(JourneyEffect.OpenSaved) }
+            JourneyEvent.SettingsClicked -> intent(OPEN) { postEffect(JourneyEffect.OpenSettings) }
         }
     }
 
