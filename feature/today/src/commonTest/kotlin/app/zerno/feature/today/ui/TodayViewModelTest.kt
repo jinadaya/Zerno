@@ -178,8 +178,11 @@ class TodayViewModelTest {
         var progress: PassageProgress? = null
         var fail = false
 
-        override suspend fun openAt(passage: PassageRef, resume: Boolean) {
+        override suspend fun openAt(passage: PassageRef, resume: Boolean) = error("Today opens plan days")
+
+        override suspend fun openPlanDay(planId: PlanId, day: Int, passage: PassageRef, resume: Boolean) {
             check(!fail) { "No Bible installed" }
+            check(day == passage.startChapter) { "Day $day of the test plan reads chapter $day" }
             opened += passage to resume
         }
 

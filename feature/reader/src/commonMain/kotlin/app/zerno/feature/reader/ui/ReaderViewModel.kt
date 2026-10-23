@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.zerno.data.prefs.AppPreferences
 import app.zerno.entities.bible.ChapterRef
 import app.zerno.feature.reader.domain.BibleSource
+import app.zerno.feature.reader.domain.DailyReading
 import app.zerno.feature.reader.domain.ReaderFontSize
 import app.zerno.feature.reader.domain.ReaderLocation
 import app.zerno.feature.reader.domain.ReaderPrefs
@@ -12,6 +13,8 @@ import app.zerno.feature.reader.domain.ReaderSession
 import app.zerno.feature.reader.domain.chapterAfter
 import app.zerno.feature.reader.domain.chapterBefore
 import app.zerno.feature.reader.domain.chapterTitle
+import app.zerno.feature.reader.ui.ReaderInnerEvent.FinishFailed
+import app.zerno.feature.reader.ui.ReaderInnerEvent.Finishing
 import app.zerno.feature.reader.ui.ReaderInnerEvent.FontSizeChanged
 import app.zerno.feature.reader.ui.ReaderInnerEvent.LoadFailed
 import app.zerno.feature.reader.ui.ReaderInnerEvent.PageLoaded
@@ -23,6 +26,7 @@ import com.royaal.arch.mvi.viewmodel.MviViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 
 /**
@@ -35,6 +39,7 @@ class ReaderViewModel(
     private val bible: BibleSource,
     private val prefs: ReaderPrefs,
     private val appPrefs: AppPreferences,
+    private val daily: DailyReading,
 ) : MviViewModel<ReaderState, ReaderEvent, ReaderInnerEvent, ReaderEffect, ScreenSnapshot.NoSnapshot>(
     savedStateHandle = savedStateHandle,
     initialState = ReaderState(),
@@ -46,7 +51,10 @@ class ReaderViewModel(
 
     init {
         subscription(PAGE) {
-            session.location.filterNotNull().collectLatest { location ->
+            // A plan day beginning or ending changes whether the page ends with "Finish reading".
+            combine(session.location.filterNotNull(), daily.current) { location, _ ->
+                location
+            }.collectLatest { location ->
                 topVerse = location.verse
                 emit(load(location))
             }
@@ -99,6 +107,25 @@ class ReaderViewModel(
                 val from = page.location.copy(verse = topVerse)
                 intent(OPEN) { session.switchTranslation(from, event.id) }
             }
+
+            ReaderEvent.FinishClicked -> finish(page)
+        }
+    }
+
+    // Recording can fail on storage; the button stays for another try.
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
+    private fun finish(page: ReaderPage?) {
+        if (page == null || !page.canFinish || state.value.finishing) return
+        intent(FINISH) {
+            emit(Finishing)
+            try {
+                daily.finish(page.location.translation)
+                postEffect(ReaderEffect.SessionFinished)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                emit(FinishFailed)
+            }
         }
     }
 
@@ -121,6 +148,7 @@ class ReaderViewModel(
                 verses = bible.chapter(location.translation, location.chapter),
                 previous = link(books.chapterBefore(location.chapter)),
                 next = link(books.chapterAfter(location.chapter)),
+                canFinish = daily.endsAt(location),
             ),
         )
     } catch (e: CancellationException) {
@@ -137,6 +165,7 @@ class ReaderViewModel(
         const val SETTINGS = "settings"
         const val FONT_SIZE = "font-size"
         const val SAVE_POSITION = "save-position"
+        const val FINISH = "finish"
         const val SAVE_POSITION_DELAY_MS = 400L
     }
 }

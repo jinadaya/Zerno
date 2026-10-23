@@ -90,7 +90,8 @@ class OnboardingViewModel(
             try {
                 plans.start(plan.id)
                 prefs.setReminderTime(answers.reminder)
-                reader.openAt(plan.days.first().passages.first())
+                val first = plan.days.first()
+                reader.openPlanDay(plan.id, first.day, first.passages.first())
                 prefs.setOnboardingDone(true)
                 postEffect(OnboardingEffect.OpenReader)
             } catch (e: CancellationException) {
