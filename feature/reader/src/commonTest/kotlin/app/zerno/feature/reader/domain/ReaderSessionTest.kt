@@ -3,6 +3,8 @@ package app.zerno.feature.reader.domain
 import app.zerno.entities.bible.ChapterRef
 import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.TranslationId
+import app.zerno.entities.bible.Versification
+import app.zerno.feature.reader.api.PassageProgress
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -124,5 +126,45 @@ class ReaderSessionTest {
         session.start(RST, "ru")
         session.openPassage(PassageRef.chapter(PSALMS, 23))
         assertEquals(ReaderLocation(RST, ChapterRef(PSALMS, 22)), session.location.value)
+    }
+
+    @Test
+    fun resumingAPassageOpensWhereItWasLeft() = runTest {
+        session.start(KJV, "en")
+        prefs.positions[Versification.English to ChapterRef(JOHN, 4)] = 12
+        session.openPassage(PassageRef.chapter(JOHN, 4), resume = true)
+        assertEquals(ReaderLocation(KJV, ChapterRef(JOHN, 4), 12), session.location.value)
+
+        session.openPassage(PassageRef.chapter(JOHN, 5), resume = true)
+        assertEquals(ReaderLocation(KJV, ChapterRef(JOHN, 5)), session.location.value)
+    }
+
+    @Test
+    fun progressIsNullOnAFreshInstall() = runTest {
+        assertNull(session.progressIn(PassageRef.chapter(JOHN, 4)))
+    }
+
+    @Test
+    fun progressIsTheSavedVerseOfTheChapter() = runTest {
+        prefs.last = ReaderLocation(KJV, ChapterRef(GENESIS, 1))
+        prefs.positions[Versification.English to ChapterRef(JOHN, 4)] = 12
+
+        assertEquals(PassageProgress(12, 30), session.progressIn(PassageRef.chapter(JOHN, 4)))
+        assertEquals(0.4f, PassageProgress(12, 30).fraction)
+    }
+
+    @Test
+    fun progressAtThePassageStartIsNull() = runTest {
+        session.start(KJV, "en")
+        prefs.positions[Versification.English to ChapterRef(JOHN, 4)] = 5
+        assertNull(session.progressIn(PassageRef(JOHN, 4, 5, 4, 26)))
+        assertEquals(PassageProgress(5, 30), session.progressIn(PassageRef.chapter(JOHN, 4)))
+    }
+
+    @Test
+    fun progressUsesTheTranslationsNumbering() = runTest {
+        session.start(RST, "ru")
+        prefs.positions[Versification.Russian to ChapterRef(PSALMS, 22)] = 3
+        assertEquals(PassageProgress(3, 30), session.progressIn(PassageRef.chapter(PSALMS, 23)))
     }
 }

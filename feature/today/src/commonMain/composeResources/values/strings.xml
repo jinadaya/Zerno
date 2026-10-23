@@ -1,4 +1,30 @@
 <resources>
     <string name="today_title">Today</string>
-    <string name="today_placeholder">The day’s reading card and streak week.</string>
+    <string name="today_tag">Today</string>
+    <string name="today_day">Day %1$d / %2$d</string>
+    <string name="today_minutes_unit">min</string>
+    <string name="today_start">Start</string>
+    <string name="today_continue">Continue</string>
+    <string name="today_read_again">Read again</string>
+    <string name="today_verse_position">Verse %1$d / %2$d</string>
+    <string name="today_progress_description">Chapter progress</string>
+    <string name="today_open_failed">The reader could not open. Please try again.</string>
+    <string name="today_no_plan_title">pick a plan</string>
+    <string name="today_no_plan_body">A plan gives you one short passage a day. Choose one to begin.</string>
+    <string name="today_no_plan_action">Choose a plan</string>
+    <plurals name="today_days_read">
+        <item quantity="one">day read this week</item>
+        <item quantity="other">days read this week</item>
+    </plurals>
+    <string name="today_day_read">read</string>
+    <string name="today_day_done">read and reflected</string>
+    <string name="today_day_today">today</string>
+    <string name="today_day_not_read">not read</string>
+    <string name="today_monday">M</string>
+    <string name="today_tuesday">T</string>
+    <string name="today_wednesday">W</string>
+    <string name="today_thursday">T</string>
+    <string name="today_friday">F</string>
+    <string name="today_saturday">S</string>
+    <string name="today_sunday">S</string>
 </resources>
