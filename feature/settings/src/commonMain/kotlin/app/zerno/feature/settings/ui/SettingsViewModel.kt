@@ -4,6 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import app.zerno.data.prefs.AppPreferences
 import app.zerno.data.prefs.ScriptureSize
 import app.zerno.feature.settings.data.InstalledTranslations
+import app.zerno.feature.settings.domain.DefaultReminderTime
+import app.zerno.feature.settings.domain.ReminderStepMinutes
+import app.zerno.feature.settings.domain.stepBy
+import app.zerno.feature.settings.domain.toggled
 import com.royaal.arch.mvi.ScreenSnapshot
 import com.royaal.arch.mvi.SnapshotHandler
 import com.royaal.arch.mvi.viewmodel.MviViewModel
@@ -43,7 +47,27 @@ class SettingsViewModel(
 
             is SettingsEvent.UiLanguageChosen -> prefs.setUiLanguage(event.language)
 
+            is SettingsEvent.ReminderEvent -> onReminderEvent(event)
+
             SettingsEvent.BackClicked -> intent(CLOSE) { postEffect(SettingsEffect.Close) }
+        }
+    }
+
+    private fun onReminderEvent(event: SettingsEvent.ReminderEvent) {
+        when (event) {
+            is SettingsEvent.ReminderTurnedOn -> intent(REMINDER) {
+                emit(SettingsInnerEvent.ReminderDenied(!event.granted))
+                if (event.granted) prefs.setReminderTime(state.value.prefs.reminderTime ?: DefaultReminderTime)
+            }
+
+            SettingsEvent.ReminderTurnedOff -> prefs.setReminderTime(null)
+
+            is SettingsEvent.ReminderTimeStepped -> state.value.prefs.reminderTime?.let { time ->
+                prefs.setReminderTime(time.stepBy(event.steps * ReminderStepMinutes))
+            }
+
+            is SettingsEvent.ReminderDayToggled ->
+                prefs.setReminderDays(state.value.prefs.reminderDays.toggled(event.day))
         }
     }
 
@@ -64,5 +88,6 @@ class SettingsViewModel(
         const val PREFS = "prefs"
         const val TRANSLATIONS = "translations"
         const val CLOSE = "close"
+        const val REMINDER = "reminder"
     }
 }

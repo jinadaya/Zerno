@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.isoDayNumber
 
 /** Light or dark chrome, or whatever the system says. */
 enum class AppTheme { System, Light, Dark }
@@ -28,6 +30,11 @@ object ScriptureSize {
     fun step(size: Int, steps: Int): Int = (size + steps * STEP).coerceIn(MIN, MAX)
 }
 
+private const val DAYS_IN_WEEK = 7
+
+/** Monday to Sunday. */
+val EveryDay: Set<DayOfWeek> = (1..DAYS_IN_WEEK).mapTo(LinkedHashSet()) { DayOfWeek(it) }
+
 /** Everything the user sets once and expects to find again after a restart. `null` means never set. */
 data class AppPrefs(
     val appTheme: AppTheme = AppTheme.System,
@@ -36,6 +43,8 @@ data class AppPrefs(
     val translation: TranslationId? = null,
     val fontSize: Int? = null,
     val reminderTime: LocalTime? = null,
+    /** Days the reminder may come on; every day unless the user narrowed it. */
+    val reminderDays: Set<DayOfWeek> = EveryDay,
     val onboardingDone: Boolean = false,
 )
 
@@ -81,6 +90,12 @@ class AppPreferences(private val settings: Settings) {
         it.copy(reminderTime = time)
     }
 
+    /** An empty set is kept as is: the reminder then never comes, like turning it off. */
+    fun setReminderDays(days: Set<DayOfWeek>) = write {
+        putString(REMINDER_DAYS, days.map { it.isoDayNumber }.sorted().joinToString(","))
+        it.copy(reminderDays = days)
+    }
+
     fun setOnboardingDone(done: Boolean) = write {
         putBoolean(ONBOARDING_DONE, done)
         it.copy(onboardingDone = done)
@@ -99,13 +114,9 @@ class AppPreferences(private val settings: Settings) {
             translation = getStringOrNull(TRANSLATION)?.takeIf { it.isNotBlank() }?.let(::TranslationId),
             fontSize = getIntOrNull(FONT_SIZE),
             reminderTime = getStringOrNull(REMINDER_TIME)?.let { runCatching { LocalTime.parse(it) }.getOrNull() },
+            reminderDays = getStringOrNull(REMINDER_DAYS)?.let(::parseDays) ?: defaults.reminderDays,
             onboardingDone = getBoolean(ONBOARDING_DONE, defaults.onboardingDone),
         )
-    }
-
-    private inline fun <reified E : Enum<E>> enumOrNull(name: String?): E? = enumValues<E>().firstOrNull {
-        it.name ==
-            name
     }
 
     private companion object {
@@ -115,6 +126,15 @@ class AppPreferences(private val settings: Settings) {
         const val TRANSLATION = "reading.translation"
         const val FONT_SIZE = "reading.font-size"
         const val REMINDER_TIME = "reminder.time"
+        const val REMINDER_DAYS = "reminder.days"
         const val ONBOARDING_DONE = "onboarding.done"
     }
 }
+
+/** ISO day numbers, e.g. "1,3,5"; numbers out of range are skipped. */
+private fun parseDays(value: String): Set<DayOfWeek> = value.split(",")
+    .mapNotNull { it.trim().toIntOrNull() }
+    .filter { it in 1..DAYS_IN_WEEK }
+    .mapTo(HashSet()) { DayOfWeek(it) }
+
+private inline fun <reified E : Enum<E>> enumOrNull(name: String?): E? = enumValues<E>().firstOrNull { it.name == name }

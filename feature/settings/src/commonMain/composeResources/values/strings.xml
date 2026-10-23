@@ -24,4 +24,25 @@
     <string name="settings_attribution_kjv">King James Version, 1769 Oxford edition. Public domain.</string>
     <string name="settings_attribution_rst">Russian Synodal Translation, 1876. Public domain.</string>
     <string name="settings_fonts">Fonts: Onest, Spectral and Unbounded, under the SIL Open Font License 1.1.</string>
+    <string name="settings_reminder">Reminder</string>
+    <string name="settings_reminder_daily">A gentle daily reminder</string>
+    <string name="settings_reminder_time">Time</string>
+    <string name="settings_reminder_earlier">Earlier</string>
+    <string name="settings_reminder_later">Later</string>
+    <string name="settings_reminder_days">Days</string>
+    <string name="settings_reminder_note">No reminder comes once you have read that day.</string>
+    <string name="settings_reminder_denied">Notifications are off for Zerno. You can allow them in the system settings.</string>
+    <string name="settings_day_1">Mon</string>
+    <string name="settings_day_2">Tue</string>
+    <string name="settings_day_3">Wed</string>
+    <string name="settings_day_4">Thu</string>
+    <string name="settings_day_5">Fri</string>
+    <string name="settings_day_6">Sat</string>
+    <string name="settings_day_7">Sun</string>
+    <string name="reminder_title">Zerno</string>
+    <string name="reminder_line_1">A few quiet minutes with the Word are waiting for you.</string>
+    <string name="reminder_line_2">Today's reading is ready whenever you are.</string>
+    <string name="reminder_line_3">Pip saved you a seat. Shall we read?</string>
+    <string name="reminder_line_4">One chapter, one breath. Your page is open.</string>
+    <string name="reminder_line_5">A small seed today grows into something lasting.</string>
 </resources>

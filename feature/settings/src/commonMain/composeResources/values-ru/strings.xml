@@ -24,4 +24,25 @@
     <string name="settings_attribution_kjv">Перевод короля Якова, оксфордское издание 1769 года. Общественное достояние.</string>
     <string name="settings_attribution_rst">Синодальный перевод, 1876. Общественное достояние.</string>
     <string name="settings_fonts">Шрифты: Onest, Spectral и Unbounded, по лицензии SIL Open Font License 1.1.</string>
+    <string name="settings_reminder">Напоминание</string>
+    <string name="settings_reminder_daily">Мягкое ежедневное напоминание</string>
+    <string name="settings_reminder_time">Время</string>
+    <string name="settings_reminder_earlier">Раньше</string>
+    <string name="settings_reminder_later">Позже</string>
+    <string name="settings_reminder_days">Дни</string>
+    <string name="settings_reminder_note">Если вы уже читали в этот день, напоминания не будет.</string>
+    <string name="settings_reminder_denied">Уведомления для Zerno выключены. Их можно разрешить в настройках системы.</string>
+    <string name="settings_day_1">Пн</string>
+    <string name="settings_day_2">Вт</string>
+    <string name="settings_day_3">Ср</string>
+    <string name="settings_day_4">Чт</string>
+    <string name="settings_day_5">Пт</string>
+    <string name="settings_day_6">Сб</string>
+    <string name="settings_day_7">Вс</string>
+    <string name="reminder_title">Zerno</string>
+    <string name="reminder_line_1">Несколько тихих минут со Словом ждут вас.</string>
+    <string name="reminder_line_2">Сегодняшнее чтение готово, когда будете готовы вы.</string>
+    <string name="reminder_line_3">Пип занял вам место. Почитаем?</string>
+    <string name="reminder_line_4">Одна глава, один вдох. Страница открыта.</string>
+    <string name="reminder_line_5">Маленькое зерно сегодня вырастет во что-то долгое.</string>
 </resources>
