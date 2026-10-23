@@ -1,7 +1,6 @@
 package app.zerno.feature.gamification.di
 
 import app.zerno.data.db.user.UserDb
-import app.zerno.designsystem.component.SjPlaceholderScreen
 import app.zerno.feature.gamification.api.AchievementTexts
 import app.zerno.feature.gamification.api.AchievementsRoute
 import app.zerno.feature.gamification.api.GamificationEvents
@@ -9,16 +8,16 @@ import app.zerno.feature.gamification.api.GamificationState
 import app.zerno.feature.gamification.data.BundledAchievementCatalog
 import app.zerno.feature.gamification.data.GamificationRepository
 import app.zerno.feature.gamification.data.GamificationService
-import app.zerno.feature.gamification.resources.Res
-import app.zerno.feature.gamification.resources.gamification_placeholder
-import app.zerno.feature.gamification.resources.gamification_title
+import app.zerno.feature.gamification.data.SeenSealsStore
+import app.zerno.feature.gamification.ui.AchievementsScreen
+import app.zerno.feature.gamification.ui.AchievementsViewModel
 import app.zerno.feature.gamification.ui.ResourceAchievementTexts
-import com.royaal.navigation.LocalNavigator
 import com.royaal.navigation.screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
@@ -38,13 +37,8 @@ val gamificationModule = module {
     } binds arrayOf(GamificationEvents::class, GamificationState::class)
     single<AchievementTexts> { ResourceAchievementTexts() }
 
-    // Placeholder until the feature's first screen lands; reached from the debug menu.
-    screen<AchievementsRoute>(showBottomBar = false) {
-        val navigator = LocalNavigator.current
-        SjPlaceholderScreen(
-            stringResource(Res.string.gamification_title),
-            stringResource(Res.string.gamification_placeholder),
-            onBack = navigator::back,
-        )
-    }
+    single { SeenSealsStore(get<UserDb>().appMetaDao()) }
+    viewModelOf(::AchievementsViewModel)
+
+    screen<AchievementsRoute>(showBottomBar = false) { AchievementsScreen(koinViewModel()) }
 }

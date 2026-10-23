@@ -1,6 +1,15 @@
 <resources>
     <string name="gamification_title">Достижения</string>
-    <string name="gamification_placeholder">Все печати, открытые и закрытые.</string>
+    <string name="achievements_intro">Печати отмечают пройденный путь. Они только ваши.</string>
+    <string name="achievements_back">Назад</string>
+    <string name="achievements_set_bird">Печати Пипа</string>
+    <string name="achievements_set_bird_line">Возвращаться день за днём.</string>
+    <string name="achievements_set_sheep">Печати Вулли</string>
+    <string name="achievements_set_sheep_line">Главы, книги и планы.</string>
+    <string name="achievements_set_lamp">Печати Люми</string>
+    <string name="achievements_set_lamp_line">Размышления и сохранённые стихи.</string>
+    <string name="achievements_unlocked">Получено %1$d из %2$d</string>
+    <string name="achievements_progress">%1$d из %2$d</string>
     <string name="achievement_first_steps_title">Первые шаги</string>
     <string name="achievement_first_steps_description">Завершите первое чтение.</string>
     <string name="achievement_first_chapter_title">Первая глава</string>
