@@ -2,11 +2,15 @@ package app.zerno.feature.reader.ui
 
 import app.zerno.entities.bible.Book
 import app.zerno.entities.bible.ChapterRef
+import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.TranslationId
 import app.zerno.entities.bible.Verse
+import app.zerno.entities.bible.Versification
+import app.zerno.entities.saved.BookmarkId
 import app.zerno.feature.reader.domain.ReaderFontSize
 import app.zerno.feature.reader.domain.ReaderLocation
 import app.zerno.feature.reader.domain.ReaderTranslation
+import app.zerno.feature.reflection.api.ReflectionRoute
 import com.royaal.arch.mvi.InnerEvent
 import com.royaal.arch.mvi.MviReducer
 import com.royaal.arch.mvi.ScreenState
@@ -23,6 +27,10 @@ data class ReaderState(
     /** "Finish reading" was tapped and the session is being recorded. */
     val finishing: Boolean = false,
     val finishFailed: Boolean = false,
+    /** Index of the tapped verse whose action bar is open. */
+    val selected: Int? = null,
+    /** Saved verses in KJV numbering, with the bookmark that keeps each. */
+    val bookmarks: Map<PassageRef, BookmarkId> = emptyMap(),
 ) : ScreenState
 
 /**
@@ -39,6 +47,7 @@ data class ReaderPage(
     val previous: ChapterLink?,
     val next: ChapterLink?,
     val canFinish: Boolean = false,
+    val versification: Versification = Versification.English,
 )
 
 data class ChapterLink(val chapter: ChapterRef, val title: String)
@@ -56,6 +65,18 @@ sealed interface ReaderEvent : UserEvent {
     data object FinishClicked : ReaderEvent
 }
 
+/** The action bar over a tapped verse. */
+sealed interface VerseEvent : ReaderEvent {
+    data class VerseClicked(val index: Int) : VerseEvent
+    data object Dismissed : VerseEvent
+
+    /** Saves the verse, or removes it when already saved. */
+    data object SaveClicked : VerseEvent
+    data object NoteClicked : VerseEvent
+    data object CopyClicked : VerseEvent
+    data object ShareClicked : VerseEvent
+}
+
 sealed interface ReaderInnerEvent : InnerEvent {
     data class PageLoaded(val page: ReaderPage) : ReaderInnerEvent
     data object LoadFailed : ReaderInnerEvent
@@ -64,6 +85,8 @@ sealed interface ReaderInnerEvent : InnerEvent {
     data class SettingsShown(val open: Boolean) : ReaderInnerEvent
     data object Finishing : ReaderInnerEvent
     data object FinishFailed : ReaderInnerEvent
+    data class VerseSelected(val index: Int?) : ReaderInnerEvent
+    data class BookmarksLoaded(val bookmarks: Map<PassageRef, BookmarkId>) : ReaderInnerEvent
 }
 
 sealed interface ReaderEffect : SideEffect {
@@ -71,12 +94,23 @@ sealed interface ReaderEffect : SideEffect {
 
     /** The plan day was completed; on to the session complete screen. */
     data object SessionFinished : ReaderEffect
+
+    data class OpenReflection(val route: ReflectionRoute) : ReaderEffect
+
+    data class CopyText(val text: String) : ReaderEffect
+
+    data class ShareText(val text: String) : ReaderEffect
 }
 
 object ReaderReducer : MviReducer<ReaderState, ReaderInnerEvent> {
     override fun reduce(oldState: ReaderState, event: ReaderInnerEvent): ReaderState = when (event) {
         // A finished session clears the plan day and reloads the page, which ends "finishing".
-        is ReaderInnerEvent.PageLoaded -> oldState.copy(page = event.page, failed = false, finishing = false)
+        is ReaderInnerEvent.PageLoaded -> oldState.copy(
+            page = event.page,
+            failed = false,
+            finishing = false,
+            selected = oldState.selected.takeIf { event.page.location.chapter == oldState.page?.location?.chapter },
+        )
 
         ReaderInnerEvent.LoadFailed -> oldState.copy(failed = true)
 
@@ -89,5 +123,9 @@ object ReaderReducer : MviReducer<ReaderState, ReaderInnerEvent> {
         ReaderInnerEvent.Finishing -> oldState.copy(finishing = true, finishFailed = false)
 
         ReaderInnerEvent.FinishFailed -> oldState.copy(finishing = false, finishFailed = true)
+
+        is ReaderInnerEvent.VerseSelected -> oldState.copy(selected = event.index)
+
+        is ReaderInnerEvent.BookmarksLoaded -> oldState.copy(bookmarks = event.bookmarks)
     }
 }

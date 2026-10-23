@@ -32,4 +32,9 @@
         <item quantity="one">day in a row</item>
         <item quantity="other">days in a row</item>
     </plurals>
+    <string name="reader_verse_save">Save</string>
+    <string name="reader_verse_saved">Saved</string>
+    <string name="reader_verse_note">Note</string>
+    <string name="reader_verse_copy">Copy</string>
+    <string name="reader_verse_share">Share</string>
 </resources>

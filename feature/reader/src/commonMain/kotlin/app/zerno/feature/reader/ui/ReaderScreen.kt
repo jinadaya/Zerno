@@ -36,12 +36,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import app.zerno.designsystem.component.SjPrimaryButton
 import app.zerno.designsystem.component.SjReaderText
 import app.zerno.designsystem.component.SjReaderTextLayout
+import app.zerno.designsystem.foundation.rememberShareText
 import app.zerno.designsystem.theme.SjTheme
 import app.zerno.designsystem.tokens.SjColors
 import app.zerno.designsystem.tokens.SjRadius
@@ -83,6 +86,11 @@ import kotlin.math.roundToInt
 @Composable
 fun ReaderScreen(viewModel: ReaderViewModel) {
     val navigator = LocalNavigator.current
+
+    // The suspend clipboard API needs a platform ClipEntry; plain text needs no more than this.
+    @Suppress("DEPRECATION")
+    val clipboard = LocalClipboardManager.current
+    val share = rememberShareText()
     EffectHandler(viewModel) { effect ->
         when (effect) {
             ReaderEffect.OpenBookPicker -> navigator.navigate(BookPickerRoute)
@@ -93,6 +101,12 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
                 if (navigator.currentTab == TodayRoute) navigator.back() else navigator.selectTab(TodayRoute)
                 navigator.navigate(SessionCompleteRoute)
             }
+
+            is ReaderEffect.OpenReflection -> navigator.navigate(effect.route)
+
+            is ReaderEffect.CopyText -> clipboard.setText(AnnotatedString(effect.text))
+
+            is ReaderEffect.ShareText -> share(effect.text)
         }
     }
     val state by viewModel.state.collectAsState()
@@ -217,6 +231,14 @@ private fun ReaderPageContent(
             }
     }
 
+    // Scrolling puts the action bar away, as tapping outside it does.
+    LaunchedEffect(page.location, state.selected) {
+        if (state.selected == null) return@LaunchedEffect
+        val from = scroll.value
+        snapshotFlow { scroll.value }.first { it != from }
+        currentOnEvent(VerseEvent.Dismissed)
+    }
+
     // On a new text size, wait for the new layout and bring the verse that was at the top back there.
     val sizeChange = remember(page.location) { FontSizeChange(fontSize) }
     if (sizeChange.size != fontSize) {
@@ -240,9 +262,12 @@ private fun ReaderPageContent(
             verses = verses,
             credit = "${page.title}, ${page.translation.name}",
             fontSize = fontSize.sp,
+            selected = state.selected,
+            onVerseClick = { onEvent(VerseEvent.VerseClicked(it)) },
             layout = textLayout,
             modifier = Modifier.fillMaxWidth(),
         )
+        VerseActionBar(page, state, textLayout, onEvent)
         if (page.canFinish) FinishReading(state, fonts, colors, onEvent)
         Row(
             modifier = Modifier
