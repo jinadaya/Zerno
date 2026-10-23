@@ -12,6 +12,7 @@ import app.zerno.feature.plans.api.Plans
 import app.zerno.feature.reader.api.PassageProgress
 import app.zerno.feature.reader.api.ReaderLauncher
 import app.zerno.feature.today.domain.John
+import app.zerno.feature.today.domain.LighterPassage
 import app.zerno.feature.today.domain.TodayAction
 import app.zerno.feature.today.domain.testPlan
 import kotlinx.coroutines.Dispatchers
@@ -29,11 +30,13 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -157,6 +160,44 @@ class TodayViewModelTest {
         assertEquals(TodayEffect.OpenPlans, viewModel.effects.first())
     }
 
+    @Test
+    fun threeDaysAwayWelcomesBackAndResumesThePlanDay() = runTest {
+        plans.show(date, PlanToday(plan, plan.days[3], done = false))
+        gamification.streak.value =
+            gamification.streak.value.copy(lastRead = date.minus(3, DateTimeUnit.DAY))
+        val viewModel = viewModel()
+        advanceUntilIdle()
+        assertTrue(viewModel.state.value.welcomeBack)
+
+        viewModel.sendEvent(TodayEvent.ResumeClicked)
+        advanceUntilIdle()
+
+        assertEquals(TodayEffect.OpenReader, viewModel.effects.first())
+        assertEquals(listOf(PassageRef.chapter(John, 4) to true), reader.opened)
+    }
+
+    @Test
+    fun somethingLighterOpensAShortPassage() = runTest {
+        gamification.streak.value =
+            gamification.streak.value.copy(lastRead = date.minus(3, DateTimeUnit.DAY))
+        val viewModel = viewModel()
+        viewModel.sendEvent(TodayEvent.LighterClicked)
+        advanceUntilIdle()
+
+        assertEquals(TodayEffect.OpenReader, viewModel.effects.first())
+        assertEquals(listOf(LighterPassage), reader.freeReading)
+    }
+
+    @Test
+    fun readingYesterdayIsNoWelcomeBack() = runTest {
+        gamification.streak.value =
+            gamification.streak.value.copy(lastRead = date.minus(1, DateTimeUnit.DAY))
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        assertFalse(viewModel.state.value.welcomeBack)
+    }
+
     /** [show] sets what a date shows, and updates every open flow. */
     private class FakePlans : Plans {
         private val state = MutableStateFlow<Map<LocalDate, PlanToday>>(emptyMap())
@@ -175,10 +216,14 @@ class TodayViewModelTest {
 
     private class FakeReader : ReaderLauncher {
         val opened = mutableListOf<Pair<PassageRef, Boolean>>()
+        val freeReading = mutableListOf<PassageRef>()
         var progress: PassageProgress? = null
         var fail = false
 
-        override suspend fun openAt(passage: PassageRef, resume: Boolean) = error("Today opens plan days")
+        override suspend fun openAt(passage: PassageRef, resume: Boolean) {
+            check(!fail) { "No Bible installed" }
+            freeReading += passage
+        }
 
         override suspend fun openPlanDay(planId: PlanId, day: Int, passage: PassageRef, resume: Boolean) {
             check(!fail) { "No Bible installed" }

@@ -1,5 +1,6 @@
 package app.zerno.feature.today.domain
 
+import app.zerno.entities.bible.BookId
 import app.zerno.entities.bible.BookNameLanguage
 import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.Versification
@@ -10,6 +11,7 @@ import app.zerno.entities.plan.ReadingPlan
 import app.zerno.feature.gamification.api.StreakState
 import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.reader.api.PassageProgress
+import kotlinx.datetime.daysUntil
 
 /** The Today card's button: Start before reading, Continue part way, Read again once the day is done. */
 enum class TodayAction { Start, Continue, ReadAgain }
@@ -45,6 +47,18 @@ fun PlanDay.reference(language: BookNameLanguage): String = passages.joinToStrin
             .format(language)
     }
 }
+
+/**
+ * True after two or more days without reading: Today then welcomes the user back instead of showing the plain card.
+ * Never true before the first reading.
+ */
+val StreakState.welcomeBack: Boolean
+    get() = lastRead?.let { it.daysUntil(today) >= AwayDays } ?: false
+
+private const val AwayDays = 2
+
+/** A short, gentle passage offered on return instead of the plan day: Psalm 23. */
+val LighterPassage: PassageRef = PassageRef.chapter(BookId(230), 23)
 
 /** Position of today in the week, or null before the streak is first computed. */
 val StreakState.todayIndex: Int?

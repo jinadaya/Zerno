@@ -50,4 +50,6 @@ data class StreakState(
     /** The seven days of the current week, in order. */
     val week: List<StreakDay>,
     val daysReadThisWeek: Int,
+    /** The last date with a reading, or null before the first. */
+    val lastRead: LocalDate? = null,
 )

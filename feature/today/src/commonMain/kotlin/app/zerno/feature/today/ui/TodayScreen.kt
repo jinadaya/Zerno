@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import app.zerno.designsystem.component.SjPrimaryButton
 import app.zerno.designsystem.component.SjTodayCard
 import app.zerno.designsystem.component.SjTodayProgress
+import app.zerno.designsystem.component.SjWelcomeBack
 import app.zerno.designsystem.foundation.StickerSurface
 import app.zerno.designsystem.mascot.Mascot
 import app.zerno.designsystem.mascot.MascotCharacter
@@ -49,6 +50,11 @@ import app.zerno.feature.today.resources.today_start
 import app.zerno.feature.today.resources.today_tag
 import app.zerno.feature.today.resources.today_title
 import app.zerno.feature.today.resources.today_verse_position
+import app.zerno.feature.today.resources.today_welcome_lighter
+import app.zerno.feature.today.resources.today_welcome_message
+import app.zerno.feature.today.resources.today_welcome_message_no_plan
+import app.zerno.feature.today.resources.today_welcome_resume
+import app.zerno.feature.today.resources.today_welcome_title
 import com.royaal.arch.mvi.EffectHandler
 import com.royaal.navigation.LocalNavigator
 import org.jetbrains.compose.resources.stringResource
@@ -90,6 +96,7 @@ private fun TodayContent(state: TodayState, onEvent: (TodayEvent) -> Unit) {
         )
         when {
             !state.planLoaded -> Unit
+            state.welcomeBack -> WelcomeBack(state.card, onEvent)
             state.card == null -> NoPlan(onEvent)
             else -> Card(state.card, onEvent)
         }
@@ -126,6 +133,22 @@ private fun Card(card: TodayCard, onEvent: (TodayEvent) -> Unit) {
                 description = stringResource(Res.string.today_progress_description),
             )
         },
+    )
+}
+
+/** Back after two or more days: where they stopped, and a lighter way in. Never the days missed. */
+@Composable
+private fun WelcomeBack(card: TodayCard?, onEvent: (TodayEvent) -> Unit) {
+    val language = BookNameLanguage.fromCode(Locale.current.language)
+    SjWelcomeBack(
+        headline = stringResource(Res.string.today_welcome_title),
+        message = card?.let { stringResource(Res.string.today_welcome_message, it.day.reference(language)) }
+            ?: stringResource(Res.string.today_welcome_message_no_plan),
+        resumeLabel = stringResource(Res.string.today_welcome_resume),
+        onResume = { onEvent(TodayEvent.ResumeClicked) },
+        todayLabel = stringResource(Res.string.today_welcome_lighter),
+        onToday = { onEvent(TodayEvent.LighterClicked) },
+        illustration = { Mascot(MascotCharacter.Pip, MascotPose.WelcomeBack, size = 120.dp) },
     )
 }
 

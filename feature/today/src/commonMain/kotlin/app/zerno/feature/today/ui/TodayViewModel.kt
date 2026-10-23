@@ -6,6 +6,7 @@ import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.plans.api.Plans
 import app.zerno.feature.reader.api.PassageProgress
 import app.zerno.feature.reader.api.ReaderLauncher
+import app.zerno.feature.today.domain.LighterPassage
 import app.zerno.feature.today.domain.TodayAction
 import app.zerno.feature.today.domain.TodayCard
 import app.zerno.feature.today.domain.todayCard
@@ -57,17 +58,25 @@ class TodayViewModel(
                 today?.let { emit(TodayInnerEvent.CardChanged(todayCard(it, progress(it)))) }
             }
 
-            TodayEvent.ActionClicked -> state.value.card?.let(::open)
+            TodayEvent.ActionClicked -> state.value.card?.let { open(it, resume = it.action == TodayAction.Continue) }
+
+            TodayEvent.ResumeClicked -> state.value.card?.let { open(it, resume = true) }
+                ?: intent(OPEN) { postEffect(TodayEffect.OpenReader) }
+
+            TodayEvent.LighterClicked -> openReader { reader.openAt(LighterPassage) }
 
             TodayEvent.ChoosePlanClicked -> intent(OPEN) { postEffect(TodayEffect.OpenPlans) }
         }
     }
 
+    private fun open(card: TodayCard, resume: Boolean) =
+        openReader { reader.openPlanDay(card.plan.id, card.day.day, card.passage, resume) }
+
     // A reader that cannot open (no Bible installed) leaves the card in place with a message.
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
-    private fun open(card: TodayCard) = intent(OPEN) {
+    private fun openReader(point: suspend () -> Unit) = intent(OPEN) {
         try {
-            reader.openPlanDay(card.plan.id, card.day.day, card.passage, resume = card.action == TodayAction.Continue)
+            point()
             postEffect(TodayEffect.OpenReader)
         } catch (e: CancellationException) {
             throw e
