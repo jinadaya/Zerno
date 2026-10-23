@@ -1,4 +1,46 @@
 <resources>
     <string name="progress_title">Journey</string>
-    <string name="progress_placeholder">Sessions, chapters read, streaks and saved verses.</string>
+    <string name="progress_intro">Every chapter you have read, kept here.</string>
+    <plurals name="progress_sessions">
+        <item quantity="one">reading session completed</item>
+        <item quantity="other">reading sessions completed</item>
+    </plurals>
+    <string name="progress_chapters">%1$d of %2$d chapters of the Bible read</string>
+    <string name="progress_chapters_line">%1$d / %2$d chapters</string>
+    <string name="progress_books_finished">%1$d of %2$d books finished</string>
+    <string name="progress_books">Books</string>
+    <string name="progress_old_testament">Old Testament</string>
+    <string name="progress_new_testament">New Testament</string>
+    <string name="progress_book_coverage">%1$s, %2$d of %3$d chapters read</string>
+    <string name="progress_plan">Current plan</string>
+    <string name="progress_plan_caption">Day %1$d of %2$d</string>
+    <string name="progress_plan_none">No plan right now. Pick one whenever you like.</string>
+    <string name="progress_plan_browse">Browse plans</string>
+    <string name="progress_streak">Streak</string>
+    <plurals name="progress_streak_current">
+        <item quantity="one">day in a row</item>
+        <item quantity="other">days in a row</item>
+    </plurals>
+    <plurals name="progress_streak_longest">
+        <item quantity="one">day, your longest</item>
+        <item quantity="other">days, your longest</item>
+    </plurals>
+    <string name="progress_month_previous">Previous month</string>
+    <string name="progress_month_next">Next month</string>
+    <string name="progress_day_read">read</string>
+    <string name="progress_day_done">read and reflected</string>
+    <string name="progress_day_not_read">not read</string>
+    <string name="progress_today">today</string>
+    <string name="progress_monday">M</string>
+    <string name="progress_tuesday">T</string>
+    <string name="progress_wednesday">W</string>
+    <string name="progress_thursday">T</string>
+    <string name="progress_friday">F</string>
+    <string name="progress_saturday">S</string>
+    <string name="progress_sunday">S</string>
+    <string name="progress_seals">Seals</string>
+    <string name="progress_seals_count">%1$d of %2$d earned</string>
+    <string name="progress_seals_open">See all seals</string>
+    <string name="progress_history">History</string>
+    <string name="progress_history_empty">Your finished readings will appear here.</string>
 </resources>

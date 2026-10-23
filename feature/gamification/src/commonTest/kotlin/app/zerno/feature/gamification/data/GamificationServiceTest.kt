@@ -89,6 +89,25 @@ class GamificationServiceTest {
     }
 
     @Test
+    fun historyListsSessionsNewestFirstWithTheirDays() = runTest {
+        val service = service()
+        advanceUntilIdle()
+        assertTrue(service.history.value.sessions.isEmpty())
+
+        val first = session("John 1")
+        service.onSessionCompleted(first)
+        clock.advanceBy(1.days)
+        val second = session("John 2")
+        service.onSessionCompleted(second)
+        service.onReflectionSaved()
+
+        val history = service.history.value
+        assertEquals(listOf(second.id, first.id), history.sessions.map { it.id })
+        assertEquals(StreakDayStatus.Read, history.days[LocalDate(2026, 3, 2)])
+        assertEquals(StreakDayStatus.Done, history.days[LocalDate(2026, 3, 3)])
+    }
+
+    @Test
     fun nothingUnlocksTwice() = runTest {
         val service = service()
         val unlocked = mutableListOf<String>()

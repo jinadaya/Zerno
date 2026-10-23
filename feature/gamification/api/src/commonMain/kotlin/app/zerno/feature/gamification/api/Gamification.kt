@@ -34,6 +34,9 @@ interface GamificationState {
     /** Achievements unlocked by an event, once each, for the end-of-session screen and toasts. */
     val newlyUnlocked: Flow<List<Achievement>>
 
+    /** Completed sessions and marked days, for the Journey tab. Empty until the first computation. */
+    val history: StateFlow<ReadingHistory>
+
     /** Recomputes for the current date and zone, e.g. when the app returns to the foreground after midnight. */
     suspend fun refresh()
 }
@@ -52,4 +55,11 @@ data class StreakState(
     val daysReadThisWeek: Int,
     /** The last date with a reading, or null before the first. */
     val lastRead: LocalDate? = null,
+)
+
+data class ReadingHistory(
+    /** Completed sessions, newest first. */
+    val sessions: List<ReadingSession> = emptyList(),
+    /** Every local date with at least a reading; dates not in the map are [StreakDayStatus.Empty]. */
+    val days: Map<LocalDate, StreakDayStatus> = emptyMap(),
 )

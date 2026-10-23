@@ -1,4 +1,52 @@
 <resources>
     <string name="progress_title">Путь</string>
-    <string name="progress_placeholder">Сессии, прочитанные главы, серии и сохранённые стихи.</string>
+    <string name="progress_intro">Всё, что вы прочитали, хранится здесь.</string>
+    <plurals name="progress_sessions">
+        <item quantity="one">чтение завершено</item>
+        <item quantity="few">чтения завершено</item>
+        <item quantity="many">чтений завершено</item>
+        <item quantity="other">чтения завершено</item>
+    </plurals>
+    <string name="progress_chapters">Прочитано %1$d из %2$d глав Библии</string>
+    <string name="progress_chapters_line">%1$d / %2$d глав</string>
+    <string name="progress_books_finished">Прочитано книг: %1$d из %2$d</string>
+    <string name="progress_books">Книги</string>
+    <string name="progress_old_testament">Ветхий Завет</string>
+    <string name="progress_new_testament">Новый Завет</string>
+    <string name="progress_book_coverage">%1$s, прочитано %2$d из %3$d глав</string>
+    <string name="progress_plan">Текущий план</string>
+    <string name="progress_plan_caption">День %1$d из %2$d</string>
+    <string name="progress_plan_none">Сейчас плана нет. Выберите, когда захочется.</string>
+    <string name="progress_plan_browse">К планам</string>
+    <string name="progress_streak">Серия</string>
+    <plurals name="progress_streak_current">
+        <item quantity="one">день подряд</item>
+        <item quantity="few">дня подряд</item>
+        <item quantity="many">дней подряд</item>
+        <item quantity="other">дня подряд</item>
+    </plurals>
+    <plurals name="progress_streak_longest">
+        <item quantity="one">день, самая длинная</item>
+        <item quantity="few">дня, самая длинная</item>
+        <item quantity="many">дней, самая длинная</item>
+        <item quantity="other">дня, самая длинная</item>
+    </plurals>
+    <string name="progress_month_previous">Предыдущий месяц</string>
+    <string name="progress_month_next">Следующий месяц</string>
+    <string name="progress_day_read">прочитано</string>
+    <string name="progress_day_done">прочитано, есть заметка</string>
+    <string name="progress_day_not_read">не прочитано</string>
+    <string name="progress_today">сегодня</string>
+    <string name="progress_monday">П</string>
+    <string name="progress_tuesday">В</string>
+    <string name="progress_wednesday">С</string>
+    <string name="progress_thursday">Ч</string>
+    <string name="progress_friday">П</string>
+    <string name="progress_saturday">С</string>
+    <string name="progress_sunday">В</string>
+    <string name="progress_seals">Печати</string>
+    <string name="progress_seals_count">Получено %1$d из %2$d</string>
+    <string name="progress_seals_open">Все печати</string>
+    <string name="progress_history">История</string>
+    <string name="progress_history_empty">Здесь появятся завершённые чтения.</string>
 </resources>

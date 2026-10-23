@@ -6,6 +6,7 @@ import app.zerno.entities.achievement.Achievement
 import app.zerno.entities.session.ReadingSession
 import app.zerno.feature.gamification.api.GamificationEvents
 import app.zerno.feature.gamification.api.GamificationState
+import app.zerno.feature.gamification.api.ReadingHistory
 import app.zerno.feature.gamification.api.StreakDay
 import app.zerno.feature.gamification.api.StreakDayStatus
 import app.zerno.feature.gamification.api.StreakState
@@ -57,6 +58,9 @@ class GamificationService(
 
     private val _newlyUnlocked = MutableSharedFlow<List<Achievement>>(extraBufferCapacity = 8)
     override val newlyUnlocked: Flow<List<Achievement>> = _newlyUnlocked.asSharedFlow()
+
+    private val _history = MutableStateFlow(ReadingHistory())
+    override val history: StateFlow<ReadingHistory> = _history.asStateFlow()
 
     init {
         scope.launch { refresh() }
@@ -112,6 +116,10 @@ class GamificationService(
 
         _streak.value = summary.toState()
         _achievements.value = evaluation.achievements
+        _history.value = ReadingHistory(
+            sessions = sessions.sortedByDescending { it.completedAt },
+            days = summary.days.mapValues { (_, status) -> status.toApi() },
+        )
         if (evaluation.newlyUnlocked.isNotEmpty()) _newlyUnlocked.emit(evaluation.newlyUnlocked)
     }
 
