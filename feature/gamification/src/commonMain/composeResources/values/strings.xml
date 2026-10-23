@@ -1,6 +1,15 @@
 <resources>
     <string name="gamification_title">Achievements</string>
-    <string name="gamification_placeholder">Every seal, unlocked and locked.</string>
+    <string name="achievements_intro">Seals mark the way you have come. They are yours alone.</string>
+    <string name="achievements_back">Back</string>
+    <string name="achievements_set_bird">Pip's seals</string>
+    <string name="achievements_set_bird_line">Coming back, day after day.</string>
+    <string name="achievements_set_sheep">Woolly's seals</string>
+    <string name="achievements_set_sheep_line">Chapters, books and plans read.</string>
+    <string name="achievements_set_lamp">Lumi's seals</string>
+    <string name="achievements_set_lamp_line">Reflections and saved verses.</string>
+    <string name="achievements_unlocked">%1$d of %2$d earned</string>
+    <string name="achievements_progress">%1$d of %2$d</string>
     <string name="achievement_first_steps_title">First Steps</string>
     <string name="achievement_first_steps_description">Complete your first reading session.</string>
     <string name="achievement_first_chapter_title">First Chapter</string>
