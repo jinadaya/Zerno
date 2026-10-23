@@ -22,7 +22,7 @@ class TabsNavigatorTest {
     @Test
     fun startsOnTheFirstTab() {
         assertEquals(Today, navigator.currentTab)
-        assertEquals(listOf(0), navigator.visibleTabIndices)
+        assertEquals(listOf<NavKey>(0), navigator.visibleTabIndices)
     }
 
     @Test
@@ -33,10 +33,10 @@ class TabsNavigatorTest {
         navigator.navigate(Detail(3))
 
         navigator.selectTab(Today)
-        assertEquals(listOf(Today, Detail(1)), stacks[0])
+        assertEquals(listOf<NavKey>(Today, Detail(1)), stacks[0])
 
         navigator.selectTab(Plans)
-        assertEquals(listOf(Plans, Detail(2), Detail(3)), stacks[2])
+        assertEquals(listOf<NavKey>(Plans, Detail(2), Detail(3)), stacks[2])
         assertEquals(Plans, navigator.currentTab)
     }
 
@@ -45,8 +45,8 @@ class TabsNavigatorTest {
         navigator.navigate(Bible)
 
         assertEquals(Bible, navigator.currentTab)
-        assertEquals(listOf(Bible), stacks[1])
-        assertEquals(listOf(0, 1), navigator.visibleTabIndices)
+        assertEquals(listOf<NavKey>(Bible), stacks[1])
+        assertEquals(listOf<NavKey>(0, 1), navigator.visibleTabIndices)
     }
 
     @Test
@@ -57,7 +57,7 @@ class TabsNavigatorTest {
 
         navigator.selectTab(Plans)
 
-        assertEquals(listOf(Plans), stacks[2])
+        assertEquals(listOf<NavKey>(Plans), stacks[2])
     }
 
     @Test
@@ -66,7 +66,7 @@ class TabsNavigatorTest {
         navigator.navigate(Detail(1))
 
         navigator.back()
-        assertEquals(listOf(Plans), stacks[2])
+        assertEquals(listOf<NavKey>(Plans), stacks[2])
         assertEquals(Plans, navigator.currentTab)
 
         navigator.back()
@@ -74,7 +74,7 @@ class TabsNavigatorTest {
 
         navigator.back()
         assertEquals(Today, navigator.currentTab)
-        assertEquals(listOf(Today), stacks[0])
+        assertEquals(listOf<NavKey>(Today), stacks[0])
     }
 
     @Test
