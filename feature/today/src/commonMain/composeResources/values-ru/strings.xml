@@ -29,4 +29,9 @@
     <string name="today_friday">П</string>
     <string name="today_saturday">С</string>
     <string name="today_sunday">В</string>
+    <string name="today_welcome_title">с возвращением</string>
+    <string name="today_welcome_message">Вы читали %1$s. Продолжите с того места или начните с чего-то полегче.</string>
+    <string name="today_welcome_message_no_plan">Продолжите с того места или начните с чего-то полегче.</string>
+    <string name="today_welcome_resume">Продолжить</string>
+    <string name="today_welcome_lighter">Что-то полегче</string>
 </resources>

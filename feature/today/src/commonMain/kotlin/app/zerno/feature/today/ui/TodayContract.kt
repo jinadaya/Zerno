@@ -2,6 +2,7 @@ package app.zerno.feature.today.ui
 
 import app.zerno.feature.gamification.api.StreakState
 import app.zerno.feature.today.domain.TodayCard
+import app.zerno.feature.today.domain.welcomeBack
 import com.royaal.arch.mvi.InnerEvent
 import com.royaal.arch.mvi.MviReducer
 import com.royaal.arch.mvi.ScreenState
@@ -17,7 +18,11 @@ data class TodayState(
     val card: TodayCard? = null,
     val streak: StreakState? = null,
     val openFailed: Boolean = false,
-) : ScreenState
+) : ScreenState {
+    /** Two or more days away: the welcome back card replaces the plain one, never mentioning the days missed. */
+    val welcomeBack: Boolean
+        get() = streak?.welcomeBack == true
+}
 
 sealed interface TodayEvent : UserEvent {
     /** The screen came into view, first or on return from the reader. */
@@ -26,6 +31,12 @@ sealed interface TodayEvent : UserEvent {
     data object ActionClicked : TodayEvent
 
     data object ChoosePlanClicked : TodayEvent
+
+    /** Welcome back: pick up the plan day where it was left, or the last place read without a plan. */
+    data object ResumeClicked : TodayEvent
+
+    /** Welcome back: a short, gentle passage instead. */
+    data object LighterClicked : TodayEvent
 }
 
 sealed interface TodayInnerEvent : InnerEvent {

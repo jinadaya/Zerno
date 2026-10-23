@@ -75,6 +75,20 @@ class GamificationServiceTest {
     }
 
     @Test
+    fun lastReadStaysOnTheDayOfTheLastReading() = runTest {
+        val service = service()
+        advanceUntilIdle()
+        assertEquals(null, service.streak.value.lastRead)
+
+        service.onSessionCompleted(session())
+        clock.advanceBy(3.days)
+        service.refresh()
+
+        assertEquals(LocalDate(2026, 3, 2), service.streak.value.lastRead)
+        assertEquals(LocalDate(2026, 3, 5), service.streak.value.today)
+    }
+
+    @Test
     fun nothingUnlocksTwice() = runTest {
         val service = service()
         val unlocked = mutableListOf<String>()

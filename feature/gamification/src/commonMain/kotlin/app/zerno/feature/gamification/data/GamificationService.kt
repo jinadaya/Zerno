@@ -149,6 +149,7 @@ private fun StreakSummary.toState() = StreakState(
     longest = longest,
     week = week.map { StreakDay(it.date, it.status.toApi()) },
     daysReadThisWeek = daysReadThisWeek,
+    lastRead = days.filterValues { it.countsForStreak }.keys.maxOrNull(),
 )
 
 private fun DayStatus.toApi(): StreakDayStatus = when (this) {

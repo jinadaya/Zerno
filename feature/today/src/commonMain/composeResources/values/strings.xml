@@ -27,4 +27,9 @@
     <string name="today_friday">F</string>
     <string name="today_saturday">S</string>
     <string name="today_sunday">S</string>
+    <string name="today_welcome_title">welcome\nback</string>
+    <string name="today_welcome_message">You were reading %1$s. Pick up where you left off, or start with something lighter.</string>
+    <string name="today_welcome_message_no_plan">Pick up where you left off, or start with something lighter.</string>
+    <string name="today_welcome_resume">Resume</string>
+    <string name="today_welcome_lighter">Something lighter</string>
 </resources>

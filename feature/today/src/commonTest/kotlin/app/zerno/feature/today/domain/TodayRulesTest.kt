@@ -15,10 +15,13 @@ import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.reader.api.PassageProgress
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 val John = BookId(500)
 val Psalms = BookId(230)
@@ -67,5 +70,17 @@ class TodayRulesTest {
         val week = (0..6).map { StreakDay(monday.plus(it, DateTimeUnit.DAY), StreakDayStatus.Empty) }
         assertEquals(3, StreakState(monday.plus(3, DateTimeUnit.DAY), 0, 0, week, 0).todayIndex)
         assertNull(StreakState(monday, 0, 0, emptyList(), 0).todayIndex)
+    }
+
+    @Test
+    fun welcomeBackAfterTwoDaysAwayOnly() {
+        val today = LocalDate(2026, 10, 22)
+        fun streak(lastRead: LocalDate?) = StreakState(today, 0, 0, emptyList(), 0, lastRead)
+
+        assertFalse(streak(null).welcomeBack, "never read")
+        assertFalse(streak(today).welcomeBack, "read today")
+        assertFalse(streak(today.minus(1, DateTimeUnit.DAY)).welcomeBack, "read yesterday")
+        assertTrue(streak(today.minus(2, DateTimeUnit.DAY)).welcomeBack, "two days away")
+        assertTrue(streak(today.minus(3, DateTimeUnit.DAY)).welcomeBack, "three days away")
     }
 }
