@@ -2,18 +2,13 @@ package app.zerno.feature.reader.domain
 
 import app.zerno.data.time.FakeClock
 import app.zerno.data.time.FakeTimeZone
+import app.zerno.entities.achievement.Achievement
+import app.zerno.entities.achievement.AchievementCode
+import app.zerno.entities.achievement.AchievementSet
 import app.zerno.entities.bible.ChapterRef
 import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.plan.PlanId
-import app.zerno.entities.plan.ReadingPlan
-import app.zerno.entities.session.ReadingSession
-import app.zerno.feature.gamification.api.GamificationEvents
-import app.zerno.feature.plans.api.PlanToday
-import app.zerno.feature.plans.api.Plans
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,8 +23,15 @@ class DailyReadingTest {
     private val clock = FakeClock(Instant.parse("2026-10-22T07:00:00Z"))
     private val plans = FakePlans()
     private val gamification = FakeEvents()
-    private val daily =
-        DailyReading(FakeBible(), plans, gamification, clock, FakeTimeZone(TimeZone.of("Europe/Moscow")))
+    private val state = FakeGamificationState()
+    private val daily = DailyReading(
+        FakeBible(),
+        plans,
+        gamification,
+        state,
+        clock,
+        FakeTimeZone(TimeZone.of("Europe/Moscow")),
+    )
     private val john = PlanId("gospel-of-john")
 
     @Test
@@ -62,7 +64,7 @@ class DailyReadingTest {
         daily.begin(john, 4, PassageRef.chapter(JOHN, 4))
         clock.advanceBy(7.minutes)
 
-        val session = assertNotNull(daily.finish(RST))
+        val session = assertNotNull(daily.finish(RST)).session
 
         assertEquals(listOf(session), gamification.sessions)
         assertEquals(PassageRef.chapter(JOHN, 4), session.passage)
@@ -87,33 +89,34 @@ class DailyReadingTest {
         assertEquals(Instant.parse("2026-10-22T07:03:00Z"), daily.current.value?.startedAt)
     }
 
-    private class FakePlans : Plans {
-        val completed = mutableListOf<Pair<PlanId, Int>>()
-
-        override suspend fun catalog(): List<ReadingPlan> = emptyList()
-
-        override suspend fun start(planId: PlanId) = Unit
-
-        override suspend fun completeDay(planId: PlanId, day: Int) {
-            completed += planId to day
+    @Test
+    fun finishingReportsOnlyTheSealsItUnlocked() = runTest {
+        state.achievements.value = listOf(seal("first_steps", unlocked = true), seal("streak_3", unlocked = false))
+        gamification.onSession = {
+            state.achievements.value = listOf(seal("first_steps", unlocked = true), seal("streak_3", unlocked = true))
         }
+        daily.begin(john, 4, PassageRef.chapter(JOHN, 4))
 
-        override fun today(date: LocalDate): Flow<PlanToday?> = emptyFlow()
+        val finished = assertNotNull(daily.finish(KJV))
+
+        assertEquals(listOf(AchievementCode("streak_3")), finished.newSeals.map { it.code })
+        assertEquals(finished, daily.lastFinished.value)
     }
 
-    private class FakeEvents : GamificationEvents {
-        val sessions = mutableListOf<ReadingSession>()
+    @Test
+    fun achievementsNotYetComputedAreComputedFirst() = runTest {
+        state.onRefresh = { state.achievements.value = listOf(seal("first_steps", unlocked = true)) }
+        daily.begin(john, 4, PassageRef.chapter(JOHN, 4))
 
-        override suspend fun onSessionCompleted(session: ReadingSession) {
-            sessions += session
-        }
-
-        override suspend fun onReflectionSaved(afterPlanStep: Boolean) = Unit
-
-        override suspend fun onVerseSaved() = Unit
-
-        override suspend fun onQuestionAnswered() = Unit
-
-        override suspend fun onPlanCompleted(wholeBible: Boolean) = Unit
+        assertTrue(assertNotNull(daily.finish(KJV)).newSeals.isEmpty())
     }
+
+    private fun seal(code: String, unlocked: Boolean) = Achievement(
+        code = AchievementCode(code),
+        set = AchievementSet.Bird,
+        titleKey = "t",
+        descriptionKey = "d",
+        icon = "i",
+        unlockedAt = if (unlocked) clock.now() else null,
+    )
 }

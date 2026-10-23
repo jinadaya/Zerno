@@ -21,4 +21,19 @@
     </plurals>
     <string name="reader_finish">Завершить чтение</string>
     <string name="reader_finish_failed">Не удалось сохранить чтение. Попробуйте ещё раз.</string>
+    <string name="session_title">прочитано</string>
+    <string name="session_read">%1$s · %2$s</string>
+    <string name="session_plan_step">День %1$d / %2$d пройден</string>
+    <string name="session_today_read">Сегодняшний день отмечен как прочитанный.</string>
+    <string name="session_today_done">Сегодня прочитано и есть размышление.</string>
+    <string name="session_reflect">Написать размышление</string>
+    <string name="session_back_to_today">Вернуться на «Сегодня»</string>
+    <string name="session_new_seals">Новая печать</string>
+    <string name="session_gone">Чтение сохранено.</string>
+    <plurals name="session_streak">
+        <item quantity="one">день подряд</item>
+        <item quantity="few">дня подряд</item>
+        <item quantity="many">дней подряд</item>
+        <item quantity="other">дня подряд</item>
+    </plurals>
 </resources>

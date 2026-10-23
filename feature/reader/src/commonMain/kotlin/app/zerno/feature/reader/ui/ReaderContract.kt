@@ -69,7 +69,7 @@ sealed interface ReaderInnerEvent : InnerEvent {
 sealed interface ReaderEffect : SideEffect {
     data object OpenBookPicker : ReaderEffect
 
-    /** The plan day was completed; back to Today. */
+    /** The plan day was completed; on to the session complete screen. */
     data object SessionFinished : ReaderEffect
 }
 

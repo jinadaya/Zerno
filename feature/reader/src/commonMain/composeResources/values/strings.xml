@@ -19,4 +19,17 @@
     </plurals>
     <string name="reader_finish">Finish reading</string>
     <string name="reader_finish_failed">Could not save this reading. Please try again.</string>
+    <string name="session_title">well read</string>
+    <string name="session_read">%1$s · %2$s</string>
+    <string name="session_plan_step">Day %1$d / %2$d done</string>
+    <string name="session_today_read">Today is marked as read.</string>
+    <string name="session_today_done">Today is marked as read and reflected.</string>
+    <string name="session_reflect">Write a reflection</string>
+    <string name="session_back_to_today">Back to Today</string>
+    <string name="session_new_seals">New seal</string>
+    <string name="session_gone">Your reading is saved.</string>
+    <plurals name="session_streak">
+        <item quantity="one">day in a row</item>
+        <item quantity="other">days in a row</item>
+    </plurals>
 </resources>
