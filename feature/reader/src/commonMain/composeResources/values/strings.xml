@@ -17,4 +17,6 @@
         <item quantity="one">%1$d chapter</item>
         <item quantity="other">%1$d chapters</item>
     </plurals>
+    <string name="reader_finish">Finish reading</string>
+    <string name="reader_finish_failed">Could not save this reading. Please try again.</string>
 </resources>

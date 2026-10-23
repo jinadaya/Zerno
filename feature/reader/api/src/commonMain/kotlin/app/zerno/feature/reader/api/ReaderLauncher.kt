@@ -1,6 +1,7 @@
 package app.zerno.feature.reader.api
 
 import app.zerno.entities.bible.PassageRef
+import app.zerno.entities.plan.PlanId
 
 /** Points the reader at a passage before another feature navigates to [ReaderRoute]. */
 interface ReaderLauncher {
@@ -10,6 +11,12 @@ interface ReaderLauncher {
      * numbering, as plans write it; Synodal translations get it mapped.
      */
     suspend fun openAt(passage: PassageRef, resume: Boolean = false)
+
+    /**
+     * [openAt] for [day] of [planId], whose reading is [passage]: the reader then offers "Finish reading" at the end
+     * of the passage, which records the session and completes the day.
+     */
+    suspend fun openPlanDay(planId: PlanId, day: Int, passage: PassageRef, resume: Boolean = false)
 
     /**
      * How far the reader got in the first chapter of [passage], in the current translation. Null when it was never

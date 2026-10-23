@@ -19,4 +19,6 @@
         <item quantity="many">%1$d глав</item>
         <item quantity="other">%1$d главы</item>
     </plurals>
+    <string name="reader_finish">Завершить чтение</string>
+    <string name="reader_finish_failed">Не удалось сохранить чтение. Попробуйте ещё раз.</string>
 </resources>

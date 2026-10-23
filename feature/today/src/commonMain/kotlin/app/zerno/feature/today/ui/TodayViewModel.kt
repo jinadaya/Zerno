@@ -67,7 +67,7 @@ class TodayViewModel(
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private fun open(card: TodayCard) = intent(OPEN) {
         try {
-            reader.openAt(card.passage, resume = card.action == TodayAction.Continue)
+            reader.openPlanDay(card.plan.id, card.day.day, card.passage, resume = card.action == TodayAction.Continue)
             postEffect(TodayEffect.OpenReader)
         } catch (e: CancellationException) {
             throw e

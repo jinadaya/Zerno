@@ -7,6 +7,7 @@ import app.zerno.feature.reader.api.ReaderRoute
 import app.zerno.feature.reader.data.AppMetaReaderPrefs
 import app.zerno.feature.reader.data.StoreBibleSource
 import app.zerno.feature.reader.domain.BibleSource
+import app.zerno.feature.reader.domain.DailyReading
 import app.zerno.feature.reader.domain.ReaderPrefs
 import app.zerno.feature.reader.domain.ReaderSession
 import app.zerno.feature.reader.domain.SessionReaderLauncher
@@ -22,13 +23,14 @@ import org.koin.dsl.module
 
 /**
  * The feature's Koin module, loaded by `initKoin()` in `:composeApp`. Needs `UserDb` and `TranslationStore` from
- * the app's platform module.
+ * the app's platform module, and `Plans`, `GamificationEvents`, `Clock` and `TimeZoneProvider`.
  */
 val readerModule = module {
     single<BibleSource> { StoreBibleSource(get()) }
     single<ReaderPrefs> { AppMetaReaderPrefs(get<UserDb>().appMetaDao()) }
     single { ReaderSession(get(), get()) }
-    single<ReaderLauncher> { SessionReaderLauncher(get(), get()) { Locale.current.language } }
+    single { DailyReading(get(), get(), get(), get(), get()) }
+    single<ReaderLauncher> { SessionReaderLauncher(get(), get(), get()) { Locale.current.language } }
 
     viewModelOf(::ReaderViewModel)
     viewModelOf(::BookPickerViewModel)

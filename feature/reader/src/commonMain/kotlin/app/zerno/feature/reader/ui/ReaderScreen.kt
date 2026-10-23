@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.zerno.designsystem.component.SjPrimaryButton
 import app.zerno.designsystem.component.SjReaderText
 import app.zerno.designsystem.component.SjReaderTextLayout
 import app.zerno.designsystem.theme.SjTheme
@@ -61,6 +62,8 @@ import app.zerno.feature.reader.domain.ReaderTranslation
 import app.zerno.feature.reader.resources.Res
 import app.zerno.feature.reader.resources.reader_choose_chapter
 import app.zerno.feature.reader.resources.reader_failed
+import app.zerno.feature.reader.resources.reader_finish
+import app.zerno.feature.reader.resources.reader_finish_failed
 import app.zerno.feature.reader.resources.reader_larger_text
 import app.zerno.feature.reader.resources.reader_next_chapter
 import app.zerno.feature.reader.resources.reader_previous_chapter
@@ -68,6 +71,7 @@ import app.zerno.feature.reader.resources.reader_settings
 import app.zerno.feature.reader.resources.reader_smaller_text
 import app.zerno.feature.reader.resources.reader_text_size
 import app.zerno.feature.reader.resources.reader_translation
+import app.zerno.feature.today.api.TodayRoute
 import com.royaal.arch.mvi.EffectHandler
 import com.royaal.navigation.LocalNavigator
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -82,6 +86,13 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
     EffectHandler(viewModel) { effect ->
         when (effect) {
             ReaderEffect.OpenBookPicker -> navigator.navigate(BookPickerRoute)
+
+            // Opened from Today, the reader sits on top of it; as the Bible tab, it switches tabs.
+            ReaderEffect.SessionFinished -> if (navigator.currentTab == TodayRoute) {
+                navigator.back()
+            } else {
+                navigator.selectTab(TodayRoute)
+            }
         }
     }
     val state by viewModel.state.collectAsState()
@@ -102,7 +113,7 @@ private fun ReaderContent(state: ReaderState, onEvent: (ReaderEvent) -> Unit) {
         ReaderTopBar(page, colors, fonts, onEvent)
         Box(Modifier.weight(1f).fillMaxWidth()) {
             when {
-                page != null -> ReaderPageContent(page, state.fontSize, colors, fonts, onEvent)
+                page != null -> ReaderPageContent(page, state, colors, fonts, onEvent)
 
                 state.failed -> BasicText(
                     text = stringResource(Res.string.reader_failed),
@@ -176,12 +187,13 @@ private fun ReaderTopBar(page: ReaderPage?, colors: SjColors, fonts: SjFonts, on
 @Composable
 private fun ReaderPageContent(
     page: ReaderPage,
-    fontSize: Int,
+    state: ReaderState,
     colors: SjColors,
     fonts: SjFonts,
     onEvent: (ReaderEvent) -> Unit,
 ) {
     val spacing = SjSpacing.Default
+    val fontSize = state.fontSize
     val scroll = remember(page.location) { ScrollState(0) }
     val textLayout = remember(page.location) { SjReaderTextLayout() }
     // Index of the verse at the top, as last reported. Not state: nothing draws from it.
@@ -231,6 +243,7 @@ private fun ReaderPageContent(
             layout = textLayout,
             modifier = Modifier.fillMaxWidth(),
         )
+        if (page.canFinish) FinishReading(state, fonts, colors, onEvent)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -256,6 +269,26 @@ private fun ReaderPageContent(
                     onClick = { onEvent(ReaderEvent.NextChapterClicked) },
                 )
             }
+        }
+    }
+}
+
+/** The end of a plan day's passage: reaching it is reading to the end, and the button records the day. */
+@Composable
+private fun FinishReading(state: ReaderState, fonts: SjFonts, colors: SjColors, onEvent: (ReaderEvent) -> Unit) {
+    val spacing = SjSpacing.Default
+    Column(
+        Modifier.fillMaxWidth().padding(start = spacing.space6, end = spacing.space6, bottom = spacing.space8),
+        verticalArrangement = Arrangement.spacedBy(spacing.space3),
+    ) {
+        SjPrimaryButton(
+            stringResource(Res.string.reader_finish),
+            { onEvent(ReaderEvent.FinishClicked) },
+            Modifier.fillMaxWidth(),
+            enabled = !state.finishing,
+        )
+        if (state.finishFailed) {
+            BasicText(stringResource(Res.string.reader_finish_failed), style = fonts.body(colors.inkMuted))
         }
     }
 }

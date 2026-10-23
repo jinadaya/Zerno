@@ -158,8 +158,11 @@ class OnboardingViewModelTest {
         val opened = mutableListOf<PassageRef>()
         var fail = false
 
-        override suspend fun openAt(passage: PassageRef, resume: Boolean) {
+        override suspend fun openAt(passage: PassageRef, resume: Boolean) = error("Onboarding opens plan days")
+
+        override suspend fun openPlanDay(planId: PlanId, day: Int, passage: PassageRef, resume: Boolean) {
             check(!fail) { "No Bible installed" }
+            check(day == 1) { "Onboarding opens day 1, not $day" }
             opened += passage
         }
 
