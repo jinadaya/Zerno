@@ -1,24 +1,29 @@
 package app.zerno.feature.reflection.di
 
-import app.zerno.designsystem.component.SjPlaceholderScreen
+import app.zerno.data.db.user.UserDb
 import app.zerno.feature.reflection.api.ReflectionRoute
-import app.zerno.feature.reflection.resources.Res
-import app.zerno.feature.reflection.resources.reflection_placeholder
-import app.zerno.feature.reflection.resources.reflection_title
-import com.royaal.navigation.LocalNavigator
+import app.zerno.feature.reflection.api.Reflections
+import app.zerno.feature.reflection.data.ReflectionStore
+import app.zerno.feature.reflection.data.ReflectionsService
+import app.zerno.feature.reflection.ui.ReflectionScreen
+import app.zerno.feature.reflection.ui.ReflectionViewModel
 import com.royaal.navigation.screen
-import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
-/** The feature's Koin module, loaded by `initKoin()` in `:composeApp`. Bindings land here as the feature grows. */
+/**
+ * The feature's Koin module, loaded by `initKoin()` in `:composeApp`. Needs `UserDb`, `GamificationEvents` and
+ * `Clock`.
+ */
 val reflectionModule = module {
-    // Placeholder until the feature's first screen lands; reached from the debug menu.
-    screen<ReflectionRoute>(showBottomBar = false) {
-        val navigator = LocalNavigator.current
-        SjPlaceholderScreen(
-            stringResource(Res.string.reflection_title),
-            stringResource(Res.string.reflection_placeholder),
-            onBack = navigator::back,
-        )
+    single { ReflectionStore(get<UserDb>().appMetaDao()) }
+    single<Reflections> { ReflectionsService(get(), get(), get()) }
+    viewModelOf(::ReflectionViewModel)
+
+    // Opened after a reading session; the debug menu opens it on a sample passage.
+    screen<ReflectionRoute>(showBottomBar = false) { route ->
+        ReflectionScreen(route.passage, koinViewModel(key = route.toString()) { parametersOf(route) })
     }
 }

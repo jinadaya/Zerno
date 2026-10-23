@@ -33,6 +33,8 @@ import app.zerno.designsystem.component.SjLinkButton
 import app.zerno.designsystem.foundation.sjHairline
 import app.zerno.designsystem.foundation.sjMinTapTarget
 import app.zerno.designsystem.theme.SjTheme
+import app.zerno.entities.bible.BookId
+import app.zerno.entities.bible.PassageRef
 import app.zerno.feature.account.api.AccountRoute
 import app.zerno.feature.gamification.api.AchievementsRoute
 import app.zerno.feature.onboarding.api.OnboardingRoute
@@ -91,7 +93,7 @@ private val destinations: List<Pair<String, NavKey>> = listOf(
     "Plans" to PlansRoute,
     "Journey" to JourneyRoute,
     "Achievements" to AchievementsRoute,
-    "Reflection" to ReflectionRoute,
+    "Reflection" to ReflectionRoute(PassageRef.chapter(BookId(500), 3)),
     "Account" to AccountRoute,
     "Settings" to SettingsRoute,
     "Design system catalog" to CatalogRoute,
