@@ -87,11 +87,11 @@ fun ReaderScreen(viewModel: ReaderViewModel) {
         when (effect) {
             ReaderEffect.OpenBookPicker -> navigator.navigate(BookPickerRoute)
 
-            // Opened from Today, the reader sits on top of it; as the Bible tab, it switches tabs.
-            ReaderEffect.SessionFinished -> if (navigator.currentTab == TodayRoute) {
-                navigator.back()
-            } else {
-                navigator.selectTab(TodayRoute)
+            // The session complete screen goes on top of Today: from Today the reader makes way for it; as the
+            // Bible tab it stays put and Today is selected.
+            ReaderEffect.SessionFinished -> {
+                if (navigator.currentTab == TodayRoute) navigator.back() else navigator.selectTab(TodayRoute)
+                navigator.navigate(SessionCompleteRoute)
             }
         }
     }

@@ -8,6 +8,8 @@ kotlin {
         implementation(projects.feature.plans.api)
         implementation(projects.feature.gamification.api)
         implementation(projects.feature.today.api)
+        // The session complete screen hands over to writing a reflection.
+        implementation(projects.feature.reflection.api)
     }
     sourceSets.commonTest.dependencies {
         implementation(libs.kotlinx.coroutines.test)
