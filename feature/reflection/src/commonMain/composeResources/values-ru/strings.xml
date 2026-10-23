@@ -1,4 +1,10 @@
 <resources>
-    <string name="reflection_title">Размышление</string>
-    <string name="reflection_placeholder">Несколько строк после чтения.</string>
+    <string name="reflection_title">пара строк</string>
+    <string name="reflection_prompt">Что запомнилось из этого отрывка? Пишите сколько хочется. Читать это можете только вы.</string>
+    <string name="reflection_field">Размышление</string>
+    <string name="reflection_placeholder">Сегодня я заметил(а)…</string>
+    <string name="reflection_save">Сохранить</string>
+    <string name="reflection_skip">Пропустить</string>
+    <string name="reflection_save_failed">Не удалось сохранить размышление. Попробуйте ещё раз.</string>
+    <string name="reflection_earlier">Ваши размышления</string>
 </resources>

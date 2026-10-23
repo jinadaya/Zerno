@@ -1,4 +1,10 @@
 <resources>
-    <string name="reflection_title">Reflection</string>
-    <string name="reflection_placeholder">A few lines after a reading session.</string>
+    <string name="reflection_title">a few lines</string>
+    <string name="reflection_prompt">What stayed with you from this passage? Write as much or as little as you like. Only you can read it.</string>
+    <string name="reflection_field">Reflection</string>
+    <string name="reflection_placeholder">Today I noticed…</string>
+    <string name="reflection_save">Save reflection</string>
+    <string name="reflection_skip">Skip</string>
+    <string name="reflection_save_failed">Could not save the reflection. Please try again.</string>
+    <string name="reflection_earlier">Your reflections</string>
 </resources>
