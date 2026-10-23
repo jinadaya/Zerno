@@ -1,4 +1,27 @@
 <resources>
     <string name="settings_title">Настройки</string>
-    <string name="settings_placeholder">Язык, размер текста и напоминания.</string>
+    <string name="settings_back">Назад</string>
+    <string name="settings_reading">Чтение</string>
+    <string name="settings_translation">Перевод</string>
+    <string name="settings_text_size">Размер текста</string>
+    <string name="settings_smaller">Меньше</string>
+    <string name="settings_larger">Больше</string>
+    <string name="settings_sample">В начале было Слово, и Слово было у Бога.</string>
+    <string name="settings_page_theme">Цвет страницы</string>
+    <string name="settings_page_light">Светлый</string>
+    <string name="settings_page_sepia">Сепия</string>
+    <string name="settings_page_dark">Тёмный</string>
+    <string name="settings_app">Приложение</string>
+    <string name="settings_app_theme">Тема</string>
+    <string name="settings_theme_system">Как в системе</string>
+    <string name="settings_theme_light">Светлая</string>
+    <string name="settings_theme_dark">Тёмная</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_language_system">Как на устройстве</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_russian">Русский</string>
+    <string name="settings_about">О приложении</string>
+    <string name="settings_attribution_kjv">Перевод короля Якова, оксфордское издание 1769 года. Общественное достояние.</string>
+    <string name="settings_attribution_rst">Синодальный перевод, 1876. Общественное достояние.</string>
+    <string name="settings_fonts">Шрифты: Onest, Spectral и Unbounded, по лицензии SIL Open Font License 1.1.</string>
 </resources>

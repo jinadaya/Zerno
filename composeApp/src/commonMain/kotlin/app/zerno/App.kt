@@ -2,6 +2,7 @@ package app.zerno
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.intl.Locale
 import app.zerno.data.prefs.AppPreferences
+import app.zerno.data.prefs.AppTheme
 import app.zerno.debug.DebugMenuRoute
 import app.zerno.debug.isDebugBuild
 import app.zerno.designsystem.component.SjBottomNav
@@ -49,14 +51,24 @@ import org.koin.compose.koinInject
  */
 @Composable
 fun App() {
+    val prefs = koinInject<AppPreferences>()
+    val appPrefs by prefs.prefs.collectAsState()
     AppLanguageScope {
-        SjTheme {
+        SjTheme(darkTheme = appPrefs.appTheme.isDark()) {
             NavHost(
                 tabs = AppTabs.map { it.route },
                 scaffold = { showBottomBar, content -> AppShell(showBottomBar, content) },
             )
         }
     }
+}
+
+/** Light or dark as the user chose, or as the system is. */
+@Composable
+private fun AppTheme.isDark(): Boolean = when (this) {
+    AppTheme.System -> isSystemInDarkTheme()
+    AppTheme.Light -> false
+    AppTheme.Dark -> true
 }
 
 @Composable

@@ -17,6 +17,17 @@ enum class PageTheme { Light, Sepia, Dark }
 /** Language of the app's own text; [System] follows the device. Scripture follows the chosen translation. */
 enum class UiLanguage { System, English, Russian }
 
+/** Scripture sizes in sp that the reader and settings offer, the `scripture` range of `SjReaderText`. */
+object ScriptureSize {
+    const val MIN = 16
+    const val MAX = 28
+    const val DEFAULT = 20
+    const val STEP = 2
+
+    /** [size] moved by [steps] steps, kept in range. */
+    fun step(size: Int, steps: Int): Int = (size + steps * STEP).coerceIn(MIN, MAX)
+}
+
 /** Everything the user sets once and expects to find again after a restart. `null` means never set. */
 data class AppPrefs(
     val appTheme: AppTheme = AppTheme.System,

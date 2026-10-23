@@ -1,7 +1,9 @@
 package app.zerno.feature.progress.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
@@ -19,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.intl.Locale
@@ -29,6 +33,8 @@ import app.zerno.designsystem.component.SjPlanList
 import app.zerno.designsystem.component.SjPlanRow
 import app.zerno.designsystem.component.SjProgressLine
 import app.zerno.designsystem.foundation.sjHairline
+import app.zerno.designsystem.icon.SjIcon
+import app.zerno.designsystem.icon.SjIcons
 import app.zerno.designsystem.theme.SjTheme
 import app.zerno.entities.bible.BookNameLanguage
 import app.zerno.entities.bible.PassageRef
@@ -62,11 +68,13 @@ import app.zerno.feature.progress.resources.progress_seals
 import app.zerno.feature.progress.resources.progress_seals_count
 import app.zerno.feature.progress.resources.progress_seals_open
 import app.zerno.feature.progress.resources.progress_sessions
+import app.zerno.feature.progress.resources.progress_settings
 import app.zerno.feature.progress.resources.progress_streak
 import app.zerno.feature.progress.resources.progress_streak_current
 import app.zerno.feature.progress.resources.progress_streak_longest
 import app.zerno.feature.progress.resources.progress_title
 import app.zerno.feature.reflection.api.SavedRoute
+import app.zerno.feature.settings.api.SettingsRoute
 import com.royaal.arch.mvi.EffectHandler
 import com.royaal.navigation.LocalNavigator
 import org.jetbrains.compose.resources.pluralStringResource
@@ -81,6 +89,7 @@ fun JourneyScreen(viewModel: JourneyViewModel) {
             JourneyEffect.OpenPlans -> navigator.selectTab(PlansRoute)
             JourneyEffect.OpenAchievements -> navigator.navigate(AchievementsRoute)
             JourneyEffect.OpenSaved -> navigator.navigate(SavedRoute)
+            JourneyEffect.OpenSettings -> navigator.navigate(SettingsRoute)
         }
     }
     LaunchedEffect(Unit) { viewModel.sendEvent(JourneyEvent.Shown) }
@@ -96,11 +105,21 @@ fun JourneyScreen(viewModel: JourneyViewModel) {
         verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space8),
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space2)) {
-            BasicText(
-                stringResource(Res.string.progress_title),
-                Modifier.semantics { heading() },
-                style = SjTheme.type.headline.copy(color = colors.ink),
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                BasicText(
+                    stringResource(Res.string.progress_title),
+                    Modifier.weight(1f).semantics { heading() },
+                    style = SjTheme.type.headline.copy(color = colors.ink),
+                )
+                Box(
+                    Modifier
+                        .size(SjTheme.sizes.tapMin)
+                        .clickable(role = Role.Button) { viewModel.sendEvent(JourneyEvent.SettingsClicked) },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    SjIcon(SjIcons.Settings, stringResource(Res.string.progress_settings), tint = colors.ink)
+                }
+            }
             BasicText(
                 stringResource(Res.string.progress_intro),
                 style = SjTheme.type.body.copy(color = colors.inkMuted),

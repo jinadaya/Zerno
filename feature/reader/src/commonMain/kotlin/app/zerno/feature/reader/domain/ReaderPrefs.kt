@@ -1,5 +1,6 @@
 package app.zerno.feature.reader.domain
 
+import app.zerno.data.prefs.ScriptureSize
 import app.zerno.entities.bible.ChapterRef
 import app.zerno.entities.bible.Versification
 
@@ -25,13 +26,13 @@ interface ReaderPrefs {
     suspend fun saveFontSize(size: Int)
 }
 
-/** Scripture sizes the reader offers, the `scripture` range of `ReaderText`. */
+/** Scripture sizes the reader offers; the same as settings, see [ScriptureSize]. */
 object ReaderFontSize {
-    const val MIN = 16
-    const val MAX = 28
-    const val DEFAULT = 20
-    const val STEP = 2
+    const val MIN = ScriptureSize.MIN
+    const val MAX = ScriptureSize.MAX
+    const val DEFAULT = ScriptureSize.DEFAULT
+    const val STEP = ScriptureSize.STEP
 
     /** [size] moved by [steps] steps, kept in range. */
-    fun step(size: Int, steps: Int): Int = (size + steps * STEP).coerceIn(MIN, MAX)
+    fun step(size: Int, steps: Int): Int = ScriptureSize.step(size, steps)
 }

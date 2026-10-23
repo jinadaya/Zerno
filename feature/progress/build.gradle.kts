@@ -10,6 +10,7 @@ kotlin {
         implementation(projects.feature.plans.api)
         // Saved verses and reflections open from here.
         implementation(projects.feature.reflection.api)
+        implementation(projects.feature.settings.api)
     }
     sourceSets.commonTest.dependencies {
         implementation(libs.kotlinx.coroutines.test)
