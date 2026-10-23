@@ -22,7 +22,7 @@ class TabsNavigatorTest {
     @Test
     fun startsOnTheFirstTab() {
         assertEquals(Today, navigator.currentTab)
-        assertEquals(listOf<NavKey>(0), navigator.visibleTabIndices)
+        assertEquals(listOf(0), navigator.visibleTabIndices)
     }
 
     @Test
@@ -46,7 +46,7 @@ class TabsNavigatorTest {
 
         assertEquals(Bible, navigator.currentTab)
         assertEquals(listOf<NavKey>(Bible), stacks[1])
-        assertEquals(listOf<NavKey>(0, 1), navigator.visibleTabIndices)
+        assertEquals(listOf(0, 1), navigator.visibleTabIndices)
     }
 
     @Test
