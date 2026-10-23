@@ -49,6 +49,8 @@ sealed interface JourneyEvent : UserEvent {
     data object CurrentPlanClicked : JourneyEvent
 
     data object AchievementsClicked : JourneyEvent
+
+    data object SavedClicked : JourneyEvent
 }
 
 sealed interface JourneyInnerEvent : InnerEvent {
@@ -65,6 +67,8 @@ sealed interface JourneyEffect : SideEffect {
     data object OpenPlans : JourneyEffect
 
     data object OpenAchievements : JourneyEffect
+
+    data object OpenSaved : JourneyEffect
 }
 
 object JourneyReducer : MviReducer<JourneyState, JourneyInnerEvent> {

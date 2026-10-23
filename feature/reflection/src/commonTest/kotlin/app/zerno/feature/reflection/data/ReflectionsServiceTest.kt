@@ -75,6 +75,26 @@ class ReflectionsServiceTest {
         assertNull(service().forSession(SessionId("s1")))
     }
 
+    @Test
+    fun editingKeepsTheReflectionAndDeletingRemovesIt() = runTest {
+        val service = service()
+        val first = service.save(John3, "First")
+        clock.advanceBy(1.minutes)
+        service.save(Psalm23, "Shepherd")
+        clock.advanceBy(1.minutes)
+
+        val edited = service.edit(first.reflection.id, "  Edited ")
+        assertEquals("Edited", edited.reflection.text)
+        assertEquals(first.reflection.createdAt, edited.reflection.createdAt)
+        assertEquals(Instant.parse("2026-10-22T07:02:00Z"), edited.reflection.updatedAt)
+        assertEquals("Edited", service().get(first.reflection.id)?.reflection?.text)
+        assertEquals(listOf(false, false), events.reflections, "an edit is not a new reflection")
+
+        service.delete(first.reflection.id)
+        assertNull(service.get(first.reflection.id))
+        assertEquals(listOf(Psalm23), service().all.first().map { it.reflection.passage })
+    }
+
     private class FakeEvents : GamificationEvents {
         val reflections = mutableListOf<Boolean>()
 

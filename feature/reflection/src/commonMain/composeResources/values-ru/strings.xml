@@ -7,4 +7,23 @@
     <string name="reflection_skip">Пропустить</string>
     <string name="reflection_save_failed">Не удалось сохранить размышление. Попробуйте ещё раз.</string>
     <string name="reflection_earlier">Ваши размышления</string>
+    <string name="reflection_cancel">Отмена</string>
+    <string name="saved_title">Сохранённое</string>
+    <string name="saved_intro">Стихи, которые вы сохранили, и ваши размышления. Их видите только вы.</string>
+    <string name="saved_back">Назад</string>
+    <string name="saved_filter">Показать</string>
+    <string name="saved_filter_all">Всё</string>
+    <string name="saved_filter_verses">Стихи</string>
+    <string name="saved_filter_notes">Заметки</string>
+    <string name="saved_sort">Порядок</string>
+    <string name="saved_sort_date">Сначала новые</string>
+    <string name="saved_sort_book">По Библии</string>
+    <string name="saved_verse">Стих</string>
+    <string name="saved_note">Заметка</string>
+    <string name="saved_edit">Изменить</string>
+    <string name="saved_open">Открыть</string>
+    <string name="saved_delete">Удалить</string>
+    <string name="saved_delete_question">Удалить насовсем?</string>
+    <string name="saved_keep">Оставить</string>
+    <string name="saved_empty">Пока ничего не сохранено. Сохраните стих во время чтения или напишите пару строк после чтения.</string>
 </resources>

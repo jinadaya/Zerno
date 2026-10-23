@@ -7,4 +7,23 @@
     <string name="reflection_skip">Skip</string>
     <string name="reflection_save_failed">Could not save the reflection. Please try again.</string>
     <string name="reflection_earlier">Your reflections</string>
+    <string name="reflection_cancel">Cancel</string>
+    <string name="saved_title">Saved</string>
+    <string name="saved_intro">Verses you kept and the reflections you wrote. Only you can see them.</string>
+    <string name="saved_back">Back</string>
+    <string name="saved_filter">Show</string>
+    <string name="saved_filter_all">All</string>
+    <string name="saved_filter_verses">Verses</string>
+    <string name="saved_filter_notes">Notes</string>
+    <string name="saved_sort">Order</string>
+    <string name="saved_sort_date">Newest</string>
+    <string name="saved_sort_book">Bible order</string>
+    <string name="saved_verse">Verse</string>
+    <string name="saved_note">Note</string>
+    <string name="saved_edit">Edit</string>
+    <string name="saved_open">Open</string>
+    <string name="saved_delete">Delete</string>
+    <string name="saved_delete_question">Delete this for good?</string>
+    <string name="saved_keep">Keep</string>
+    <string name="saved_empty">Nothing saved yet. Save a verse while reading, or write a few lines after a session.</string>
 </resources>

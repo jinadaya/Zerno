@@ -49,4 +49,7 @@
     <string name="progress_seals_open">Все печати</string>
     <string name="progress_history">История</string>
     <string name="progress_history_empty">Здесь появятся завершённые чтения.</string>
+    <string name="progress_saved">Сохранённое</string>
+    <string name="progress_saved_line">Сохранённые стихи и ваши размышления.</string>
+    <string name="progress_saved_open">Открыть</string>
 </resources>
