@@ -18,10 +18,14 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalTime
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -91,6 +95,38 @@ class SettingsViewModelTest {
         advanceUntilIdle()
 
         assertTrue(viewModel.state.value.translations.isEmpty())
+    }
+
+    @Test
+    fun turningTheReminderOnStartsAtEightAndStepsByAQuarter() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        viewModel.sendEvent(SettingsEvent.ReminderTurnedOn(granted = true))
+        viewModel.sendEvent(SettingsEvent.ReminderTimeStepped(-1))
+        viewModel.sendEvent(SettingsEvent.ReminderDayToggled(DayOfWeek.SUNDAY))
+        advanceUntilIdle()
+
+        val saved = AppPreferences(store).prefs.value
+        assertEquals(LocalTime(7, 45), saved.reminderTime)
+        assertFalse(DayOfWeek.SUNDAY in saved.reminderDays)
+        assertEquals(6, saved.reminderDays.size)
+
+        viewModel.sendEvent(SettingsEvent.ReminderTurnedOff)
+        advanceUntilIdle()
+        assertNull(prefs.prefs.value.reminderTime)
+    }
+
+    @Test
+    fun aRefusedPermissionLeavesTheReminderOffAndSaysWhy() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        viewModel.sendEvent(SettingsEvent.ReminderTurnedOn(granted = false))
+        advanceUntilIdle()
+
+        assertNull(prefs.prefs.value.reminderTime)
+        assertTrue(viewModel.state.value.reminderDenied)
     }
 
     @Test

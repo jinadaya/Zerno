@@ -2,6 +2,7 @@ package app.zerno.data.prefs
 
 import app.zerno.entities.bible.TranslationId
 import com.russhwolf.settings.MapSettings
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -23,6 +24,7 @@ class AppPreferencesTest {
             setTranslation(TranslationId("rst"))
             setFontSize(22)
             setReminderTime(LocalTime(7, 30))
+            setReminderDays(setOf(DayOfWeek.MONDAY, DayOfWeek.FRIDAY))
             setOnboardingDone(true)
         }
 
@@ -33,6 +35,7 @@ class AppPreferencesTest {
             translation = TranslationId("rst"),
             fontSize = 22,
             reminderTime = LocalTime(7, 30),
+            reminderDays = setOf(DayOfWeek.MONDAY, DayOfWeek.FRIDAY),
             onboardingDone = true,
         )
         assertEquals(expected, AppPreferences(storage).prefs.value)

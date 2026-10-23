@@ -11,11 +11,14 @@ import com.royaal.arch.mvi.MviReducer
 import com.royaal.arch.mvi.ScreenState
 import com.royaal.arch.mvi.SideEffect
 import com.royaal.arch.mvi.UserEvent
+import kotlinx.datetime.DayOfWeek
 
 /** The saved settings and the translations on this device. */
 data class SettingsState(
     val prefs: AppPrefs = AppPrefs(),
     val translations: List<InstalledTranslation> = emptyList(),
+    /** The user refused notifications when turning the reminder on. */
+    val reminderDenied: Boolean = false,
 ) : ScreenState
 
 sealed interface SettingsEvent : UserEvent {
@@ -29,6 +32,18 @@ sealed interface SettingsEvent : UserEvent {
 
     data class UiLanguageChosen(val language: UiLanguage) : SettingsEvent
 
+    /** The reminder's switch, time and days. */
+    sealed interface ReminderEvent : SettingsEvent
+
+    /** The reminder switched on, after the platform's permission prompt answered [granted]. */
+    data class ReminderTurnedOn(val granted: Boolean) : ReminderEvent
+
+    data object ReminderTurnedOff : ReminderEvent
+
+    data class ReminderTimeStepped(val steps: Int) : ReminderEvent
+
+    data class ReminderDayToggled(val day: DayOfWeek) : ReminderEvent
+
     data object BackClicked : SettingsEvent
 }
 
@@ -36,6 +51,8 @@ sealed interface SettingsInnerEvent : InnerEvent {
     data class PrefsChanged(val prefs: AppPrefs) : SettingsInnerEvent
 
     data class TranslationsLoaded(val translations: List<InstalledTranslation>) : SettingsInnerEvent
+
+    data class ReminderDenied(val denied: Boolean) : SettingsInnerEvent
 }
 
 sealed interface SettingsEffect : SideEffect {
@@ -46,5 +63,6 @@ object SettingsReducer : MviReducer<SettingsState, SettingsInnerEvent> {
     override fun reduce(oldState: SettingsState, event: SettingsInnerEvent): SettingsState = when (event) {
         is SettingsInnerEvent.PrefsChanged -> oldState.copy(prefs = event.prefs)
         is SettingsInnerEvent.TranslationsLoaded -> oldState.copy(translations = event.translations)
+        is SettingsInnerEvent.ReminderDenied -> oldState.copy(reminderDenied = event.denied)
     }
 }

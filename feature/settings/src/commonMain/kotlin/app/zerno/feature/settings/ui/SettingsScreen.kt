@@ -3,6 +3,8 @@ package app.zerno.feature.settings.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,18 +27,28 @@ import app.zerno.data.prefs.AppTheme
 import app.zerno.data.prefs.PageTheme
 import app.zerno.data.prefs.ScriptureSize
 import app.zerno.data.prefs.UiLanguage
+import app.zerno.designsystem.component.SjChip
 import app.zerno.designsystem.component.SjChipGroup
 import app.zerno.designsystem.component.SjLinkButton
 import app.zerno.designsystem.component.SjOutlineButton
+import app.zerno.designsystem.component.SjSwitchRow
 import app.zerno.designsystem.foundation.SjEdge
 import app.zerno.designsystem.foundation.sjHairline
 import app.zerno.designsystem.theme.SjTheme
 import app.zerno.feature.settings.domain.attribution
+import app.zerno.feature.settings.reminder.rememberNotificationPermission
 import app.zerno.feature.settings.resources.Res
 import app.zerno.feature.settings.resources.settings_about
 import app.zerno.feature.settings.resources.settings_app
 import app.zerno.feature.settings.resources.settings_app_theme
 import app.zerno.feature.settings.resources.settings_back
+import app.zerno.feature.settings.resources.settings_day_1
+import app.zerno.feature.settings.resources.settings_day_2
+import app.zerno.feature.settings.resources.settings_day_3
+import app.zerno.feature.settings.resources.settings_day_4
+import app.zerno.feature.settings.resources.settings_day_5
+import app.zerno.feature.settings.resources.settings_day_6
+import app.zerno.feature.settings.resources.settings_day_7
 import app.zerno.feature.settings.resources.settings_fonts
 import app.zerno.feature.settings.resources.settings_language
 import app.zerno.feature.settings.resources.settings_language_english
@@ -48,6 +60,14 @@ import app.zerno.feature.settings.resources.settings_page_light
 import app.zerno.feature.settings.resources.settings_page_sepia
 import app.zerno.feature.settings.resources.settings_page_theme
 import app.zerno.feature.settings.resources.settings_reading
+import app.zerno.feature.settings.resources.settings_reminder
+import app.zerno.feature.settings.resources.settings_reminder_daily
+import app.zerno.feature.settings.resources.settings_reminder_days
+import app.zerno.feature.settings.resources.settings_reminder_denied
+import app.zerno.feature.settings.resources.settings_reminder_earlier
+import app.zerno.feature.settings.resources.settings_reminder_later
+import app.zerno.feature.settings.resources.settings_reminder_note
+import app.zerno.feature.settings.resources.settings_reminder_time
 import app.zerno.feature.settings.resources.settings_sample
 import app.zerno.feature.settings.resources.settings_smaller
 import app.zerno.feature.settings.resources.settings_text_size
@@ -58,6 +78,8 @@ import app.zerno.feature.settings.resources.settings_title
 import app.zerno.feature.settings.resources.settings_translation
 import com.royaal.arch.mvi.EffectHandler
 import com.royaal.navigation.LocalNavigator
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.stringResource
 
 /** Reading, app and about. Every choice applies at once; there is no save button. */
@@ -89,6 +111,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             )
         }
         Reading(state, viewModel::sendEvent)
+        Reminders(state, viewModel::sendEvent)
         AppSection(state, viewModel::sendEvent)
         About(state)
     }
@@ -160,6 +183,84 @@ private fun TextSize(size: Int, onEvent: (SettingsEvent) -> Unit) {
         )
     }
 }
+
+/** On or off, the time in quarter-hour steps, and the days it may come on. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun Reminders(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
+    val colors = SjTheme.colors
+    val type = SjTheme.type
+    val askPermission = rememberNotificationPermission { granted -> onEvent(SettingsEvent.ReminderTurnedOn(granted)) }
+    val time = state.prefs.reminderTime
+    Section(stringResource(Res.string.settings_reminder)) {
+        SjSwitchRow(
+            label = stringResource(Res.string.settings_reminder_daily),
+            checked = time != null,
+            onCheckedChange = { on -> if (on) askPermission() else onEvent(SettingsEvent.ReminderTurnedOff) },
+        )
+        if (state.reminderDenied) {
+            BasicText(
+                stringResource(Res.string.settings_reminder_denied),
+                style = type.body.copy(color = colors.inkMuted),
+            )
+        }
+        if (time != null) {
+            Column(verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space2)) {
+                BasicText(
+                    stringResource(Res.string.settings_reminder_time),
+                    style = type.tag.copy(color = colors.inkMuted),
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(SjTheme.spacing.space3),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SjOutlineButton(
+                        stringResource(Res.string.settings_reminder_earlier),
+                        { onEvent(SettingsEvent.ReminderTimeStepped(-1)) },
+                    )
+                    BasicText(time.clockText(), style = type.bodyStrong.copy(color = colors.ink))
+                    SjOutlineButton(
+                        stringResource(Res.string.settings_reminder_later),
+                        { onEvent(SettingsEvent.ReminderTimeStepped(1)) },
+                    )
+                }
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space2)) {
+                BasicText(
+                    stringResource(Res.string.settings_reminder_days),
+                    style = type.tag.copy(color = colors.inkMuted),
+                )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(SjTheme.spacing.space2)) {
+                    WeekDays.forEachIndexed { index, day ->
+                        SjChip(
+                            text = stringResource(DayLabels[index]),
+                            selected = day in state.prefs.reminderDays,
+                            onClick = { onEvent(SettingsEvent.ReminderDayToggled(day)) },
+                        )
+                    }
+                }
+            }
+            BasicText(
+                stringResource(Res.string.settings_reminder_note),
+                style = type.caption.copy(color = colors.inkMuted),
+            )
+        }
+    }
+}
+
+private fun LocalTime.clockText() = "${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}"
+
+private val WeekDays = (1..7).map { DayOfWeek(it) }
+
+private val DayLabels = listOf(
+    Res.string.settings_day_1,
+    Res.string.settings_day_2,
+    Res.string.settings_day_3,
+    Res.string.settings_day_4,
+    Res.string.settings_day_5,
+    Res.string.settings_day_6,
+    Res.string.settings_day_7,
+)
 
 @Composable
 private fun AppSection(state: SettingsState, onEvent: (SettingsEvent) -> Unit) {
