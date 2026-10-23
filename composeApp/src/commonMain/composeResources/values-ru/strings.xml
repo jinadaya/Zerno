@@ -1,0 +1,6 @@
+<resources>
+    <string name="nav_today">Сегодня</string>
+    <string name="nav_bible">Библия</string>
+    <string name="nav_plans">Планы</string>
+    <string name="nav_journey">Путь</string>
+</resources>
