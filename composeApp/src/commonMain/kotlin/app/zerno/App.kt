@@ -13,8 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.intl.Locale
 import app.zerno.debug.DebugMenuRoute
 import app.zerno.debug.isDebugBuild
 import app.zerno.designsystem.component.SjBottomNav
@@ -22,22 +28,40 @@ import app.zerno.designsystem.component.SjNavItem
 import app.zerno.designsystem.component.SjTag
 import app.zerno.designsystem.foundation.sjMinTapTarget
 import app.zerno.designsystem.theme.SjTheme
+import app.zerno.feature.settings.api.AppLanguage
+import app.zerno.locale.LocalAppLocale
 import com.royaal.navigation.LocalNavigator
 import com.royaal.navigation.NavHost
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 /**
  * Root composable shared by Android and iOS: the app shell. Each of [AppTabs] keeps its own back stack while another
  * is shown, and `SjBottomNav` sits under the screens unless the top one hides it (the reader does).
- * Debug builds float a small "debug" tag in the bottom corner that opens the debug menu.
+ * The UI language follows the device unless settings override it, and the first run picks the translation from
+ * the device language. Debug builds float a small "debug" tag in the bottom corner that opens the debug menu.
  */
 @Composable
 fun App() {
-    SjTheme {
-        NavHost(
-            tabs = AppTabs.map { it.route },
-            scaffold = { showBottomBar, content -> AppShell(showBottomBar, content) },
-        )
+    AppLanguageScope {
+        SjTheme {
+            NavHost(
+                tabs = AppTabs.map { it.route },
+                scaffold = { showBottomBar, content -> AppShell(showBottomBar, content) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun AppLanguageScope(content: @Composable () -> Unit) {
+    val appLanguage = koinInject<AppLanguage>()
+    // Read before any override, so it is the device's own language.
+    val deviceLanguage = Locale.current.language
+    remember(appLanguage) { appLanguage.chooseFirstRunTranslation(deviceLanguage) }
+    val uiLanguage by appLanguage.uiLanguage.collectAsState(appLanguage.currentUiLanguage)
+    CompositionLocalProvider(LocalAppLocale provides uiLanguage) {
+        key(uiLanguage) { content() }
     }
 }
 

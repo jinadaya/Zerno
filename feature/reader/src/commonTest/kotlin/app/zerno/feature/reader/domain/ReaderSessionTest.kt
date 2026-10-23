@@ -13,24 +13,36 @@ class ReaderSessionTest {
 
     @Test
     fun freshInstallOpensGenesisInTheDeviceLanguage() = runTest {
-        session.start("en")
+        session.start(null, "en")
         assertEquals(ReaderLocation(KJV, ChapterRef(GENESIS, 1)), session.location.value)
     }
 
     @Test
+    fun freshInstallOpensTheFirstRunTranslation() = runTest {
+        session.start(RST, "en")
+        assertEquals(ReaderLocation(RST, ChapterRef(GENESIS, 1)), session.location.value)
+    }
+
+    @Test
+    fun firstRunTranslationNotInstalledFallsBackToTheLanguage() = runTest {
+        session.start(TranslationId("asv"), "en")
+        assertEquals(KJV, session.location.value?.translation)
+    }
+
+    @Test
     fun unknownLanguageOpensTheFirstTranslation() = runTest {
-        session.start("de")
+        session.start(null, "de")
         assertEquals(RST, session.location.value?.translation)
     }
 
     @Test
     fun restartReturnsToTheLastPlace() = runTest {
-        session.start("en")
+        session.start(null, "en")
         session.openChapter(ChapterRef(JOHN, 3))
         session.savePosition(ReaderLocation(KJV, ChapterRef(JOHN, 3), 16))
 
         val reopened = ReaderSession(FakeBible(), prefs)
-        reopened.start("ru")
+        reopened.start(null, "ru")
 
         assertEquals(ReaderLocation(KJV, ChapterRef(JOHN, 3), 16), reopened.location.value)
     }
@@ -38,13 +50,13 @@ class ReaderSessionTest {
     @Test
     fun lastPlaceInATranslationNoLongerInstalledIsIgnored() = runTest {
         prefs.last = ReaderLocation(TranslationId("asv"), ChapterRef(JOHN, 3), 16)
-        session.start("en")
+        session.start(null, "en")
         assertEquals(ReaderLocation(KJV, ChapterRef(GENESIS, 1)), session.location.value)
     }
 
     @Test
     fun reopeningAChapterReturnsToTheSameVerse() = runTest {
-        session.start("en")
+        session.start(null, "en")
         session.openChapter(ChapterRef(JOHN, 3))
         session.savePosition(ReaderLocation(KJV, ChapterRef(JOHN, 3), 16))
         session.openChapter(ChapterRef(JOHN, 4))
@@ -57,7 +69,7 @@ class ReaderSessionTest {
 
     @Test
     fun scrollingBackToTheTopForgetsTheVerse() = runTest {
-        session.start("en")
+        session.start(null, "en")
         session.savePosition(ReaderLocation(KJV, ChapterRef(GENESIS, 1), 12))
         session.savePosition(ReaderLocation(KJV, ChapterRef(GENESIS, 1), null))
         session.openChapter(ChapterRef(GENESIS, 1))
@@ -66,28 +78,28 @@ class ReaderSessionTest {
 
     @Test
     fun switchingKjvToRstKeepsTheVerse() = runTest {
-        session.start("en")
+        session.start(null, "en")
         session.switchTranslation(ReaderLocation(KJV, ChapterRef(PSALMS, 23), 4), RST)
         assertEquals(ReaderLocation(RST, ChapterRef(PSALMS, 22), 4), session.location.value)
     }
 
     @Test
     fun switchingFollowsAVerseIntoAnotherChapter() = runTest {
-        session.start("en")
+        session.start(null, "en")
         session.switchTranslation(ReaderLocation(KJV, ChapterRef(JONAH, 1), 17), RST)
         assertEquals(ReaderLocation(RST, ChapterRef(JONAH, 2), 1), session.location.value)
     }
 
     @Test
     fun switchingBackRestoresTheOriginalVerse() = runTest {
-        session.start("ru")
+        session.start(null, "ru")
         session.switchTranslation(ReaderLocation(RST, ChapterRef(PSALMS, 22), 4), KJV)
         assertEquals(ReaderLocation(KJV, ChapterRef(PSALMS, 23), 4), session.location.value)
     }
 
     @Test
     fun switchingAtTheTopOfAChapterStaysAtTheTop() = runTest {
-        session.start("en")
+        session.start(null, "en")
         session.switchTranslation(ReaderLocation(KJV, ChapterRef(JOHN, 3), null), RST)
         assertEquals(ReaderLocation(RST, ChapterRef(JOHN, 3), null), session.location.value)
     }

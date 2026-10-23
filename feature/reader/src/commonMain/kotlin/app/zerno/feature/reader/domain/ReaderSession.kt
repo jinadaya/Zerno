@@ -20,16 +20,17 @@ class ReaderSession(private val bible: BibleSource, private val prefs: ReaderPre
     val location: StateFlow<ReaderLocation?> = _location.asStateFlow()
 
     /**
-     * Opens where the reader was last, or at the first chapter of the first translation in [preferredLanguage]
-     * (any translation when none is). Does nothing once a place is open.
+     * Opens where the reader was last, or at the first chapter of [preferredTranslation] (the one chosen on first
+     * run), else of the first translation in [preferredLanguage], else of any. Does nothing once a place is open.
      */
-    suspend fun start(preferredLanguage: String) = lock.withLock {
+    suspend fun start(preferredTranslation: TranslationId?, preferredLanguage: String) = lock.withLock {
         if (_location.value != null) return@withLock
         val translations = bible.translations()
         check(translations.isNotEmpty()) { "No Bible translation is installed" }
         val saved = prefs.lastLocation()?.takeIf { last -> translations.any { it.id == last.translation } }
         _location.value = saved ?: run {
-            val translation = translations.firstOrNull { it.language.equals(preferredLanguage, ignoreCase = true) }
+            val translation = translations.firstOrNull { it.id == preferredTranslation }
+                ?: translations.firstOrNull { it.language.equals(preferredLanguage, ignoreCase = true) }
                 ?: translations.first()
             ReaderLocation(translation.id, ChapterRef(bible.books(translation.id).first().id, 1))
         }
