@@ -36,4 +36,9 @@
         <item quantity="many">дней подряд</item>
         <item quantity="other">дня подряд</item>
     </plurals>
+    <string name="reader_verse_save">Сохранить</string>
+    <string name="reader_verse_saved">Сохранено</string>
+    <string name="reader_verse_note">Заметка</string>
+    <string name="reader_verse_copy">Копировать</string>
+    <string name="reader_verse_share">Поделиться</string>
 </resources>
