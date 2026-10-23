@@ -5,6 +5,7 @@ import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.TranslationId
 import app.zerno.entities.bible.Versification
 import app.zerno.entities.bible.mapVersification
+import app.zerno.feature.reader.api.PassageProgress
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,14 +42,32 @@ class ReaderSession(private val bible: BibleSource, private val prefs: ReaderPre
 
     /**
      * Opens the start of [passage], written in KJV numbering, in the current translation. Must follow [start].
-     * A passage starting at a chapter opens at its top.
+     * A passage starting at a chapter opens at its top. With [resume], opens at the verse its first chapter was left
+     * at instead, if any.
      */
-    suspend fun openPassage(passage: PassageRef) = lock.withLock {
+    suspend fun openPassage(passage: PassageRef, resume: Boolean = false) = lock.withLock {
         val current = checkNotNull(_location.value) { "The reader has not started" }
         val numbering = bible.details(current.translation).versification
         val mapped = passage.mapVersification(Versification.English, numbering)
         val chapter = ChapterRef(passage.book, mapped.startChapter)
-        _location.value = ReaderLocation(current.translation, chapter, mapped.startVerse)
+        val saved = if (resume) prefs.position(numbering, chapter) else null
+        _location.value = ReaderLocation(current.translation, chapter, saved ?: mapped.startVerse)
+    }
+
+    /**
+     * How far the first chapter of [passage] (KJV numbering) was read in the current translation, or the last one
+     * used before the reader started. Null on a fresh install, or when the saved verse is not past the passage's
+     * start.
+     */
+    suspend fun progressIn(passage: PassageRef): PassageProgress? = lock.withLock {
+        val translation = _location.value?.translation ?: prefs.lastLocation()?.translation
+        if (translation == null || bible.translations().none { it.id == translation }) return@withLock null
+        val numbering = bible.details(translation).versification
+        val mapped = passage.mapVersification(Versification.English, numbering)
+        val chapter = ChapterRef(passage.book, mapped.startChapter)
+        val verse = prefs.position(numbering, chapter)?.takeIf { it > (mapped.startVerse ?: 1) }
+        val verses = bible.chapter(translation, chapter).size
+        if (verse == null || verses == 0) null else PassageProgress(verse.coerceAtMost(verses), verses)
     }
 
     /** Opens [chapter] of the current translation at the verse it was left at. */

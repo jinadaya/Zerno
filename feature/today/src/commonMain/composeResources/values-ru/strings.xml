@@ -1,4 +1,32 @@
 <resources>
     <string name="today_title">Сегодня</string>
-    <string name="today_placeholder">Карточка дневного чтения и неделя серии.</string>
+    <string name="today_tag">Сегодня</string>
+    <string name="today_day">День %1$d / %2$d</string>
+    <string name="today_minutes_unit">мин</string>
+    <string name="today_start">Начать</string>
+    <string name="today_continue">Продолжить</string>
+    <string name="today_read_again">Прочитать снова</string>
+    <string name="today_verse_position">Стих %1$d / %2$d</string>
+    <string name="today_progress_description">Прогресс главы</string>
+    <string name="today_open_failed">Не удалось открыть чтение. Попробуйте ещё раз.</string>
+    <string name="today_no_plan_title">выберите план</string>
+    <string name="today_no_plan_body">План даёт один короткий отрывок в день. Выберите план, чтобы начать.</string>
+    <string name="today_no_plan_action">Выбрать план</string>
+    <plurals name="today_days_read">
+        <item quantity="one">день чтения на этой неделе</item>
+        <item quantity="few">дня чтения на этой неделе</item>
+        <item quantity="many">дней чтения на этой неделе</item>
+        <item quantity="other">дня чтения на этой неделе</item>
+    </plurals>
+    <string name="today_day_read">прочитано</string>
+    <string name="today_day_done">прочитано, есть заметка</string>
+    <string name="today_day_today">сегодня</string>
+    <string name="today_day_not_read">не прочитано</string>
+    <string name="today_monday">П</string>
+    <string name="today_tuesday">В</string>
+    <string name="today_wednesday">С</string>
+    <string name="today_thursday">Ч</string>
+    <string name="today_friday">П</string>
+    <string name="today_saturday">С</string>
+    <string name="today_sunday">В</string>
 </resources>
