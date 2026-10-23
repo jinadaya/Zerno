@@ -37,6 +37,7 @@ import app.zerno.designsystem.foundation.sjMinTapTarget
 import app.zerno.designsystem.theme.SjTheme
 import app.zerno.feature.onboarding.api.OnboardingRoute
 import app.zerno.feature.settings.api.AppLanguage
+import app.zerno.feature.settings.reminder.ReminderCoordinator
 import app.zerno.locale.LocalAppLocale
 import com.royaal.navigation.LocalNavigator
 import com.royaal.navigation.NavHost
@@ -47,12 +48,15 @@ import org.koin.compose.koinInject
  * Root composable shared by Android and iOS: the app shell. Each of [AppTabs] keeps its own back stack while another
  * is shown, and `SjBottomNav` sits under the screens unless the top one hides it (the reader does).
  * The UI language follows the device unless settings override it, and the first run picks the translation from
- * the device language. Debug builds float a small "debug" tag in the bottom corner that opens the debug menu.
+ * the device language. Reminders are rescheduled while the app is open. Debug builds float a small "debug" tag in
+ * the bottom corner that opens the debug menu.
  */
 @Composable
 fun App() {
     val prefs = koinInject<AppPreferences>()
     val appPrefs by prefs.prefs.collectAsState()
+    val reminders = koinInject<ReminderCoordinator>()
+    LaunchedEffect(reminders) { reminders.start(this) }
     AppLanguageScope {
         SjTheme(darkTheme = appPrefs.appTheme.isDark()) {
             NavHost(

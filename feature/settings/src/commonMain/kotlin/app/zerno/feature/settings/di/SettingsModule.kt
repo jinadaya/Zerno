@@ -10,9 +10,6 @@ import app.zerno.feature.settings.reminder.platformReminderModule
 import app.zerno.feature.settings.ui.SettingsScreen
 import app.zerno.feature.settings.ui.SettingsViewModel
 import com.royaal.navigation.screen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -30,12 +27,8 @@ val settingsModule = module {
     single<InstalledTranslations> { StoreInstalledTranslations(get()) }
     viewModelOf(::SettingsViewModel)
 
-    // Started with the app, so reminders follow the settings and the day's reading from the first launch.
-    single(createdAtStart = true) {
-        ReminderCoordinator(get(), get(), get(), get(), get()).apply {
-            start(CoroutineScope(SupervisorJob() + Dispatchers.Default))
-        }
-    }
+    // Started by the app root, which has the platform context the schedulers need.
+    single { ReminderCoordinator(get(), get(), get(), get(), get()) }
 
     screen<SettingsRoute>(showBottomBar = false) { SettingsScreen(koinViewModel()) }
 }

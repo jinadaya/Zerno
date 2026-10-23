@@ -12,6 +12,7 @@ import app.zerno.feature.settings.resources.reminder_line_4
 import app.zerno.feature.settings.resources.reminder_line_5
 import app.zerno.feature.settings.resources.reminder_title
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -25,7 +26,8 @@ import kotlin.time.Clock
 
 /**
  * Keeps the scheduled reminders in step with the settings and the day's reading: renewed when the time or days
- * change, the UI language changes, the day turns, or a reading finishes (which drops today's). Start one per app.
+ * change, the UI language changes, the day turns, or a reading finishes (which drops today's). The app root starts
+ * it once, for as long as the app is open.
  */
 class ReminderCoordinator(
     private val prefs: AppPreferences,
@@ -35,7 +37,7 @@ class ReminderCoordinator(
     private val zones: TimeZoneProvider,
 ) {
     fun start(scope: CoroutineScope) {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             combine(
                 prefs.prefs.map { Triple(it.reminderTime, it.reminderDays, it.uiLanguage) }.distinctUntilChanged(),
                 gamification.streak.map { it.today to (it.lastRead == it.today) }.distinctUntilChanged(),
