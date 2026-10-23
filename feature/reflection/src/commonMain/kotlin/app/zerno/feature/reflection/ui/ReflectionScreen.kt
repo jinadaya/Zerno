@@ -39,6 +39,7 @@ import app.zerno.entities.bible.PassageRef
 import app.zerno.feature.reflection.api.SavedReflection
 import app.zerno.feature.reflection.domain.display
 import app.zerno.feature.reflection.resources.Res
+import app.zerno.feature.reflection.resources.reflection_cancel
 import app.zerno.feature.reflection.resources.reflection_earlier
 import app.zerno.feature.reflection.resources.reflection_field
 import app.zerno.feature.reflection.resources.reflection_placeholder
@@ -52,7 +53,7 @@ import com.royaal.navigation.LocalNavigator
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ReflectionScreen(passage: PassageRef, viewModel: ReflectionViewModel) {
+fun ReflectionScreen(passage: PassageRef, viewModel: ReflectionViewModel, editing: Boolean = false) {
     val navigator = LocalNavigator.current
     EffectHandler(viewModel) { effect ->
         when (effect) {
@@ -60,11 +61,16 @@ fun ReflectionScreen(passage: PassageRef, viewModel: ReflectionViewModel) {
         }
     }
     val state by viewModel.state.collectAsState()
-    ReflectionContent(passage, state, viewModel::sendEvent)
+    ReflectionContent(passage, editing, state, viewModel::sendEvent)
 }
 
 @Composable
-private fun ReflectionContent(passage: PassageRef, state: ReflectionState, onEvent: (ReflectionEvent) -> Unit) {
+private fun ReflectionContent(
+    passage: PassageRef,
+    editing: Boolean,
+    state: ReflectionState,
+    onEvent: (ReflectionEvent) -> Unit,
+) {
     val colors = SjTheme.colors
     val type = SjTheme.type
     val language = BookNameLanguage.fromCode(Locale.current.language)
@@ -84,7 +90,10 @@ private fun ReflectionContent(passage: PassageRef, state: ReflectionState, onEve
             .padding(horizontal = SjTheme.spacing.gutter, vertical = SjTheme.spacing.space6),
         verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space6),
     ) {
-        SjLinkButton(stringResource(Res.string.reflection_skip), { onEvent(ReflectionEvent.SkipClicked) })
+        SjLinkButton(
+            stringResource(if (editing) Res.string.reflection_cancel else Res.string.reflection_skip),
+            { onEvent(ReflectionEvent.SkipClicked) },
+        )
         StickerSurface(colors.lilac, Modifier.fillMaxWidth()) {
             Mascot(MascotCharacter.Lumi, MascotPose.Reading, size = 96.dp)
             SjTag(passage.display(language))

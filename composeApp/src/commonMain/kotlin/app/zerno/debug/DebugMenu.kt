@@ -42,6 +42,7 @@ import app.zerno.feature.plans.api.PlansRoute
 import app.zerno.feature.progress.api.JourneyRoute
 import app.zerno.feature.reader.api.ReaderRoute
 import app.zerno.feature.reflection.api.ReflectionRoute
+import app.zerno.feature.reflection.api.SavedRoute
 import app.zerno.feature.settings.api.SettingsRoute
 import app.zerno.feature.today.api.TodayRoute
 import com.royaal.navigation.LocalNavigator
@@ -94,6 +95,7 @@ private val destinations: List<Pair<String, NavKey>> = listOf(
     "Journey" to JourneyRoute,
     "Achievements" to AchievementsRoute,
     "Reflection" to ReflectionRoute(PassageRef.chapter(BookId(500), 3)),
+    "Saved" to SavedRoute,
     "Account" to AccountRoute,
     "Settings" to SettingsRoute,
     "Design system catalog" to CatalogRoute,

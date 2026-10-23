@@ -43,4 +43,7 @@
     <string name="progress_seals_open">See all seals</string>
     <string name="progress_history">History</string>
     <string name="progress_history_empty">Your finished readings will appear here.</string>
+    <string name="progress_saved">Saved</string>
+    <string name="progress_saved_line">Verses you kept and your reflections.</string>
+    <string name="progress_saved_open">Open saved</string>
 </resources>

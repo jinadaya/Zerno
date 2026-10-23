@@ -52,13 +52,37 @@ class ReflectionsService(
             } else {
                 existing.copy(reflection = existing.reflection.copy(text = text.trim(), updatedAt = now))
             }
-            val updated = (current.filterNot { it.reflection.id == saved.reflection.id } + saved).newestFirst()
-            store.save(updated)
-            reflections.value = updated
+            write((current.filterNot { it.reflection.id == saved.reflection.id } + saved).newestFirst())
             saved to (existing == null)
         }
         if (isNew) gamification.onReflectionSaved(afterPlanStep)
         return saved
+    }
+
+    override suspend fun get(id: ReflectionId): SavedReflection? =
+        lock.withLock { loaded().firstOrNull { it.reflection.id == id } }
+
+    override suspend fun edit(id: ReflectionId, text: String): SavedReflection {
+        require(text.isNotBlank()) { "A reflection needs some text" }
+        return lock.withLock {
+            val current = loaded()
+            val existing = requireNotNull(current.firstOrNull { it.reflection.id == id }) { "No reflection $id" }
+            val edited = existing.copy(
+                reflection = existing.reflection.copy(text = text.trim(), updatedAt = clock.now()),
+            )
+            write(current.map { if (it.reflection.id == id) edited else it })
+            edited
+        }
+    }
+
+    override suspend fun delete(id: ReflectionId) = lock.withLock {
+        val current = loaded()
+        if (current.any { it.reflection.id == id }) write(current.filterNot { it.reflection.id == id })
+    }
+
+    private suspend fun write(updated: List<SavedReflection>) {
+        store.save(updated)
+        reflections.value = updated
     }
 
     private suspend fun loaded(): List<SavedReflection> = reflections.value

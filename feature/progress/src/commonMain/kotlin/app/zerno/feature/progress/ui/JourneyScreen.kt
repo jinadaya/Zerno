@@ -55,6 +55,9 @@ import app.zerno.feature.progress.resources.progress_plan
 import app.zerno.feature.progress.resources.progress_plan_browse
 import app.zerno.feature.progress.resources.progress_plan_caption
 import app.zerno.feature.progress.resources.progress_plan_none
+import app.zerno.feature.progress.resources.progress_saved
+import app.zerno.feature.progress.resources.progress_saved_line
+import app.zerno.feature.progress.resources.progress_saved_open
 import app.zerno.feature.progress.resources.progress_seals
 import app.zerno.feature.progress.resources.progress_seals_count
 import app.zerno.feature.progress.resources.progress_seals_open
@@ -63,6 +66,7 @@ import app.zerno.feature.progress.resources.progress_streak
 import app.zerno.feature.progress.resources.progress_streak_current
 import app.zerno.feature.progress.resources.progress_streak_longest
 import app.zerno.feature.progress.resources.progress_title
+import app.zerno.feature.reflection.api.SavedRoute
 import com.royaal.arch.mvi.EffectHandler
 import com.royaal.navigation.LocalNavigator
 import org.jetbrains.compose.resources.pluralStringResource
@@ -76,6 +80,7 @@ fun JourneyScreen(viewModel: JourneyViewModel) {
         when (effect) {
             JourneyEffect.OpenPlans -> navigator.selectTab(PlansRoute)
             JourneyEffect.OpenAchievements -> navigator.navigate(AchievementsRoute)
+            JourneyEffect.OpenSaved -> navigator.navigate(SavedRoute)
         }
     }
     LaunchedEffect(Unit) { viewModel.sendEvent(JourneyEvent.Shown) }
@@ -113,6 +118,7 @@ fun JourneyScreen(viewModel: JourneyViewModel) {
             )
         }
         Seals(state.sealsUnlocked, state.sealsTotal) { viewModel.sendEvent(JourneyEvent.AchievementsClicked) }
+        Saved { viewModel.sendEvent(JourneyEvent.SavedClicked) }
         History(state.history)
     }
 }
@@ -221,6 +227,18 @@ private fun Seals(unlocked: Int, total: Int, onOpen: () -> Unit) {
             style = SjTheme.type.bodyStrong.copy(color = SjTheme.colors.ink),
         )
         SjLinkButton(stringResource(Res.string.progress_seals_open), onOpen)
+    }
+}
+
+@Composable
+private fun Saved(onOpen: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space3)) {
+        SectionTitle(stringResource(Res.string.progress_saved))
+        BasicText(
+            stringResource(Res.string.progress_saved_line),
+            style = SjTheme.type.body.copy(color = SjTheme.colors.inkMuted),
+        )
+        SjLinkButton(stringResource(Res.string.progress_saved_open), onOpen)
     }
 }
 
