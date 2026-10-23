@@ -11,6 +11,7 @@ import app.zerno.feature.onboarding.domain.LaunchLike
 import app.zerno.feature.onboarding.domain.OnboardingStep
 import app.zerno.feature.onboarding.domain.PlanPreference
 import app.zerno.feature.onboarding.domain.ReadingGoal
+import app.zerno.feature.plans.api.PlanOverview
 import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.plans.api.Plans
 import app.zerno.feature.reader.api.PassageProgress
@@ -19,6 +20,7 @@ import com.russhwolf.settings.MapSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -144,6 +146,10 @@ class OnboardingViewModelTest {
         val started = mutableListOf<PlanId>()
 
         override suspend fun catalog(): List<ReadingPlan> = LaunchLike
+
+        override suspend fun pause() = Unit
+
+        override val overview: Flow<List<PlanOverview>> = emptyFlow()
 
         override suspend fun start(planId: PlanId) {
             started += planId

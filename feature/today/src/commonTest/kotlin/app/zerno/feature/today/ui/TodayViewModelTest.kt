@@ -7,6 +7,7 @@ import app.zerno.entities.plan.PlanId
 import app.zerno.entities.plan.ReadingPlan
 import app.zerno.feature.gamification.api.GamificationState
 import app.zerno.feature.gamification.api.StreakState
+import app.zerno.feature.plans.api.PlanOverview
 import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.plans.api.Plans
 import app.zerno.feature.reader.api.PassageProgress
@@ -206,6 +207,10 @@ class TodayViewModelTest {
         }
 
         override suspend fun catalog(): List<ReadingPlan> = emptyList()
+
+        override suspend fun pause() = Unit
+
+        override val overview: Flow<List<PlanOverview>> = emptyFlow()
 
         override suspend fun start(planId: PlanId) = Unit
 

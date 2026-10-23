@@ -7,6 +7,7 @@ import app.zerno.entities.session.ReadingSession
 import app.zerno.feature.gamification.api.GamificationEvents
 import app.zerno.feature.gamification.api.GamificationState
 import app.zerno.feature.gamification.api.StreakState
+import app.zerno.feature.plans.api.PlanOverview
 import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.plans.api.Plans
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +30,10 @@ class FakePlans : Plans {
     var catalog: List<ReadingPlan> = emptyList()
 
     override suspend fun catalog(): List<ReadingPlan> = catalog
+
+    override suspend fun pause() = Unit
+
+    override val overview: Flow<List<PlanOverview>> = emptyFlow()
 
     override suspend fun start(planId: PlanId) = Unit
 

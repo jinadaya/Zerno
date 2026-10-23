@@ -4,9 +4,11 @@ import app.zerno.data.time.TimeZoneProvider
 import app.zerno.data.time.today
 import app.zerno.entities.plan.PlanId
 import app.zerno.entities.plan.ReadingPlan
+import app.zerno.feature.plans.api.PlanOverview
 import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.plans.api.Plans
 import app.zerno.feature.plans.domain.PlanJourney
+import app.zerno.feature.plans.domain.overview
 import app.zerno.feature.plans.domain.todayIn
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,6 +44,16 @@ class PlansService(
         val plan = requireNotNull(loadedCatalog().firstOrNull { it.id == planId }) { "No plan $planId" }
         save(loadedJourney().start(plan, clock.today(zones)))
     }
+
+    override suspend fun pause() = lock.withLock { save(loadedJourney().pause()) }
+
+    override val overview: Flow<List<PlanOverview>> = flow {
+        val plans = lock.withLock {
+            loadedJourney()
+            loadedCatalog()
+        }
+        emitAll(journey.filterNotNull().map { it.overview(plans) })
+    }.distinctUntilChanged()
 
     override suspend fun completeDay(planId: PlanId, day: Int) = lock.withLock {
         save(loadedJourney().completeDay(planId, day, clock.today(zones)))

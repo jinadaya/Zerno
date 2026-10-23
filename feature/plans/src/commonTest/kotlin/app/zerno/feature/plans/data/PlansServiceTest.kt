@@ -4,6 +4,7 @@ import app.zerno.data.db.user.AppMeta
 import app.zerno.data.db.user.AppMetaDao
 import app.zerno.data.time.FakeClock
 import app.zerno.entities.plan.PlanId
+import app.zerno.feature.plans.api.PlanRunStatus
 import app.zerno.feature.plans.api.PlanToday
 import app.zerno.feature.plans.domain.PlanJourney
 import app.zerno.feature.plans.domain.PlanStatus
@@ -113,6 +114,30 @@ class PlansServiceTest {
         assertEquals(14, last.day.day)
         assertTrue(last.done)
         assertNull(plans.today(today.plus(1, DateTimeUnit.DAY)).first())
+    }
+
+    @Test
+    fun switchingPlansKeepsFinishedDaysInTheOverview() = runTest {
+        plans.start(PlanId("first-steps"))
+        plans.completeDay(PlanId("first-steps"), 1)
+        plans.completeDay(PlanId("first-steps"), 2)
+        plans.start(PlanId("prayer"))
+
+        val overview = plans.overview.first().associateBy { it.plan.id.value }
+        assertEquals(PlanRunStatus.Paused, overview.getValue("first-steps").status)
+        assertEquals(setOf(1, 2), overview.getValue("first-steps").completedDays)
+        assertEquals(3, overview.getValue("first-steps").nextDay)
+        assertEquals(PlanRunStatus.Active, overview.getValue("prayer").status)
+        assertEquals(PlanRunStatus.NotStarted, overview.getValue("gospel-of-john").status)
+    }
+
+    @Test
+    fun pausingLeavesNoPlanDayForToday() = runTest {
+        plans.start(PlanId("gospel-of-john"))
+        plans.pause()
+
+        assertNull(plans.today(today).first())
+        assertEquals(PlanStatus.Paused, store.load().plans.getValue(PlanId("gospel-of-john")).status)
     }
 
     @Test

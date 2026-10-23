@@ -1,17 +1,20 @@
 package app.zerno.feature.plans.di
 
 import app.zerno.data.db.user.UserDb
-import app.zerno.designsystem.component.SjPlaceholderScreen
 import app.zerno.feature.plans.api.Plans
 import app.zerno.feature.plans.api.PlansRoute
 import app.zerno.feature.plans.data.BundledPlans
 import app.zerno.feature.plans.data.PlanJourneyStore
 import app.zerno.feature.plans.data.PlansService
-import app.zerno.feature.plans.resources.Res
-import app.zerno.feature.plans.resources.plans_placeholder
-import app.zerno.feature.plans.resources.plans_title
+import app.zerno.feature.plans.ui.PlanDetailRoute
+import app.zerno.feature.plans.ui.PlanDetailScreen
+import app.zerno.feature.plans.ui.PlanDetailViewModel
+import app.zerno.feature.plans.ui.PlansScreen
+import app.zerno.feature.plans.ui.PlansViewModel
 import com.royaal.navigation.screen
-import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 /**
@@ -21,12 +24,12 @@ val plansModule = module {
     single { BundledPlans() }
     single { PlanJourneyStore(get<UserDb>().appMetaDao()) }
     single<Plans> { PlansService(get(), get(), get(), get()) }
+    viewModelOf(::PlansViewModel)
+    viewModelOf(::PlanDetailViewModel)
 
-    // Placeholder until the feature's first screen lands. It is the Plans tab's root, so it has no back link.
-    screen<PlansRoute> {
-        SjPlaceholderScreen(
-            stringResource(Res.string.plans_title),
-            stringResource(Res.string.plans_placeholder),
-        )
+    // The Plans tab's root, so it has no back link.
+    screen<PlansRoute> { PlansScreen(koinViewModel()) }
+    screen<PlanDetailRoute>(showBottomBar = false) { route ->
+        PlanDetailScreen(koinViewModel(key = route.toString()) { parametersOf(route) })
     }
 }
