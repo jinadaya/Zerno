@@ -1,4 +1,35 @@
 <resources>
-    <string name="onboarding_title">Знакомство</string>
-    <string name="onboarding_placeholder">Приветствие, язык, перевод и напоминание.</string>
+    <string name="onboarding_back">Назад</string>
+    <string name="onboarding_continue">Дальше</string>
+    <string name="onboarding_step">Шаг %1$d из %2$d</string>
+    <string name="onboarding_welcome_title">Немного Писания каждый день</string>
+    <string name="onboarding_welcome_body">Выберите план под свой ритм, читайте в своём темпе и следите за своим путём. Аккаунт не нужен.</string>
+    <string name="onboarding_welcome_start">Начнём</string>
+    <string name="onboarding_goal_title">Что бы вы хотели?</string>
+    <string name="onboarding_goal_start">Начать читать Библию</string>
+    <string name="onboarding_goal_consistent">Читать регулярнее</string>
+    <string name="onboarding_goal_theme">Изучить тему</string>
+    <string name="onboarding_goal_whole">Прочитать всю Библию</string>
+    <string name="onboarding_time_title">Сколько времени в день?</string>
+    <string name="onboarding_time_minutes">%1$d мин</string>
+    <string name="onboarding_time_twenty_plus">20+ мин</string>
+    <string name="onboarding_preference_title">Какой план вам ближе?</string>
+    <string name="onboarding_preference_guided">Мягкое начало</string>
+    <string name="onboarding_preference_sequential">Одна книга от начала до конца</string>
+    <string name="onboarding_preference_thematic">Отрывки на одну тему</string>
+    <string name="onboarding_recommendation_title">Ваш план</string>
+    <string name="onboarding_recommendation_caption">%1$s · %2$s в день</string>
+    <plurals name="onboarding_recommendation_days">
+        <item quantity="one">%1$d день</item>
+        <item quantity="few">%1$d дня</item>
+        <item quantity="many">%1$d дней</item>
+        <item quantity="other">%1$d дня</item>
+    </plurals>
+    <string name="onboarding_recommendation_minutes">%1$d мин</string>
+    <string name="onboarding_recommendation_start">Начать этот план</string>
+    <string name="onboarding_reminder_title">Мягкое напоминание?</string>
+    <string name="onboarding_reminder_body">Одно в день в выбранное время, и никакого, если вы уже прочитали. Это можно изменить в настройках.</string>
+    <string name="onboarding_reminder_start">Начать чтение</string>
+    <string name="onboarding_reminder_skip">Не сейчас</string>
+    <string name="onboarding_failed">Не получилось начать план. Попробуйте ещё раз.</string>
 </resources>

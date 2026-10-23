@@ -1,6 +1,7 @@
 package app.zerno.feature.reader.domain
 
 import app.zerno.entities.bible.ChapterRef
+import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.TranslationId
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -102,5 +103,26 @@ class ReaderSessionTest {
         session.start(null, "en")
         session.switchTranslation(ReaderLocation(KJV, ChapterRef(JOHN, 3), null), RST)
         assertEquals(ReaderLocation(RST, ChapterRef(JOHN, 3), null), session.location.value)
+    }
+
+    @Test
+    fun planPassageOpensAtItsFirstVerse() = runTest {
+        session.start(KJV, "en")
+        session.openPassage(PassageRef(JOHN, 4, 1, 4, 26))
+        assertEquals(ReaderLocation(KJV, ChapterRef(JOHN, 4), 1), session.location.value)
+    }
+
+    @Test
+    fun planPassageOfWholeChaptersOpensAtTheTop() = runTest {
+        session.start(KJV, "en")
+        session.openPassage(PassageRef.chapter(JOHN, 1))
+        assertEquals(ReaderLocation(KJV, ChapterRef(JOHN, 1)), session.location.value)
+    }
+
+    @Test
+    fun planPassageIsMappedToSynodalNumbering() = runTest {
+        session.start(RST, "ru")
+        session.openPassage(PassageRef.chapter(PSALMS, 23))
+        assertEquals(ReaderLocation(RST, ChapterRef(PSALMS, 22)), session.location.value)
     }
 }
