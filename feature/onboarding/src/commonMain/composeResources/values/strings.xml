@@ -1,4 +1,33 @@
 <resources>
-    <string name="onboarding_title">Onboarding</string>
-    <string name="onboarding_placeholder">Welcome, language, translation and reminder.</string>
+    <string name="onboarding_back">Back</string>
+    <string name="onboarding_continue">Continue</string>
+    <string name="onboarding_step">Step %1$d of %2$d</string>
+    <string name="onboarding_welcome_title">A little Scripture, every day</string>
+    <string name="onboarding_welcome_body">Pick a plan that fits your day, read at your own pace and keep track of the journey. No account needed.</string>
+    <string name="onboarding_welcome_start">Let’s begin</string>
+    <string name="onboarding_goal_title">What would you like to do?</string>
+    <string name="onboarding_goal_start">Start reading the Bible</string>
+    <string name="onboarding_goal_consistent">Read more consistently</string>
+    <string name="onboarding_goal_theme">Explore a theme</string>
+    <string name="onboarding_goal_whole">Read the whole Bible</string>
+    <string name="onboarding_time_title">How much time a day?</string>
+    <string name="onboarding_time_minutes">%1$d min</string>
+    <string name="onboarding_time_twenty_plus">20+ min</string>
+    <string name="onboarding_preference_title">What kind of plan suits you?</string>
+    <string name="onboarding_preference_guided">A guided start</string>
+    <string name="onboarding_preference_sequential">One book, front to back</string>
+    <string name="onboarding_preference_thematic">Passages on a theme</string>
+    <string name="onboarding_recommendation_title">Your plan</string>
+    <string name="onboarding_recommendation_caption">%1$s · %2$s a day</string>
+    <plurals name="onboarding_recommendation_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="onboarding_recommendation_minutes">%1$d min</string>
+    <string name="onboarding_recommendation_start">Start this plan</string>
+    <string name="onboarding_reminder_title">A gentle reminder?</string>
+    <string name="onboarding_reminder_body">One a day at the time you pick, and none once you’ve read. You can change it in settings.</string>
+    <string name="onboarding_reminder_start">Start reading</string>
+    <string name="onboarding_reminder_skip">Not now</string>
+    <string name="onboarding_failed">Couldn’t start the plan. Try again.</string>
 </resources>

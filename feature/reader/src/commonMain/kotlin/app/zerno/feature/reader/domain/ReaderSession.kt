@@ -1,7 +1,10 @@
 package app.zerno.feature.reader.domain
 
 import app.zerno.entities.bible.ChapterRef
+import app.zerno.entities.bible.PassageRef
 import app.zerno.entities.bible.TranslationId
+import app.zerno.entities.bible.Versification
+import app.zerno.entities.bible.mapVersification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +37,18 @@ class ReaderSession(private val bible: BibleSource, private val prefs: ReaderPre
                 ?: translations.first()
             ReaderLocation(translation.id, ChapterRef(bible.books(translation.id).first().id, 1))
         }
+    }
+
+    /**
+     * Opens the start of [passage], written in KJV numbering, in the current translation. Must follow [start].
+     * A passage starting at a chapter opens at its top.
+     */
+    suspend fun openPassage(passage: PassageRef) = lock.withLock {
+        val current = checkNotNull(_location.value) { "The reader has not started" }
+        val numbering = bible.details(current.translation).versification
+        val mapped = passage.mapVersification(Versification.English, numbering)
+        val chapter = ChapterRef(passage.book, mapped.startChapter)
+        _location.value = ReaderLocation(current.translation, chapter, mapped.startVerse)
     }
 
     /** Opens [chapter] of the current translation at the verse it was left at. */

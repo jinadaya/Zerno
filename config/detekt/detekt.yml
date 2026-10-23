@@ -48,6 +48,8 @@ style:
     ignorePropertyDeclaration: true
     ignoreCompanionObjectPropertyDeclaration: true
     ignoreNamedArgument: true
+    # Values that define an enum entry, such as DailyMinutes.Five(5).
+    ignoreEnums: true
     # Layout sizes and colours in composables and previews are design values, named by the call they sit in.
     ignoreAnnotated: ['Composable', 'Preview']
   UnusedPrivateMember:

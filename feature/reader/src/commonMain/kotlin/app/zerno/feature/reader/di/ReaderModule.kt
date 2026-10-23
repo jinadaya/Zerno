@@ -1,12 +1,15 @@
 package app.zerno.feature.reader.di
 
+import androidx.compose.ui.text.intl.Locale
 import app.zerno.data.db.user.UserDb
+import app.zerno.feature.reader.api.ReaderLauncher
 import app.zerno.feature.reader.api.ReaderRoute
 import app.zerno.feature.reader.data.AppMetaReaderPrefs
 import app.zerno.feature.reader.data.StoreBibleSource
 import app.zerno.feature.reader.domain.BibleSource
 import app.zerno.feature.reader.domain.ReaderPrefs
 import app.zerno.feature.reader.domain.ReaderSession
+import app.zerno.feature.reader.domain.SessionReaderLauncher
 import app.zerno.feature.reader.ui.BookPickerRoute
 import app.zerno.feature.reader.ui.BookPickerScreen
 import app.zerno.feature.reader.ui.BookPickerViewModel
@@ -25,6 +28,7 @@ val readerModule = module {
     single<BibleSource> { StoreBibleSource(get()) }
     single<ReaderPrefs> { AppMetaReaderPrefs(get<UserDb>().appMetaDao()) }
     single { ReaderSession(get(), get()) }
+    single<ReaderLauncher> { SessionReaderLauncher(get(), get()) { Locale.current.language } }
 
     viewModelOf(::ReaderViewModel)
     viewModelOf(::BookPickerViewModel)
