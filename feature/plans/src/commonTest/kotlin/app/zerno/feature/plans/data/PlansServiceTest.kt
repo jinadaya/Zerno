@@ -39,7 +39,7 @@ class PlansServiceTest {
     private val today = LocalDate(2026, 10, 22)
     private val store = PlanJourneyStore(dao)
     private val plans = PlansService(
-        bundled = BundledPlans(),
+        catalogSource = PlanCatalog(BundledPlans(), remote = null, meta = dao),
         store = store,
         clock = FakeClock(today.atStartOfDayIn(TimeZone.UTC)),
         zones = { TimeZone.UTC },

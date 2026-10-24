@@ -19,6 +19,7 @@ class PlansViewModel(savedStateHandle: SavedStateHandle, plans: Plans) :
     ) {
     init {
         subscription(LOAD) { plans.overview.collect { emit(PlansInnerEvent.Loaded(it.inListOrder())) } }
+        intent(REFRESH) { plans.refreshCatalog() }
     }
 
     override fun onEvent(event: PlansEvent) {
@@ -30,6 +31,7 @@ class PlansViewModel(savedStateHandle: SavedStateHandle, plans: Plans) :
     private companion object {
         const val LOAD = "load"
         const val OPEN = "open"
+        const val REFRESH = "refresh"
     }
 }
 
