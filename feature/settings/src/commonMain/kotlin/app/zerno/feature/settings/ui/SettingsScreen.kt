@@ -111,6 +111,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             )
         }
         Reading(state, viewModel::sendEvent)
+        Downloads(state, viewModel::sendEvent)
         Reminders(state, viewModel::sendEvent)
         AppSection(state, viewModel::sendEvent)
         About(state)
@@ -118,7 +119,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 }
 
 @Composable
-private fun Section(title: String, content: @Composable () -> Unit) {
+internal fun Section(title: String, content: @Composable () -> Unit) {
     Column(
         Modifier.fillMaxWidth().sjHairline(SjTheme.colors.rule, SjEdge.Top),
         verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space4),
@@ -294,9 +295,9 @@ private fun About(state: SettingsState) {
                 verticalArrangement = Arrangement.spacedBy(SjTheme.spacing.space1),
             ) {
                 BasicText(translation.name, style = type.bodyStrong.copy(color = colors.ink))
-                translation.id.attribution?.let { line ->
-                    BasicText(stringResource(line), style = type.body.copy(color = colors.inkMuted))
-                }
+                val line = translation.id.attribution?.let { stringResource(it) }
+                    ?: state.offers.firstOrNull { it.translation.id == translation.id.value }?.translation?.attribution
+                line?.let { BasicText(it, style = type.body.copy(color = colors.inkMuted)) }
             }
         }
         BasicText(stringResource(Res.string.settings_fonts), style = type.body.copy(color = colors.inkMuted))
