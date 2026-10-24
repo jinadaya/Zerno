@@ -31,6 +31,12 @@ interface Plans {
      * reads "Read again"), else the active plan's next day. Null when no plan is active and none finished that date.
      */
     fun today(date: LocalDate): Flow<PlanToday?>
+
+    /**
+     * Asks the backend for new or changed plans; [overview] and [today] update if any arrive. Quiet when offline,
+     * and cheap to call often: it asks at most once an hour.
+     */
+    suspend fun refreshCatalog() = Unit
 }
 
 /** One day of a plan as the Today card shows it. [done] is true once it was completed on the date asked for. */

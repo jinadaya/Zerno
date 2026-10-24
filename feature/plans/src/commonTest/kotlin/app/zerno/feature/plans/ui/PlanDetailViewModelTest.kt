@@ -7,6 +7,7 @@ import app.zerno.data.time.FakeClock
 import app.zerno.entities.plan.PlanId
 import app.zerno.feature.plans.api.PlanRunStatus
 import app.zerno.feature.plans.data.BundledPlans
+import app.zerno.feature.plans.data.PlanCatalog
 import app.zerno.feature.plans.data.PlanJourneyStore
 import app.zerno.feature.plans.data.PlansService
 import kotlinx.coroutines.Dispatchers
@@ -29,16 +30,15 @@ import kotlin.time.Instant
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlanDetailViewModelTest {
     private val rows = mutableMapOf<String, String>()
+    private val dao = object : AppMetaDao {
+        override suspend fun get(key: String) = rows[key]
+        override suspend fun put(meta: AppMeta) {
+            rows[meta.key] = meta.value
+        }
+    }
     private val plans = PlansService(
-        bundled = BundledPlans(),
-        store = PlanJourneyStore(
-            object : AppMetaDao {
-                override suspend fun get(key: String) = rows[key]
-                override suspend fun put(meta: AppMeta) {
-                    rows[meta.key] = meta.value
-                }
-            },
-        ),
+        catalogSource = PlanCatalog(BundledPlans(), remote = null, meta = dao),
+        store = PlanJourneyStore(dao),
         clock = FakeClock(Instant.parse("2026-10-22T07:00:00Z")),
         zones = { TimeZone.UTC },
     )

@@ -53,9 +53,13 @@ class TodayViewModel(
 
     override fun onEvent(event: TodayEvent) {
         when (event) {
-            TodayEvent.Shown -> intent(REFRESH) {
-                gamification.refresh()
-                today?.let { emit(TodayInnerEvent.CardChanged(todayCard(it, progress(it)))) }
+            TodayEvent.Shown -> {
+                intent(REFRESH) {
+                    gamification.refresh()
+                    today?.let { emit(TodayInnerEvent.CardChanged(todayCard(it, progress(it)))) }
+                }
+                // New plans from the backend; the card follows through the plan subscription.
+                intent(CATALOG) { plans.refreshCatalog() }
             }
 
             TodayEvent.ActionClicked -> state.value.card?.let { open(it, resume = it.action == TodayAction.Continue) }
@@ -102,6 +106,7 @@ class TodayViewModel(
         const val STREAK = "streak"
         const val PLAN = "plan"
         const val REFRESH = "refresh"
+        const val CATALOG = "catalog"
         const val OPEN = "open"
     }
 }
