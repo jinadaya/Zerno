@@ -2,6 +2,7 @@ package app.zerno.feature.plans.data
 
 import app.zerno.data.net.ZernoJson
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.expectSuccess
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
