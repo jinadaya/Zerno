@@ -29,7 +29,7 @@ data class InstalledTranslation(
 
 /**
  * The Bible files in one app-private directory (`bibleDirectory()` per platform): the bundled ones, copied out of
- * the app on first launch, and the ones DA-05 downloads next to them.
+ * the app on first launch, and the ones [TranslationDownloads] fetches next to them.
  *
  * [list] and [open] copy the bundled files first if needed, so a fresh install reads offline straight away. Which
  * bundled version was copied is kept in [AppMeta] under `bundled.{id}`; a higher [BundledTranslation.version] in an
@@ -95,15 +95,40 @@ class TranslationStore(
         }
     }
 
+    /**
+     * Removes a downloaded translation and any partial download of it. Bundled translations cannot be removed:
+     * the app needs them offline. Close the translation's [BibleFile] first.
+     */
+    suspend fun delete(id: TranslationId) {
+        require(bundled.none { it.id == id }) { "Translation $id is bundled" }
+        withContext(Dispatchers.IO) {
+            val file = fileOf(id)
+            fileSystem.deleteSidecars(directory, file)
+            fileSystem.delete(file, mustExist = false)
+            fileSystem.delete(partFile(id), mustExist = false)
+        }
+    }
+
+    /** Where [TranslationDownloads] writes [id] until it is complete and checked. */
+    internal fun partFile(id: TranslationId) = Path(directory, "${id.value}$BIBLE_FILE_SUFFIX.part")
+
+    /** Moves a complete, checked [partFile] into place over any older copy. */
+    internal suspend fun installDownloaded(id: TranslationId) = withContext(Dispatchers.IO) {
+        place(partFile(id), fileOf(id))
+    }
+
     private fun fileOf(id: TranslationId) = Path(directory, "${id.value}$BIBLE_FILE_SUFFIX")
 
     /** Writes next to [target] and moves it into place, so a crash never leaves a half-copied Bible file. */
     private fun copy(bytes: ByteArray, target: Path) {
         val temporary = Path(directory, "${target.name}.tmp")
         fileSystem.sink(temporary).buffered().use { it.write(bytes) }
-        // Sidecars of the old file (KJV and RST are WAL-mode files) must not be applied to the new one.
-        listOf("-wal", "-shm").forEach { fileSystem.delete(Path(directory, "${target.name}$it"), mustExist = false) }
-        fileSystem.atomicMove(temporary, target)
+        place(temporary, target)
+    }
+
+    private fun place(complete: Path, target: Path) {
+        fileSystem.deleteSidecars(directory, target)
+        fileSystem.atomicMove(complete, target)
     }
 
     /** Reads the required `info` keys; a file that does not open or lacks `language` is left out. */
@@ -123,3 +148,7 @@ class TranslationStore(
         }.getOrNull()
     }
 }
+
+/** Sidecars of an old file (KJV and RST are WAL-mode files) must not be applied to a new one. */
+private fun FileSystem.deleteSidecars(directory: Path, file: Path) =
+    listOf("-wal", "-shm").forEach { delete(Path(directory, "${file.name}$it"), mustExist = false) }

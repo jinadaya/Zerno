@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.zerno.room)
+    // The translation catalog is decoded into @Serializable classes.
+    alias(libs.plugins.kotlin.serialization)
     // Compose resources carry the bundled Bible files (KJV, RST) on both platforms.
     alias(libs.plugins.zerno.kmp.compose)
 }

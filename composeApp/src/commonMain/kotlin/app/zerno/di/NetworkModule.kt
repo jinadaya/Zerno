@@ -1,8 +1,11 @@
 package app.zerno.di
 
+import app.zerno.data.db.bible.TranslationDownloads
+import app.zerno.data.db.user.UserDb
 import app.zerno.data.net.ApiConfig
 import app.zerno.data.net.AuthTokenProvider
 import app.zerno.data.net.HealthApi
+import app.zerno.data.net.TranslationsApi
 import app.zerno.data.net.zernoHttpClient
 import app.zerno.debug.isDebugBuild
 import org.koin.dsl.module
@@ -20,10 +23,14 @@ expect val localBackendUrl: String
 val apiConfig: ApiConfig
     get() = if (isDebugBuild) ApiConfig(localBackendUrl, logging = true) else ApiConfig(RELEASE_BASE_URL)
 
-/** The backend client. `AuthTokenProvider.None` until the account feature (AC-01) binds its own. */
+/**
+ * The backend client and what talks to it. `AuthTokenProvider.None` until the account feature (AC-01) binds its own.
+ */
 val networkModule = module {
     single { apiConfig }
     single<AuthTokenProvider> { AuthTokenProvider.None }
     single { zernoHttpClient(get(), get()) }
     single { HealthApi(get()) }
+    single { TranslationsApi(get()) }
+    single { TranslationDownloads(get(), get(), get<UserDb>().appMetaDao()) }
 }
