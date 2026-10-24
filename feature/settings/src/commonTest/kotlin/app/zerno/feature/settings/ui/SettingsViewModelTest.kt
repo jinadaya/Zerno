@@ -2,6 +2,7 @@ package app.zerno.feature.settings.ui
 
 import androidx.lifecycle.SavedStateHandle
 import app.zerno.data.db.bible.InstalledTranslation
+import app.zerno.data.net.RemoteTranslation
 import app.zerno.data.prefs.AppPreferences
 import app.zerno.data.prefs.AppTheme
 import app.zerno.data.prefs.PageTheme
@@ -9,7 +10,9 @@ import app.zerno.data.prefs.ScriptureSize
 import app.zerno.data.prefs.UiLanguage
 import app.zerno.entities.bible.TranslationId
 import app.zerno.feature.settings.data.InstalledTranslations
+import app.zerno.feature.settings.data.TranslationLibrary
 import com.russhwolf.settings.MapSettings
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -43,8 +46,13 @@ class SettingsViewModelTest {
     @AfterTest
     fun tearDown() = Dispatchers.resetMain()
 
-    private fun viewModel(list: List<InstalledTranslation> = listOf(rst, kjv)) =
-        SettingsViewModel(SavedStateHandle(), prefs, Listed { list })
+    private val asv =
+        InstalledTranslation(TranslationId("asv"), "en", "American Standard Version", bundled = false, path = "asv")
+    private val installed = mutableListOf(rst, kjv)
+    private val library = FakeLibrary()
+
+    private fun viewModel(list: List<InstalledTranslation>? = null) =
+        SettingsViewModel(SavedStateHandle(), prefs, Listed { list ?: installed.toList() }, library)
 
     @Test
     fun showsTheSavedSettingsAndInstalledTranslations() = runTest {
@@ -91,7 +99,7 @@ class SettingsViewModelTest {
 
     @Test
     fun aFailedListLeavesTheChoiceOut() = runTest {
-        val viewModel = SettingsViewModel(SavedStateHandle(), prefs, Listed { error("Disk unreadable") })
+        val viewModel = SettingsViewModel(SavedStateHandle(), prefs, Listed { error("Disk unreadable") }, library)
         advanceUntilIdle()
 
         assertTrue(viewModel.state.value.translations.isEmpty())
@@ -138,7 +146,114 @@ class SettingsViewModelTest {
         assertEquals(SettingsEffect.Close, viewModel.effects.first())
     }
 
+    @Test
+    fun theCatalogOffersTheTranslationsThatAreNotBundled() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        val offer = viewModel.state.value.offers.single()
+        assertEquals("asv", offer.translation.id)
+        assertFalse(offer.installed)
+        assertFalse(viewModel.state.value.offersUnavailable)
+    }
+
+    @Test
+    fun aDownloadShowsItsProgressAndThenTheTranslation() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+        val gate = CompletableDeferred<Unit>()
+        library.onDownload = { progress ->
+            progress(0.5f)
+            gate.await()
+            installed += asv
+        }
+
+        viewModel.sendEvent(SettingsEvent.DownloadClicked("asv"))
+        advanceUntilIdle()
+        assertEquals(0.5f, viewModel.state.value.downloads["asv"])
+
+        gate.complete(Unit)
+        advanceUntilIdle()
+        assertTrue(viewModel.state.value.downloads.isEmpty())
+        assertTrue(asv in viewModel.state.value.translations)
+        assertTrue(viewModel.state.value.offers.single().installed)
+    }
+
+    @Test
+    fun aFailedDownloadSaysSoNextToTheTranslation() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+        library.onDownload = { throw IllegalStateException("offline") }
+
+        viewModel.sendEvent(SettingsEvent.DownloadClicked("asv"))
+        advanceUntilIdle()
+
+        assertEquals("asv", viewModel.state.value.failedDownload)
+        assertTrue(viewModel.state.value.downloads.isEmpty())
+    }
+
+    @Test
+    fun removingTheTranslationBeingReadSwitchesToABundledOneInItsLanguage() = runTest {
+        installed += asv
+        prefs.setTranslation(TranslationId("asv"))
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        viewModel.sendEvent(SettingsEvent.DeleteClicked("asv"))
+        advanceUntilIdle()
+
+        assertEquals(listOf("asv"), library.deleted)
+        assertEquals(TranslationId("kjv"), prefs.prefs.value.translation)
+    }
+
+    @Test
+    fun noCatalogLeavesTheDownloadsOutAndSaysWhy() = runTest {
+        library.catalogFails = true
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.state.value.offers.isEmpty())
+        assertTrue(viewModel.state.value.offersUnavailable)
+        assertEquals(listOf(rst, kjv), viewModel.state.value.translations)
+    }
+
+    private inner class FakeLibrary : TranslationLibrary {
+        var catalogFails = false
+        var onDownload: suspend ((Float) -> Unit) -> Unit = {}
+        val deleted = mutableListOf<String>()
+
+        override suspend fun catalog(): List<RemoteTranslation> {
+            check(!catalogFails) { "offline" }
+            return listOf(remote("kjv", bundled = true), remote("asv", bundled = false))
+        }
+
+        override suspend fun downloadedVersion(id: String): String? = null
+
+        override suspend fun download(translation: RemoteTranslation, onProgress: (Float) -> Unit) =
+            onDownload(onProgress)
+
+        override suspend fun delete(id: String) {
+            deleted += id
+            installed.removeAll { it.id.value == id }
+        }
+    }
+
     private class Listed(private val source: () -> List<InstalledTranslation>) : InstalledTranslations {
         override suspend fun list(): List<InstalledTranslation> = source()
     }
 }
+
+internal fun remote(id: String, bundled: Boolean, fileVersion: String = "v1") = RemoteTranslation(
+    id = id,
+    code = id.uppercase(),
+    name = id,
+    language = "en",
+    licence = "public-domain",
+    attribution = "Public domain.",
+    schemaVersion = 1,
+    fileVersion = fileVersion,
+    size = 9_000_000,
+    sha256 = "0".repeat(64),
+    downloadUrl = "v1/translations/$id/file",
+    bundled = bundled,
+)

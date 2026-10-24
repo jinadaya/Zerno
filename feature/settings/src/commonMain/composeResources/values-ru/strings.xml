@@ -3,6 +3,14 @@
     <string name="settings_back">Назад</string>
     <string name="settings_reading">Чтение</string>
     <string name="settings_translation">Перевод</string>
+    <string name="settings_downloads">Другие переводы</string>
+    <string name="settings_download">Скачать</string>
+    <string name="settings_download_size">%1$d МБ</string>
+    <string name="settings_downloading">Загрузка: %1$s</string>
+    <string name="settings_update">Обновить</string>
+    <string name="settings_delete">Удалить</string>
+    <string name="settings_download_failed">Загрузка прервалась. Попробуйте снова, когда будет интернет.</string>
+    <string name="settings_downloads_offline">Другие переводы появятся здесь, когда будет интернет.</string>
     <string name="settings_text_size">Размер текста</string>
     <string name="settings_smaller">Меньше</string>
     <string name="settings_larger">Больше</string>

@@ -3,6 +3,14 @@
     <string name="settings_back">Back</string>
     <string name="settings_reading">Reading</string>
     <string name="settings_translation">Translation</string>
+    <string name="settings_downloads">More translations</string>
+    <string name="settings_download">Download</string>
+    <string name="settings_download_size">%1$d MB</string>
+    <string name="settings_downloading">Downloading %1$s</string>
+    <string name="settings_update">Update</string>
+    <string name="settings_delete">Remove</string>
+    <string name="settings_download_failed">The download stopped. Try again when you're online.</string>
+    <string name="settings_downloads_offline">More translations show up here when you're online.</string>
     <string name="settings_text_size">Text size</string>
     <string name="settings_smaller">Smaller</string>
     <string name="settings_larger">Larger</string>
